@@ -2,11 +2,11 @@
 {% set title = "Unauthorized"|t %}
 
 {% block message %}
-<h2>{{ title }}</h2>
+	<h2>{{ title }}</h2>
 
-{% if message %}
-{% filter md %}{{ message }}{% endfilter %}
-{% else %}
-<p>{{ "You don’t have the proper credentials to access this page."|t }}</p>
-{% endif %}
+	{% if message %}
+		{% filter md %}{{ message }}{% endfilter %}
+	{% else %}
+		<p>{{ "You don’t have the proper credentials to access this page."|t }}</p>
+	{% endif %}
 {% endblock %}
