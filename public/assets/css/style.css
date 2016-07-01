@@ -3,7 +3,6 @@ body {
   font-size:   18px;
   line-height: 1.3;
   background:  url(/assets/images/install_bg.jpg) no-repeat center;
-  background-size: cover;
   box-sizing:  border-box;
   margin:      2em;
 }
