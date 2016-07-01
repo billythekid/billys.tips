@@ -21,7 +21,7 @@ return array(
     ],
 
     '.tips' => [
-        'siteUrl'              => 'http://tips.dev/',
+        'siteUrl'              => 'https://billys.tips/',
         'devMode'              => false,
         'environmentVariables' => [
             'basePath' => '/home/forge/billys.tips/public/',
