@@ -9,6 +9,7 @@ body {
 
 #container {
   margin:    0 auto;
+  min-width: 100px;
   max-width: 1000px;
   /*box-shadow:         0 2px 10px #da5a47;*/
 }
@@ -81,9 +82,9 @@ body {
 #content {
   border-left:  .5em solid #da5a47;
   border-right: .5em solid #da5a47;
-  display:    block;
-  padding:    25px;
-  background: #fff;
+  display:      block;
+  padding:      25px;
+  background:   #fff;
 }
 
 #content h1 {
