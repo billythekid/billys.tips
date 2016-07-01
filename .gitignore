@@ -5,3 +5,4 @@
 !/craft/storage/logo/*
 !/craft/storage/.gitignore
 .idea/
+/craft/config/license.key
