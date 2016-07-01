@@ -18,4 +18,10 @@ return array(
         'user'     => 'root',
         'password' => '',
     ],
+    
+    '.tips' => [
+        'database' => 'billys.tips',
+        'user'     => 'billys.tips',
+        'password' => 'YAizdt7trijn',
+    ],
 );
