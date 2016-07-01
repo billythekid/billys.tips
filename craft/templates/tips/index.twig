@@ -1,9 +1,9 @@
 {#
-# News index template
+# Tips index template
 # -------------------
 #
-# This template is loaded whenever http://example.com/news is
-# requested, because it is located at news/index.html in your
+# This template is loaded whenever http://example.com/tips is
+# requested, because it is located at tips/index.html in your
 # craft/templates/ folder.
 #
 # See this page for more details on how Craft routes requests:
@@ -11,17 +11,24 @@
 #}
 
 {% extends "_layout" %}
-{% set title = "News" %}
+{% set title = "Tips" %}
 
 {% block content %}
-<h1>News</h1>
-
-{% for entry in craft.entries.section('news').find() %}
-<article>
-    <h3><a href="{{ entry.url }}">{{ entry.title }}</a></h3>
-    <p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
-    {{ entry.body.getPage(1) }}
-    <p><a href="{{ entry.url }}">Continue reading</a></p>
-</article>
-{% endfor %}
+  <h1>Tips</h1>
+  {% set tips = craft.entries.section('tips').find() %}
+  {% if tips is not empty %}
+    {% for tip in tips %}
+      <article>
+        <h3><a href="{{ tip.url }}">{{ tip.title }}</a></h3>
+        <p>Posted on {{ tip.postDate.format('F d, Y') }}</p>
+        {{ tip.body.getPage(1) }}
+        <p><a href="{{ tip.url }}">Continue reading</a></p>
+      </article>
+    {% endfor %}
+  {% else %}
+    <article>
+      <h3>No tips found!</h3>
+      <p>Come back after the next Aberdeen PHP meeting for more.</p>
+    </article>
+  {% endif %}
 {% endblock %}
