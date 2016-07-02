@@ -1,0 +1,11 @@
+{% if tip is not defined and entry is defined %}
+  {% set tip = entry %}
+{% endif %}
+{% if tip is defined %}
+  <article>
+    <h3><a href="{{ tip.url }}">{{ tip.title }}</a></h3>
+    <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
+    {{ tip.body.getPage(1) }}
+    <p><a href="{{ tip.url }}">…continue reading</a></p>
+  </article>
+{% endif %}

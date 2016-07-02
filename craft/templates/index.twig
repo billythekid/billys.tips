@@ -2,6 +2,18 @@
 
 {% block content %}
 
-{{ entry.body }}
+  {{ entry.body }}
+
+  {% set latest = craft.entries.section('tips').first() %}
+  {% if latest %}
+    <h2>Latest Tip</h2>
+    <hr class="heading-line">
+    <article class="latest">
+      <h3><a href="{{ latest.url }}">{{ latest.title }}</a></h3>
+      <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
+      {{ latest.body.page(1) }}
+      <a href="{{ latest.url }}">…continue reading.</a>
+    </article>
+  {% endif %}
 
 {% endblock %}

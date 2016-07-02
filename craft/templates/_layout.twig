@@ -12,10 +12,9 @@
   <div id="container">
     <header id="header">
       <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
-
       <nav>
         <ul>
-          <li><a href="{{ url('tips') }}" {% if craft.request.firstSegment== 'tips' %}class="active"{% endif %}>Tips</a>
+          <li><a href="{{ url('tips') }}" {% if craft.request.firstSegment== 'tips' %}class="active"{% endif %}>See All Tips</a>
           </li>
         </ul>
       </nav>

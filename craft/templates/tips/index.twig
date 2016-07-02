@@ -14,21 +14,22 @@
 {% set title = "Tips" %}
 
 {% block content %}
-  <h1>Tips</h1>
-  {% set tips = craft.entries.section('tips').find() %}
-  {% if tips is not empty %}
-    {% for tip in tips %}
-      <article>
-        <h3><a href="{{ tip.url }}">{{ tip.title }}</a></h3>
-        <p>Posted on {{ tip.postDate.format('F d, Y') }}</p>
-        {{ tip.body.getPage(1) }}
-        <p><a href="{{ tip.url }}">Continue reading</a></p>
-      </article>
-    {% endfor %}
-  {% else %}
-    <article>
-      <h3>No tips found!</h3>
-      <p>Come back after the next Aberdeen PHP meeting for more.</p>
-    </article>
-  {% endif %}
+  <h2>Tips</h2>
+  <hr class="heading-line">
+  {% paginate craft.entries.section('tips').limit(6) as pageInfo, tips %}
+
+  <div class="articles">
+    {% if tips is not empty %}
+      {% for tip in tips %}
+        {% include '_partials/tipCard' %}
+      {% endfor %}
+    {% else %}
+      <div>
+        <h3>No tips found!</h3>
+        <p>Come back after the next Aberdeen PHP meeting for more.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  {% include '_partials/pagination' %}
 {% endblock %}

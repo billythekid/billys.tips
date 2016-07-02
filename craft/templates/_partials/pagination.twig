@@ -1,0 +1,29 @@
+{% if pageInfo.totalPages > 0 %}
+  <div class="pagination">
+    {% if pageInfo.currentPage > 1 %}
+      <a href="{{ pageInfo.firstUrl }}">❮❮</a>
+      {#<span>…</span>#}
+    {% endif %}
+    {% if pageInfo.prevUrl %}
+      <a href="{{ pageInfo.prevUrl }}">❮</a>
+    {% endif %}
+    {% for page, url in pageInfo.getPrevUrls(5) %}
+      {#{% if page > 1 %}#}
+      <a href="{{ url }}">{{ page }}</a>
+      {#{% endif %}#}
+    {% endfor %}
+    <span class="current">{{ pageInfo.currentPage }}</span>
+    {% for page, url in pageInfo.getNextUrls(5) %}
+      {#{% if page < pageInfo.total %}#}
+      <a href="{{ url }}">{{ page }}</a>
+      {#{% endif %}#}
+    {% endfor %}
+    {% if pageInfo.nextUrl %}
+      <a href="{{ pageInfo.nextUrl }}">❯︎</a>
+    {% endif %}
+    {% if pageInfo.currentPage < pageInfo.totalPages %}
+      {#<span>…</span>#}
+      <a href="{{ pageInfo.lastUrl }}">❯❯</a>
+    {% endif %}
+  </div>
+{% endif %}
