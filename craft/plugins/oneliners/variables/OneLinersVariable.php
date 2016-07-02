@@ -16,6 +16,7 @@ class OneLinersVariable
 {
     /**
      * Pulls a one liner from the text file.
+     *
      * @param int $line
      * @return
      */
