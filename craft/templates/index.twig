@@ -4,16 +4,15 @@
 
   {{ entry.body }}
 
-  {% set latest = craft.entries.section('tips').first() %}
-  {% if latest %}
-    <h2>Latest Tip</h2>
-    <hr class="heading-line">
-    <article class="latest">
-      <h3><a href="{{ latest.url }}">{{ latest.title }}</a></h3>
-      <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
-      {{ latest.body.page(1) }}
-      <a href="{{ latest.url }}">…continue reading.</a>
-    </article>
+  {% set tip = craft.entries.section('tips').first() %}
+  {% if tip %}
+    <div class="row">
+      <h2>Latest Tip</h2>
+      <hr class="heading-line">
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        {% include '_partials/tipCard' %}
+      </div>
+    </div>
   {% endif %}
 
 {% endblock %}

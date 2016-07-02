@@ -1,0 +1,7 @@
+.mb- {
+  @for $i from 1 through 10 {
+    &#{$i} {
+      margin-bottom: #{$i}em;
+    }
+  }
+}

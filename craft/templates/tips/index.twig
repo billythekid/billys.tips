@@ -18,10 +18,12 @@
   <hr class="heading-line">
   {% paginate craft.entries.section('tips').limit(6) as pageInfo, tips %}
 
-  <div class="articles">
+  <div class="articles row">
     {% if tips is not empty %}
       {% for tip in tips %}
-        {% include '_partials/tipCard' %}
+        <div class="col-xs-12 col-sm-6 col-md-4 mb-2">
+          {% include '_partials/tipCard' %}
+        </div>
       {% endfor %}
     {% else %}
       <div>

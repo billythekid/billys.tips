@@ -6,6 +6,8 @@
     <h3><a href="{{ tip.url }}">{{ tip.title }}</a></h3>
     <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
     {{ tip.body.getPage(1) }}
-    <p><a href="{{ tip.url }}">…continue reading</a></p>
+    {% if tip.body.getTotalPages() > 1 %}
+      <p class="pull-right"><a href="{{ tip.url }}">…continue reading</a></p>
+    {% endif %}
   </article>
 {% endif %}

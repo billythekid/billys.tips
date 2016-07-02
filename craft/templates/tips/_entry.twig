@@ -14,7 +14,10 @@
 #}
 
 {% extends "_layout" %}
+{% set class='entry' %}
 
 {% block content %}
-  {% include '_partials/tipCard' %}
+    <h3>{{ entry.title }}</h3>
+    <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
+    {{ entry.body }}
 {% endblock %}
