@@ -3,7 +3,7 @@
 {% endif %}
 {% if tip is defined %}
   <article>
-    <h3><a href="{{ tip.url }}">{{ tip.title }}</a></h3>
+    <h3><a href="{{ tip.url }}">{{ tip.title|title }}</a></h3>
     <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
     {{ tip.intro }}
     {% if tip.blocks is not empty %}

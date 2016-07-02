@@ -17,7 +17,7 @@
 {% set class='entry' %}
 
 {% block content %}
-  <h3>{{ entry.title }}</h3>
+  <h3>{{ entry.title|title }}</h3>
   <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
   <p class="lead">{{ entry.intro }}</p>
   {% for block in entry.blocks %}

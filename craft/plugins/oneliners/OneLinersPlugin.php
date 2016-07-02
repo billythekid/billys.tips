@@ -1,7 +1,6 @@
 <?php
 /**
  * One Liners plugin for Craft CMS
- *
  * Spits out a random one-liner for use anywhere you like
  *
  * @author    Billy Fagan
@@ -27,7 +26,7 @@ class OneLinersPlugin extends BasePlugin
      */
     public function getName()
     {
-         return Craft::t('One Liners');
+        return Craft::t('One Liners');
     }
 
     /**

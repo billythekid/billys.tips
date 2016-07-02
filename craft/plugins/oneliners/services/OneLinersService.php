@@ -1,7 +1,6 @@
 <?php
 /**
  * One Liners plugin for Craft CMS
- *
  * OneLiners Service
  *
  * @author    Billy Fagan
