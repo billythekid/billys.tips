@@ -2,6 +2,7 @@
 
 $white: #fff;
 $red: #da5a47;
+$grey: #ccc;
 
 html {
   position: absolute;
@@ -120,6 +121,12 @@ html {
           &:hover {
             text-decoration: underline;
           }
+        }
+
+        code:not(.prism-code) {
+          background-color: $grey;
+          padding:          0 .5em;
+          border-radius:    .5em 0;
         }
 
         .articles {

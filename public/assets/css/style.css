@@ -110,6 +110,10 @@ html {
         text-decoration: none; }
         html body .container #content a:hover {
           text-decoration: underline; }
+      html body .container #content code:not(.prism-code) {
+        background-color: #ccc;
+        padding: 0 .5em;
+        border-radius: .5em 0; }
       html body .container #content .articles {
         display: flex;
         flex-wrap: wrap; }

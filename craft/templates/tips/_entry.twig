@@ -23,7 +23,7 @@
   {% for block in entry.blocks %}
     {% switch block.type %}
     {% case "code" %}
-    <pre {% if block.highlightLines is not empty %}data-line="{{ block.highlightLines }}"{% endif %}><code class="language-{{ block.language }} line-numbers">{{ block.body }}</code></pre>
+    <pre {% if block.highlightLines is not empty %}data-line="{{ block.highlightLines }}"{% endif %}><code class="prism-code language-{{ block.language }} line-numbers">{{ block.body }}</code></pre>
     {% default %}
     {{ block.body }}
     {% endswitch %}
