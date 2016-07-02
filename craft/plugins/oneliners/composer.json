@@ -1,0 +1,14 @@
+{
+	"name": "billythekid/oneliners",
+	"description": "Spits out a random one-liner for use anywhere you like",
+	"type": "craft-plugin",
+	"authors": [
+		{
+			"name": "Billy Fagan",
+			"homepage": "https://billyfagan.co.uk"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0"
+	}
+}

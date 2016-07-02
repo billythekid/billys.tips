@@ -6,6 +6,7 @@
     <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
     <link rel="home" href="{{ siteUrl }}"/>
     <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
   </head>
 
@@ -25,7 +26,7 @@
     <main id="content" role="main" class="{{ class ?? '' }}">
       {% block content %}
         <p>If you see me, you haven’t set your
-          <code>{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
+          <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
         <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template
             Inheritance</a> documentation for an explanation.</p>
       {% endblock %}
@@ -33,6 +34,7 @@
 
     <footer id="footer">© {{ now.year }} {{ siteName }}.</footer>
   </div>
+  <script src="{{ url('assets/js/prism.js') }}"></script>
   </body>
   </html>
 {% endspaceless %}

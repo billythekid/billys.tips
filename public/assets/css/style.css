@@ -121,9 +121,9 @@ html {
         height: 100%; }
         html body .container #content article.latest h2, html body .container #content div.article.latest h2 {
           text-align: center; }
-        html body .container #content article p.date, html body .container #content div.article p.date {
-          margin-top: -1em;
-          font-size: .75em; }
+      html body .container #content p.date {
+        margin-top: -1em;
+        font-size: .75em; }
       html body .container #content .pagination {
         text-align: center; }
         html body .container #content .pagination a,
