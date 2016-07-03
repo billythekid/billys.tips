@@ -1,25 +1,10 @@
-{#
-# News entry template
-# -------------------
-#
-# This template gets loaded whenever a News entry’s URL is
-# requested. That’s because the News section’s Template setting is
-# set to “news/_entry”, the path to this template.
-#
-# When this template is loaded, it will already have an ‘entry’
-# variable, set to the requested News entry.
-#
-# See this page for more details on how Craft routes requests:
-# http://craftcms.com/docs/routing
-#}
-
 {% extends "_layout" %}
 {% set class='entry' %}
 
 {% block content %}
   <h3>{{ entry.title|title }}</h3>
   <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
-  <p class="lead">{{ entry.intro|raw }}</p>
+  {#<p class="lead">{{ entry.intro|raw }}</p>#}
   {% for block in entry.blocks %}
     {% switch block.type %}
     {% case "code" %}
