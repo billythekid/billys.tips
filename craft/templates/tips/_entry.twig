@@ -19,7 +19,7 @@
 {% block content %}
   <h3>{{ entry.title|title }}</h3>
   <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
-  <p class="lead">{{ entry.intro }}</p>
+  <p class="lead">{{ entry.intro|raw }}</p>
   {% for block in entry.blocks %}
     {% switch block.type %}
     {% case "code" %}

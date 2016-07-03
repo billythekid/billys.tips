@@ -3,11 +3,14 @@
 {% endif %}
 {% if tip is defined %}
   <article>
+    <h2>Just the tip…</h2>
     <h3><a href="{{ tip.url }}">{{ tip.title|title }}</a></h3>
     <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
-    {{ tip.intro }}
+    {{ tip.intro|raw }}
     {% if tip.blocks is not empty %}
-      <p class="pull-right"><a href="{{ tip.url }}">…continue reading</a></p>
+      <div class="clearfix"></div>
+      <p class="pull-right"><a class='btn btn-red' href="{{ tip.url }}">…go deeper.</a></p>
+      <div class="clearfix"></div>
     {% endif %}
   </article>
 {% endif %}

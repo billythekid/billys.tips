@@ -112,8 +112,23 @@ html {
           text-decoration: underline; }
       html body .container #content code:not(.prism-code) {
         background-color: #ccc;
-        padding: 0 .5em;
-        border-radius: .5em 0; }
+        padding: .25em;
+        border-radius: .25em 0; }
+      html body .container #content .btn {
+        border: 1px solid #ccc;
+        padding: .5em;
+        border-radius: .5em 0;
+        box-shadow: 2px 2px 5px #ccc;
+        text-decoration: none;
+        transition: background-color 0.3s ease 0s;
+        background-color: #da5a47; }
+        html body .container #content .btn-red {
+          color: #fff; }
+        html body .container #content .btn:hover {
+          text-decoration: none;
+          background-color: #d64732; }
+        html body .container #content .btn:active {
+          box-shadow: inset 2px 2px 5px #9c2f1f; }
       html body .container #content .articles {
         display: flex;
         flex-wrap: wrap; }
@@ -123,8 +138,16 @@ html {
         padding: 1em;
         border-radius: 1em 0;
         height: 100%; }
-        html body .container #content article.latest h2, html body .container #content div.article.latest h2 {
-          text-align: center; }
+        html body .container #content article h2, html body .container #content div.article h2 {
+          background: #da5a47;
+          color: #fff;
+          position: absolute;
+          top: -.5em;
+          left: .85em;
+          right: .85em;
+          padding-bottom: .5em; }
+        html body .container #content article h3, html body .container #content div.article h3 {
+          margin-top: 3em; }
       html body .container #content p.date {
         margin-top: -1em;
         font-size: .75em; }

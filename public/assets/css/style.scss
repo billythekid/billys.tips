@@ -125,8 +125,30 @@ html {
 
         code:not(.prism-code) {
           background-color: $grey;
-          padding:          0 .5em;
+          padding:          .25em;
+          border-radius:    .25em 0;
+        }
+
+        .btn {
+          $btn-background: #fff;
+          border:           1px solid $grey;
+          padding:          .5em;
           border-radius:    .5em 0;
+          box-shadow:       2px 2px 5px $grey;
+          text-decoration:  none;
+          transition:       background-color 0.3s ease 0s;
+          &-red {
+            $btn-background: $red;
+            color: $white;
+          }
+          &:hover {
+            text-decoration:  none;
+            background-color: darken($btn-background, 5%);
+          }
+          &:active {
+            box-shadow: inset 2px 2px 5px darken($btn-background, 20%);
+          }
+          background-color: $btn-background;
         }
 
         .articles {
@@ -140,8 +162,18 @@ html {
           padding:          1em;
           border-radius:    1em 0;
           height:           100%;
-          &.latest h2 {
-            text-align: center;
+          h2 {
+            background:     $red;
+            color:          $white;
+            position:       absolute;
+            top:            -.5em;
+            left:           .85em;
+            right:          .85em;
+            padding-bottom: .5em;
+          }
+
+          h3 {
+            margin-top: 3em;
           }
         }
 
