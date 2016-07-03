@@ -3,6 +3,8 @@
 $white: #fff;
 $red: #da5a47;
 $grey: #ccc;
+$cardHover: 1px 1px 5px darken($grey, 50%);
+$buttonHover: 2px 2px 5px $grey;
 
 html {
   position: absolute;
@@ -134,7 +136,7 @@ html {
           border:           1px solid $grey;
           padding:          .5em;
           border-radius:    .5em 0;
-          box-shadow:       2px 2px 5px $grey;
+          box-shadow:       $buttonHover;
           text-decoration:  none;
           transition:       background-color 0.3s ease 0s;
           &-red {
@@ -162,6 +164,8 @@ html {
           padding:          1em;
           border-radius:    1em 0;
           height:           100%;
+          box-shadow:       $cardHover;
+
           h2 {
             background:     $red;
             color:          $white;

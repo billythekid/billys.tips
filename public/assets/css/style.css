@@ -137,7 +137,8 @@ html {
         border: 0.5em solid #da5a47;
         padding: 1em;
         border-radius: 1em 0;
-        height: 100%; }
+        height: 100%;
+        box-shadow: 1px 1px 5px #4d4d4d; }
         html body .container #content article h2, html body .container #content div.article h2 {
           background: #da5a47;
           color: #fff;

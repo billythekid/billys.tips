@@ -13,6 +13,12 @@ return array(
         'tablePrefix' => 'craft',
     ],
 
+    'ngrok.io' => [
+        'database' => 'tips',
+        'user'     => 'root',
+        'password' => '',
+    ],
+    
     '.dev' => [
         'database' => 'tips',
         'user'     => 'root',
