@@ -8,16 +8,19 @@
     <link rel="home" href="{{ siteUrl }}"/>
     {#<link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">#}
     {#<link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">#}
-    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
   </head>
 
   <body>
+  <!-- You don't understand why this is in the body, and that's OK -->
+  <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
+
   <div class="container">
     <header id="header">
       <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
       <nav>
         <ul>
-          <li><a href="{{ url('tips') }}" {% if craft.request.firstSegment== 'tips' %}class="active"{% endif %}>See All Tips</a>
+          <li><a href="{{ url('tips') }}" {% if craft.request.firstSegment== 'tips' %}class="active"{% endif %}>See All
+              Tips</a>
           </li>
         </ul>
       </nav>
