@@ -94,11 +94,11 @@ html {
       }
 
       #content {
-        border-left:  .5em solid $red;
-        border-right: .5em solid $red;
-        display:      block;
-        padding:      25px;
-        background:   rgba(255, 255, 255, .85);
+        background-color: rgba(255, 255, 255, .85);
+        border-left:      .5em solid $red;
+        border-right:     .5em solid $red;
+        display:          block;
+        padding:          25px;
         &.entry {
           background-color: $white;
         }
@@ -224,7 +224,6 @@ html {
             content: url(/assets/images/btksig.png);
           }
         }
-
       }
 
       #footer {
@@ -232,25 +231,18 @@ html {
         padding:       15px;
         font-size:     .75em;
         text-align:    center;
-        &:after,
-        &:before {
-          content:         '';
-          display:         inline-block;
-          min-height:      2em;
-          min-width:       2em;
-          vertical-align: middle;
 
-        }
-        &:after {
-          background:      url('/assets/images/scophp.png') no-repeat center;
-          background-size: contain;
-        }
-        &:before {
-          background:      url(/assets/images/abzphp.png) no-repeat center;
-          background-size: contain;
-        }
       }
+      &:after {
 
+        margin:          1em 0;
+        float:           right;
+        background:      url('/assets/images/scophp.png') no-repeat calc(100% - 2em), url(/assets/images/abzphp.png) no-repeat calc(100% - 4em);
+        background-size: contain, contain;
+        content:         '';
+        width:           6em;
+        height:          1em;
+      }
     }
   }
 }
