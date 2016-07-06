@@ -212,6 +212,20 @@ html {
           }
         }
 
+        .plumbing {
+          h4 {
+            margin: 0;
+          }
+          border:        $red 1em solid;
+          border-radius: 1em 0;
+          padding:       1em;
+          margin-top:    2em;
+          &:after {
+            content: url(/assets/images/btksig.png);
+          }
+        }
+
+
       }
 
       #footer {

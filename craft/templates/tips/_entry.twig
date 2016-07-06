@@ -3,6 +3,7 @@
 
 {% block content %}
   <h2>{{ entry.title|title }}</h2>
+  <hr class="heading-line"></hr>
   <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
   {#<p class="lead">{{ entry.intro|raw }}</p>#}
   {% for block in entry.blocks %}
@@ -13,5 +14,13 @@
     {{ block.body }}
     {% endswitch %}
   {% endfor %}
+
+  {% if entry.plumbingTip is not empty %}
+    <div class="plumbing">
+      <h4>Billy's bonus plumbing tip…</h4>
+
+      {{ entry.plumbingTip }}
+    </div>
+  {% endif %}
 
 {% endblock %}
