@@ -8,16 +8,34 @@
     <link rel="home" href="{{ siteUrl }}"/>
     {#<link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">#}
     {#<link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">#}
-    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}" media="(min-width: 100px)">
   </head>
 
   <body>
+  <noscript id="deferred-styles">
+    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}" media="(min-width: 100px)">
+  </noscript>
+  <script>
+    var loadDeferredStyles = function () {
+      var addStylesNode = document.getElementById("deferred-styles");
+      var replacement = document.createElement("div");
+      replacement.innerHTML = addStylesNode.textContent;
+      document.body.appendChild(replacement);
+      addStylesNode.parentElement.removeChild(addStylesNode);
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(function () {
+      window.setTimeout(loadDeferredStyles, 0);
+    });
+    else window.addEventListener('load', loadDeferredStyles);
+  </script>
   <div class="container">
     <header id="header">
       <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
       <nav>
         <ul>
-          <li><a href="{{ url('tips') }}" {% if craft.request.firstSegment== 'tips' %}class="active"{% endif %}>See All Tips</a>
+          <li><a href="{{ url('tips') }}" {% if craft.request.firstSegment== 'tips' %}class="active"{% endif %}>See All
+              Tips</a>
           </li>
         </ul>
       </nav>
