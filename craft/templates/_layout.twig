@@ -22,7 +22,7 @@
       <div class="clearfix"></div>
     </header>
 
-    <main id="content" role="main" class="{{ class ?? '' }}">
+    <main id="content" class="{{ class ?? '' }}">
       {% block content %}
         <p>If you see me, you haven’t set your
           <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
