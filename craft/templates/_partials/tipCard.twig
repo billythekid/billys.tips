@@ -6,7 +6,7 @@
     <h2>Just the tip…</h2>
     <h3><a href="{{ tip.url }}">{{ tip.title|title }}</a></h3>
     <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
-    {{ tip.intro|raw }}
+    <span>{{ tip.intro|raw }}</span>
     {% if tip.blocks is not empty %}
       <div class="clearfix"></div>
       <p class="pull-right"><a class='btn btn-red' href="{{ tip.url }}">…go deeper.</a></p>
