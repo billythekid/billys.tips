@@ -56,7 +56,7 @@ html {
       }
 
       #header {
-        border-radius: $cardRadius*2 $cardRadius*2 0 0;
+        border-radius: $cardRadius $cardRadius 0 0;
         padding:       25px;
         a {
           text-decoration: none;
