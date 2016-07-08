@@ -8,6 +8,12 @@ $grey: #ccc;
 $cardHover: 1px 1px 5px darken($grey, 50%);
 $buttonHover: 2px 2px 5px $grey;
 
+//radiuses
+$cardRadius: .5em;
+
+$smallRadius: .2em;
+$buttonRadius: .5em;
+
 html {
   position: absolute;
   top:      0;
@@ -50,7 +56,7 @@ html {
       }
 
       #header {
-        border-radius: 2em 0 0 0;
+        border-radius: $cardRadius*2 $cardRadius*2 0 0;
         padding:       25px;
         a {
           text-decoration: none;
@@ -92,8 +98,10 @@ html {
 
       #content {
         background-color: rgba(255, 255, 255, .85);
-        border-left:      .5em solid $red;
-        border-right:     .5em solid $red;
+        //border-left:      $cardRadius solid $red;
+        //border-right:     $cardRadius solid $red;
+        box-shadow:       0 0 0 2*$cardRadius $red;
+        border-radius:    $cardRadius;
         display:          block;
         padding:          25px;
         &.entry {
@@ -112,8 +120,8 @@ html {
           width:         10em;
           margin-top:    -1em;
           margin-bottom: 2em;
-          border:        .5em solid $red;
-          border-radius: .5em 0;
+          border:        .2em solid $red;
+          border-radius: $cardRadius;
         }
 
         a {
@@ -127,20 +135,21 @@ html {
         code:not(.prism-code) {
           background-color: $grey;
           padding:          .25em;
-          border-radius:    .25em 0;
+          border-radius:    $smallRadius;
         }
 
         .btn {
           $btn-background: #fff;
           border:           1px solid $grey;
           padding:          .5em;
-          border-radius:    .5em 0;
+          border-radius:    $buttonRadius;
           box-shadow:       $buttonHover;
           text-decoration:  none;
           transition:       background-color 0.3s ease 0s;
           &-red {
             $btn-background: $red;
-            color: $white;
+            border: 0;
+            color:  $white;
           }
           &:hover {
             text-decoration:  none;
@@ -159,9 +168,9 @@ html {
 
         article, div.article {
           background-color: $white;
-          border:           .5em solid $red;
+          border:           $cardRadius solid $red;
           padding:          1em;
-          border-radius:    1em 0;
+          border-radius:    $cardRadius;
           height:           100%;
           box-shadow:       $cardHover;
 
@@ -190,10 +199,12 @@ html {
           a,
           span {
             &:first-child {
-              border-top-left-radius: 1em;
+              border-top-left-radius:    $cardRadius;
+              border-bottom-left-radius: $cardRadius;
             }
             &:last-child {
-              border-bottom-right-radius: 1em;
+              border-top-right-radius:    $cardRadius;
+              border-bottom-right-radius: $cardRadius;
             }
             padding:    .25em;
             width:      1.5em;
@@ -213,9 +224,12 @@ html {
           h3 {
             margin: 0;
           }
-          border:        $red 1em solid;
-          border-radius: 1em 0;
+          box-shadow:    0 0 0 $cardRadius $red;
+          //border:        $red 1em white;
+          border-radius: $cardRadius;
           padding:       1em;
+          margin-left:   $cardRadius;
+          margin-right:  $cardRadius;
           margin-top:    2em;
           &:after {
             content: url(/assets/images/btksig.png);
@@ -224,7 +238,7 @@ html {
       }
 
       #footer {
-        border-radius: 0 0 2em 0;
+        border-radius: 0 0 $cardRadius $cardRadius;
         padding:       15px;
         font-size:     .75em;
         text-align:    center;
