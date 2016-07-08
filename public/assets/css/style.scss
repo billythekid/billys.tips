@@ -40,10 +40,9 @@ html {
   bottom:   0;
   left:     0;
   right:    0;
-  &.red {
-    $baseColor: $red;
-    @import 'body';
-  }
+  $baseColor: $red;
+  @import 'body';
+
   &.hotPink {
     $baseColor: $hotPink;
     @import 'body';
