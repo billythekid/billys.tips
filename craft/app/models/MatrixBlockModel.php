@@ -13,239 +13,266 @@ namespace Craft;
  */
 class MatrixBlockModel extends BaseElementModel
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var string
-     */
-    protected $elementType = ElementType::MatrixBlock;
+	/**
+	 * @var string
+	 */
+	protected $elementType = ElementType::MatrixBlock;
 
-    /**
-     * @var
-     */
-    private $_owner;
+	/**
+	 * @var
+	 */
+	private $_owner;
 
-    /**
-     * @var
-     */
-    private $_eagerLoadedBlockTypeElements;
+	/**
+	 * @var
+	 */
+	private $_eagerLoadedBlockTypeElements;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseElementModel::getFieldLayout()
-     * @return FieldLayoutModel|null
-     */
-    public function getFieldLayout()
-    {
-        $blockType = $this->getType();
+	/**
+	 * @inheritDoc BaseElementModel::getFieldLayout()
+	 *
+	 * @return FieldLayoutModel|null
+	 */
+	public function getFieldLayout()
+	{
+		$blockType = $this->getType();
 
-        if ($blockType)
-        {
-            return $blockType->getFieldLayout();
-        }
-    }
+		if ($blockType)
+		{
+			return $blockType->getFieldLayout();
+		}
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getLocales()
-     * @return array
-     */
-    public function getLocales()
-    {
-        // If the Matrix field is translatable, than each individual block is tied to a single locale, and thus aren't
-        // translatable. Otherwise all blocks belong to all locales, and their content is translatable.
+	/**
+	 * @inheritDoc BaseElementModel::getLocales()
+	 *
+	 * @return array
+	 */
+	public function getLocales()
+	{
+		// If the Matrix field is translatable, than each individual block is tied to a single locale, and thus aren't
+		// translatable. Otherwise all blocks belong to all locales, and their content is translatable.
 
-        if ($this->ownerLocale)
-        {
-            return array($this->ownerLocale);
-        } else
-        {
-            $owner = $this->getOwner();
+		if ($this->ownerLocale)
+		{
+			return array($this->ownerLocale);
+		}
+		else
+		{
+			$owner = $this->getOwner();
 
-            if ($owner)
-            {
-                // Just send back an array of locale IDs -- don't pass along enabledByDefault configs
-                $localeIds = array();
+			if ($owner)
+			{
+				// Just send back an array of locale IDs -- don't pass along enabledByDefault configs
+				$localeIds = array();
 
-                foreach ($owner->getLocales() as $localeId => $localeInfo)
-                {
-                    if (is_numeric($localeId) && is_string($localeInfo))
-                    {
-                        $localeIds[] = $localeInfo;
-                    } else
-                    {
-                        $localeIds[] = $localeId;
-                    }
-                }
+				foreach ($owner->getLocales() as $localeId => $localeInfo)
+				{
+					if (is_numeric($localeId) && is_string($localeInfo))
+					{
+						$localeIds[] = $localeInfo;
+					}
+					else
+					{
+						$localeIds[] = $localeId;
+					}
+				}
 
-                return $localeIds;
-            } else
-            {
-                return array(craft()->i18n->getPrimarySiteLocaleId());
-            }
-        }
-    }
+				return $localeIds;
+			}
+			else
+			{
+				return array(craft()->i18n->getPrimarySiteLocaleId());
+			}
+		}
+	}
 
-    /**
-     * Returns the block type.
-     *
-     * @return MatrixBlockTypeModel|null
-     */
-    public function getType()
-    {
-        if ($this->typeId)
-        {
-            return craft()->matrix->getBlockTypeById($this->typeId);
-        }
-    }
+	/**
+	 * Returns the block type.
+	 *
+	 * @return MatrixBlockTypeModel|null
+	 */
+	public function getType()
+	{
+		if ($this->typeId)
+		{
+			return craft()->matrix->getBlockTypeById($this->typeId);
+		}
+	}
 
-    /**
-     * Returns the owner.
-     *
-     * @return BaseElementModel|null
-     */
-    public function getOwner()
-    {
-        if (!isset($this->_owner) && $this->ownerId)
-        {
-            $this->_owner = craft()->elements->getElementById($this->ownerId, null, $this->locale);
+	/**
+	 * Returns the owner.
+	 *
+	 * @return BaseElementModel|null
+	 */
+	public function getOwner()
+	{
+		if (!isset($this->_owner) && $this->ownerId)
+		{
+			$this->_owner = craft()->elements->getElementById($this->ownerId, null, $this->locale);
 
-            if (!$this->_owner)
-            {
-                $this->_owner = false;
-            }
-        }
+			if (!$this->_owner)
+			{
+				$this->_owner = false;
+			}
+		}
 
-        if ($this->_owner)
-        {
-            return $this->_owner;
-        }
-    }
+		if ($this->_owner)
+		{
+			return $this->_owner;
+		}
+	}
 
-    /**
-     * Sets the owner
-     *
-     * @param BaseElementModel
-     */
-    public function setOwner(BaseElementModel $owner)
-    {
-        $this->_owner = $owner;
-    }
+	/**
+	 * Sets the owner
+	 *
+	 * @param BaseElementModel
+	 */
+	public function setOwner(BaseElementModel $owner)
+	{
+		$this->_owner = $owner;
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getContentTable()
-     * @return string
-     */
-    public function getContentTable()
-    {
-        return craft()->matrix->getContentTableName($this->_getField());
-    }
+	/**
+	 * @inheritDoc BaseElementModel::getContentTable()
+	 *
+	 * @return string
+	 */
+	public function getContentTable()
+	{
+		return craft()->matrix->getContentTableName($this->_getField());
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getFieldColumnPrefix()
-     * @return string
-     */
-    public function getFieldColumnPrefix()
-    {
-        return 'field_' . $this->getType()->handle . '_';
-    }
+	/**
+	 * @inheritDoc BaseElementModel::getFieldColumnPrefix()
+	 *
+	 * @return string
+	 */
+	public function getFieldColumnPrefix()
+	{
+		return 'field_'.$this->getType()->handle.'_';
+	}
 
-    /**
-     * Returns the field context this element's content uses.
-     *
-     * @return string
-     */
-    public function getFieldContext()
-    {
-        return 'matrixBlockType:' . $this->typeId;
-    }
+	/**
+	 * Returns the field context this element's content uses.
+	 *
+	 * @return string
+	 */
+	public function getFieldContext()
+	{
+		return 'matrixBlockType:'.$this->typeId;
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::hasEagerLoadedElements()
-     * @param string $handle
-     * @return bool
-     */
-    public function hasEagerLoadedElements($handle)
-    {
-        // See if we have this stored with a block type-specific handle
-        $blockTypeHandle = $this->getType()->handle . ':' . $handle;
+	/**
+	 * @inheritDoc BaseElementModel::hasEagerLoadedElements()
+	 *
+	 * @param string $handle
+	 *
+	 * @return bool
+	 */
+	public function hasEagerLoadedElements($handle)
+	{
+		// See if we have this stored with a block type-specific handle
+		$blockTypeHandle = $this->getType()->handle.':'.$handle;
 
-        if (isset($this->_eagerLoadedBlockTypeElements[$blockTypeHandle]))
-        {
-            return true;
-        }
+		if (isset($this->_eagerLoadedBlockTypeElements[$blockTypeHandle]))
+		{
+			return true;
+		}
 
-        return parent::hasEagerLoadedElements($handle);
-    }
+		return parent::hasEagerLoadedElements($handle);
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getEagerLoadedElements()
-     * @param string $handle
-     * @return BaseElementModel[]|null
-     */
-    public function getEagerLoadedElements($handle)
-    {
-        // See if we have this stored with a block type-specific handle
-        $blockTypeHandle = $this->getType()->handle . ':' . $handle;
+	/**
+	 * @inheritDoc BaseElementModel::getEagerLoadedElements()
+	 *
+	 * @param string $handle
+	 *
+	 * @return BaseElementModel[]|null
+	 */
+	public function getEagerLoadedElements($handle)
+	{
+		// See if we have this stored with a block type-specific handle
+		$blockTypeHandle = $this->getType()->handle.':'.$handle;
 
-        if (isset($this->_eagerLoadedBlockTypeElements[$blockTypeHandle]))
-        {
-            return $this->_eagerLoadedBlockTypeElements[$blockTypeHandle];
-        }
+		if (isset($this->_eagerLoadedBlockTypeElements[$blockTypeHandle]))
+		{
+			return $this->_eagerLoadedBlockTypeElements[$blockTypeHandle];
+		}
 
-        return parent::getEagerLoadedElements($handle);
-    }
+		return parent::getEagerLoadedElements($handle);
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::setEagerLoadedElements()
-     * @param string             $handle
-     * @param BaseElementModel[] $elements
-     */
-    public function setEagerLoadedElements($handle, $elements)
-    {
-        // See if this was eager-loaded with a block type-specific handle
-        $blockTypeHandlePrefix = $this->getType()->handle . ':';
-        if (strncmp($handle, $blockTypeHandlePrefix, strlen($blockTypeHandlePrefix)) === 0)
-        {
-            $this->_eagerLoadedBlockTypeElements[$handle] = $elements;
-        } else
-        {
-            parent::setEagerLoadedElements($handle, $elements);
-        }
-    }
+	/**
+	 * @inheritDoc BaseElementModel::setEagerLoadedElements()
+	 *
+	 * @param string             $handle
+	 * @param BaseElementModel[] $elements
+	 */
+	public function setEagerLoadedElements($handle, $elements)
+	{
+		// See if this was eager-loaded with a block type-specific handle
+		$blockTypeHandlePrefix = $this->getType()->handle.':';
+		if (strncmp($handle, $blockTypeHandlePrefix, strlen($blockTypeHandlePrefix)) === 0)
+		{
+			$this->_eagerLoadedBlockTypeElements[$handle] = $elements;
+		}
+		else
+		{
+			parent::setEagerLoadedElements($handle, $elements);
+		}
+	}
 
-    // Protected Methods
-    // =========================================================================
+	/**
+	 * @inheritDoc BaseElementModel::getHasFreshContent()
+	 *
+	 * @return bool
+	 */
+	public function getHasFreshContent()
+	{
+		// Defer to the owner element
+		$owner = $this->getOwner();
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array_merge(parent::defineAttributes(), array(
-            'fieldId'     => AttributeType::Number,
-            'ownerId'     => AttributeType::Number,
-            'ownerLocale' => AttributeType::Locale,
-            'typeId'      => AttributeType::Number,
-            'sortOrder'   => AttributeType::Number,
+		return $owner ? $owner->getHasFreshContent() : false;
+	}
 
-            'collapsed' => AttributeType::Bool,
-        ));
-    }
+	// Protected Methods
+	// =========================================================================
 
-    // Private Methods
-    // =========================================================================
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array_merge(parent::defineAttributes(), array(
+			'fieldId'     => AttributeType::Number,
+			'ownerId'     => AttributeType::Number,
+			'ownerLocale' => AttributeType::Locale,
+			'typeId'      => AttributeType::Number,
+			'sortOrder'   => AttributeType::Number,
 
-    /**
-     * Returns the Matrix field.
-     *
-     * @return FieldModel
-     */
-    private function _getField()
-    {
-        return craft()->fields->getFieldById($this->fieldId);
-    }
+			'collapsed'   => AttributeType::Bool,
+		));
+	}
+
+	// Private Methods
+	// =========================================================================
+
+	/**
+	 * Returns the Matrix field.
+	 *
+	 * @return FieldModel
+	 */
+	private function _getField()
+	{
+		return craft()->fields->getFieldById($this->fieldId);
+	}
 }

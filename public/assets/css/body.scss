@@ -1,7 +1,11 @@
 body {
   :not(pre) > code[class*="language-"],
-  pre[class*="language-"] {
+  pre[class*="language-"],
+  code:not(.prism-code) {
     background: darken($baseColor, 25%);
+  }
+  code:not(.prism-code) {
+    color: invert(darken($baseColor, 25%));
   }
 
   color: $textColor;
