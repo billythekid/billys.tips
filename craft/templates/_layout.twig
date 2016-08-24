@@ -10,102 +10,101 @@
   </head>
   <body>
 
-  <div class="container">
-    <header id="header">
-      <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
-      <nav>
+    <div class="container">
+      <header id="header">
+        <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
+        <nav>
+          <ul>
+            <li>
+              <a href="{{ url('tips') }}"{% if craft.request.firstSegment== 'tips' %} class="active"{% endif %}>See All Tips</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="clearfix"></div>
+      </header>
+
+      <div class="colortab">
         <ul>
-          <li>
-            <a href="{{ url('tips') }}"{% if craft.request.firstSegment== 'tips' %} class="active"{% endif %}>See All Tips</a>
-          </li>
+          <li class="pink"><a href="?color=pink" onclick="setBgColor('pink')"></a></li>
+          <li class="hotPink"><a href="?color=hotPink" onclick="setBgColor('hotPink')"></a></li>
+          <li class="violet"><a href="?color=violet" onclick="setBgColor('violet')"></a></li>
+          <li class="magenta"><a href="?color=magenta" onclick="setBgColor('magenta')"></a></li>
+          <li class="brown"><a href="?color=brown" onclick="setBgColor('brown')"></a></li>
+          <li class="red"><a href="?color=red" onclick="setBgColor('red')"></a></li>
+          <li class="orange"><a href="?color=orange" onclick="setBgColor('orange')"></a></li>
+          <li class="gold"><a href="?color=gold" onclick="setBgColor('gold')"></a></li>
+          <li class="yellow"><a href="?color=yellow" onclick="setBgColor('yellow')"></a></li>
+          <li class="lime"><a href="?color=lime" onclick="setBgColor('lime')"></a></li>
+          <li class="green"><a href="?color=green" onclick="setBgColor('green')"></a></li>
+          <li class="aquamarine"><a href="?color=aquamarine" onclick="setBgColor('aquamarine')"></a></li>
+          <li class="cyan"><a href="?color=cyan" onclick="setBgColor('cyan')"></a></li>
+          <li class="blue"><a href="?color=blue" onclick="setBgColor('blue')"></a></li>
+          <li class="darkBlue"><a href="?color=darkBlue" onclick="setBgColor('darkBlue')"></a></li>
+          <li class="indigo"><a href="?color=indigo" onclick="setBgColor('indigo')"></a></li>
+          <li class="purple"><a href="?color=purple" onclick="setBgColor('purple')"></a></li>
+          <li class="black"><a href="?color=black" onclick="setBgColor('black')"></a></li>
+          <li class="white"><a href="?color=white" onclick="setBgColor('white')"></a></li>
         </ul>
-      </nav>
-      <div class="clearfix"></div>
-    </header>
+      </div>
 
-    <div class="colortab">
-      <ul>
-        <li class="pink"><a href="?color=pink" onclick="setBgColor('pink')"></a></li>
-        <li class="hotPink"><a href="?color=hotPink" onclick="setBgColor('hotPink')"></a></li>
-        <li class="violet"><a href="?color=violet" onclick="setBgColor('violet')"></a></li>
-        <li class="magenta"><a href="?color=magenta" onclick="setBgColor('magenta')"></a></li>
-        <li class="brown"><a href="?color=brown" onclick="setBgColor('brown')"></a></li>
-        <li class="red"><a href="?color=red" onclick="setBgColor('red')"></a></li>
-        <li class="orange"><a href="?color=orange" onclick="setBgColor('orange')"></a></li>
-        <li class="gold"><a href="?color=gold" onclick="setBgColor('gold')"></a></li>
-        <li class="yellow"><a href="?color=yellow" onclick="setBgColor('yellow')"></a></li>
-        <li class="lime"><a href="?color=lime" onclick="setBgColor('lime')"></a></li>
-        <li class="green"><a href="?color=green" onclick="setBgColor('green')"></a></li>
-        <li class="aquamarine"><a href="?color=aquamarine" onclick="setBgColor('aquamarine')"></a></li>
-        <li class="cyan"><a href="?color=cyan" onclick="setBgColor('cyan')"></a></li>
-        <li class="blue"><a href="?color=blue" onclick="setBgColor('blue')"></a></li>
-        <li class="darkBlue"><a href="?color=darkBlue" onclick="setBgColor('darkBlue')"></a></li>
-        <li class="indigo"><a href="?color=indigo" onclick="setBgColor('indigo')"></a></li>
-        <li class="purple"><a href="?color=purple" onclick="setBgColor('purple')"></a></li>
-        <li class="black"><a href="?color=black" onclick="setBgColor('black')"></a></li>
-        <li class="white"><a href="?color=white" onclick="setBgColor('white')"></a></li>
-      </ul>
+      <main id="content" class="{{ class ?? '' }}">
+        {% block content %}
+          <p>If you see me, you haven’t set your
+            <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
+          <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template
+              Inheritance</a> documentation for an explanation.</p>
+        {% endblock %}
+      </main>
+
+      <footer id="footer">© {{ now.year }} {{ siteName }}.</footer>
     </div>
-
-    <main id="content" class="{{ class ?? '' }}">
-      {% block content %}
-        <p>If you see me, you haven’t set your
-          <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
-        <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template
-            Inheritance</a> documentation for an explanation.</p>
-      {% endblock %}
-    </main>
-
-    <footer id="footer">© {{ now.year }} {{ siteName }}.</footer>
-  </div>
-  <script src="{{ url('assets/js/prism.js') }}"></script>
-  <script>
-    function createCookie(name, value, days) {
-      var expires;
-      if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toGMTString();
-      } else {
-        expires = "";
+    <script src="{{ url('assets/js/prism.js') }}"></script>
+    {% if entry is defined and entry.konami is not empty %}
+      <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
+    {% endif %}
+    <script>
+      function createCookie(name, value, days) {
+        var expires;
+        if (days) {
+          var date = new Date();
+          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+          expires = "; expires=" + date.toGMTString();
+        } else {
+          expires = "";
+        }
+        document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
       }
-      document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
-    }
 
-    function readCookie(name) {
-      var nameEQ = encodeURIComponent(name) + "=";
-      var ca = document.cookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      function readCookie(name) {
+        var nameEQ = encodeURIComponent(name) + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+        return null;
       }
-      return null;
-    }
 
-    function eraseCookie(name) {
-      createCookie(name, "", -1);
-    }
+      function eraseCookie(name) {
+        createCookie(name, "", -1);
+      }
 
-    if ('{{ craft.request.getQuery('color') ?? '' }}' != '')
-    {
-      createCookie('color', '{{ craft.request.getQuery('color') }}', 365);
-    }
+      if ('{{ craft.request.getQuery('color') ?? '' }}' != '') {
+        createCookie('color', '{{ craft.request.getQuery('color') }}', 365);
+      }
 
-    if (readCookie('color')) {
-      document.getElementsByTagName('html')[0].className = readCookie('color');
-    }
+      if (readCookie('color')) {
+        document.getElementsByTagName('html')[0].className = readCookie('color');
+      }
 
-    function setBgColor(color)
-    {
-      event.preventDefault();
-      document.getElementsByTagName('html')[0].className = color;
-      createCookie('color', color, 365);
-    }
+      function setBgColor(color) {
+        event.preventDefault();
+        document.getElementsByTagName('html')[0].className = color;
+        createCookie('color', color, 365);
+      }
 
-
-
-  </script>
+    </script>
   </body>
   </html>
 {% endspaceless %}
