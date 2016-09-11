@@ -1,0 +1,5 @@
+{% if craft.request.getQuery('ver') is not empty %}
+  {% header "Content-Type: application/json" %}
+  {% set entry = craft.entries.id(craft.request.getQuery('ver')).first() %}
+  new Btknmi('{{ entry.konami }}');
+{% endif %}
