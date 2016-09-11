@@ -13,91 +13,94 @@ namespace Craft;
  */
 class UpdatesVariable
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns whether the update info is cached.
-     *
-     * @return bool
-     */
-    public function isUpdateInfoCached()
-    {
-        return craft()->updates->isUpdateInfoCached();
-    }
+	/**
+	 * Returns whether the update info is cached.
+	 *
+	 * @return bool
+	 */
+	public function isUpdateInfoCached()
+	{
+		return craft()->updates->isUpdateInfoCached();
+	}
 
-    /**
-     * Returns whether a critical update is available.
-     *
-     * @return bool
-     */
-    public function isCriticalUpdateAvailable()
-    {
-        return craft()->updates->isCriticalUpdateAvailable();
-    }
+	/**
+	 * Returns whether a critical update is available.
+	 *
+	 * @return bool
+	 */
+	public function isCriticalUpdateAvailable()
+	{
+		return craft()->updates->isCriticalUpdateAvailable();
+	}
 
-    /**
-     * Returns the folders that need to be set to writable.
-     *
-     * @return array
-     */
-    public function getUnwritableFolders()
-    {
-        return craft()->updates->getUnwritableFolders();
-    }
+	/**
+	 * Returns the folders that need to be set to writable.
+	 *
+	 * @return array
+	 */
+	public function getUnwritableFolders()
+	{
+		return craft()->updates->getUnwritableFolders();
+	}
 
-    /**
-     * @param bool $forceRefresh
-     * @return mixed
-     */
-    public function getUpdates($forceRefresh = false)
-    {
-        return craft()->updates->getUpdates($forceRefresh);
-    }
+	/**
+	 * @param bool $forceRefresh
+	 *
+	 * @return mixed
+	 */
+	public function getUpdates($forceRefresh = false)
+	{
+		return craft()->updates->getUpdates($forceRefresh);
+	}
 
-    /**
-     * @return string|null
-     */
-    public function getManualUpdateDisplayName()
-    {
-        return $this->_getManualUpdateInfo('name');
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getManualUpdateDisplayName()
+	{
+		return $this->_getManualUpdateInfo('name');
+	}
 
-    /**
-     * @return string|null
-     */
-    public function getManualUpdateHandle()
-    {
-        return $this->_getManualUpdateInfo('handle');
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getManualUpdateHandle()
+	{
+		return $this->_getManualUpdateInfo('handle');
+	}
 
-    // Private Methods
-    // =========================================================================
+	// Private Methods
+	// =========================================================================
 
-    /**
-     * @param string $type
-     * @return string|null
-     */
-    private function _getManualUpdateInfo($type)
-    {
-        if (craft()->updates->isCraftDbMigrationNeeded())
-        {
-            return 'Craft';
-        }
+	/**
+	 * @param string $type
+	 *
+	 * @return string|null
+	 */
+	private function _getManualUpdateInfo($type)
+	{
+		if (craft()->updates->isCraftDbMigrationNeeded())
+		{
+			return 'Craft';
+		}
 
-        $plugins = craft()->updates->getPluginsThatNeedDbUpdate();
+		$plugins = craft()->updates->getPluginsThatNeedDbUpdate();
 
-        if (!empty($plugins) && isset($plugins[0]))
-        {
-            if ($type == 'name')
-            {
-                return $plugins[0]->getName();
-            } else
-            {
-                return $plugins[0]->getClassHandle();
-            }
-        }
+		if (!empty($plugins) && isset($plugins[0]))
+		{
+			if ($type == 'name')
+			{
+				return $plugins[0]->getName();
+			}
+			else
+			{
+				return $plugins[0]->getClassHandle();
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

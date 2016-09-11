@@ -13,47 +13,52 @@ namespace Craft;
  */
 class DeleteAssetsElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Delete…');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Delete…');
+	}
 
-    /**
-     * @inheritDoc IElementAction::isDestructive()
-     * @return bool
-     */
-    public function isDestructive()
-    {
-        return true;
-    }
+	/**
+	 * @inheritDoc IElementAction::isDestructive()
+	 *
+	 * @return bool
+	 */
+	public function isDestructive()
+	{
+		return true;
+	}
 
-    /**
-     * @inheritDoc IElementAction::getConfirmationMessage()
-     * @return string|null
-     */
-    public function getConfirmationMessage()
-    {
-        return Craft::t('Are you sure you want to delete the selected assets?');
-    }
+	/**
+	 * @inheritDoc IElementAction::getConfirmationMessage()
+	 *
+	 * @return string|null
+	 */
+	public function getConfirmationMessage()
+	{
+		return Craft::t('Are you sure you want to delete the selected assets?');
+	}
 
-    /**
-     * @inheritDoc IElementAction::performAction()
-     * @param ElementCriteriaModel $criteria
-     * @return bool
-     */
-    public function performAction(ElementCriteriaModel $criteria)
-    {
-        craft()->assets->deleteFiles($criteria->ids());
+	/**
+	 * @inheritDoc IElementAction::performAction()
+	 *
+	 * @param ElementCriteriaModel $criteria
+	 *
+	 * @return bool
+	 */
+	public function performAction(ElementCriteriaModel $criteria)
+	{
+		craft()->assets->deleteFiles($criteria->ids());
 
-        $this->setMessage(Craft::t('Assets deleted.'));
+		$this->setMessage(Craft::t('Assets deleted.'));
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -199,7 +199,7 @@ Named Arguments
 ---------------
 
 .. versionadded:: 1.12
-Support for named arguments was added in Twig 1.12.
+    Support for named arguments was added in Twig 1.12.
 
 .. code-block:: jinja
 
@@ -293,25 +293,24 @@ designers or yourself:
 Including other Templates
 -------------------------
 
-The :doc:`include<tags/include>` tag is useful to include a template and
-return the rendered content of that template into the current one:
+The :doc:`include<functions/include>` function is useful to include a template
+and return the rendered content of that template into the current one:
 
 .. code-block:: jinja
 
-    {% include 'sidebar.html' %}
+    {{ include('sidebar.html') }}
 
-Per default included templates are passed the current context.
-
-The context that is passed to the included template includes variables defined
-in the template:
+By default, included templates have access to the same context as the template
+which includes them. This means that any variable defined in the main template
+will be available in the included template too:
 
 .. code-block:: jinja
 
     {% for box in boxes %}
-        {% include "render_box.html" %}
+        {{ include('render_box.html') }}
     {% endfor %}
 
-The included template ``render_box.html`` is able to access ``box``.
+The included template ``render_box.html`` is able to access the ``box`` variable.
 
 The filename of the template depends on the template loader. For instance, the
 ``Twig_Loader_Filesystem`` allows you to access other templates by giving the
@@ -319,7 +318,7 @@ filename. You can access templates in subdirectories with a slash:
 
 .. code-block:: jinja
 
-    {% include "sections/articles/sidebar.html" %}
+    {{ include('sections/articles/sidebar.html') }}
 
 This behavior depends on the application embedding Twig.
 
@@ -498,7 +497,7 @@ Macros
 ------
 
 .. versionadded:: 1.12
-Support for default argument values was added in Twig 1.12.
+    Support for default argument values was added in Twig 1.12.
 
 Macros are comparable with functions in regular programming languages. They
 are useful to reuse often used HTML fragments to not repeat yourself.
@@ -577,7 +576,7 @@ Literals
 ~~~~~~~~
 
 .. versionadded:: 1.5
-Support for hash keys as names and expressions was added in Twig 1.5.
+    Support for hash keys as names and expressions was added in Twig 1.5.
 
 The simplest form of expressions are literals. Literals are representations
 for PHP types such as strings, numbers, and arrays. The following literals
@@ -587,7 +586,9 @@ exist:
   string. They are useful whenever you need a string in the template (for
   example as arguments to function calls, filters or just to extend or include
   a template). A string can contain a delimiter if it is preceded by a
-  backslash (``\``) -- like in ``'It\'s good'``.
+  backslash (``\``) -- like in ``'It\'s good'``. If the string contains a
+  backslash (e.g. ``'c:\Program Files'``) escape it by doubling it
+  (e.g. ``'c:\\Program Files'``).
 
 * ``42`` / ``42.23``: Integers and floating point numbers are created by just
   writing the number down. If a dot is present the number is a float,
@@ -769,7 +770,7 @@ Other Operators
 ~~~~~~~~~~~~~~~
 
 .. versionadded:: 1.12.0
-Support for the extended ternary operator was added in Twig 1.12.0.
+    Support for the extended ternary operator was added in Twig 1.12.0.
 
 The following operators don't fit into any of the other categories:
 
@@ -819,9 +820,9 @@ String Interpolation
 ~~~~~~~~~~~~~~~~~~~~
 
 .. versionadded:: 1.5
-String interpolation was added in Twig 1.5.
+    String interpolation was added in Twig 1.5.
 
-String interpolation (`#{expression}`) allows any valid expression to appear
+String interpolation (``#{expression}``) allows any valid expression to appear
 within a *double-quoted string*. The result of evaluating that expression is
 inserted into the string:
 
@@ -836,7 +837,7 @@ Whitespace Control
 ------------------
 
 .. versionadded:: 1.1
-Tag level whitespace control was added in Twig 1.1.
+    Tag level whitespace control was added in Twig 1.1.
 
 The first newline after a template tag is removed automatically (like in PHP.)
 Whitespace is not further modified by the template engine, so each whitespace
@@ -869,7 +870,7 @@ leading and or trailing whitespace:
     {# output 'no spaces' #}
 
 The above sample shows the default whitespace control modifier, and how you can
-use it to remove whitespace around tags.  Trimming space will consume all whitespace
+use it to remove whitespace around tags. Trimming space will consume all whitespace
 for that side of the tag.  It is possible to use whitespace trimming on one side
 of a tag:
 
@@ -889,7 +890,7 @@ If you are looking for new tags, filters, or functions, have a look at the Twig 
 `extension repository`_.
 
 If you want to create your own, read the :ref:`Creating an
-    Extension<creating_extensions>` chapter.
+Extension<creating_extensions>` chapter.
 
 .. _`Twig bundle`:                https://github.com/Anomareh/PHP-Twig.tmbundle
 .. _`Jinja syntax plugin`:        http://jinja.pocoo.org/docs/integration/#vim

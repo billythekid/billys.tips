@@ -30,7 +30,7 @@ class VisitorFlyweight
         'response.json'         => 'Guzzle\Service\Command\LocationVisitor\Response\JsonVisitor',
         'response.reasonPhrase' => 'Guzzle\Service\Command\LocationVisitor\Response\ReasonPhraseVisitor',
         'response.statusCode'   => 'Guzzle\Service\Command\LocationVisitor\Response\StatusCodeVisitor',
-        'response.xml'          => 'Guzzle\Service\Command\LocationVisitor\Response\XmlVisitor',
+        'response.xml'          => 'Guzzle\Service\Command\LocationVisitor\Response\XmlVisitor'
     );
 
     /** @var array Array of mappings of location names to classes */
@@ -45,8 +45,7 @@ class VisitorFlyweight
      */
     public static function getInstance()
     {
-        if (!self::$instance)
-        {
+        if (!self::$instance) {
             self::$instance = new self();
         }
 
@@ -66,6 +65,7 @@ class VisitorFlyweight
      * Get an instance of a request visitor by location name
      *
      * @param string $visitor Visitor name
+     *
      * @return RequestVisitorInterface
      */
     public function getRequestVisitor($visitor)
@@ -77,6 +77,7 @@ class VisitorFlyweight
      * Get an instance of a response visitor by location name
      *
      * @param string $visitor Visitor name
+     *
      * @return ResponseVisitorInterface
      */
     public function getResponseVisitor($visitor)
@@ -89,6 +90,7 @@ class VisitorFlyweight
      *
      * @param string                  $name    Name of the visitor
      * @param RequestVisitorInterface $visitor Visitor to add
+     *
      * @return self
      */
     public function addRequestVisitor($name, RequestVisitorInterface $visitor)
@@ -103,6 +105,7 @@ class VisitorFlyweight
      *
      * @param string                   $name    Name of the visitor
      * @param ResponseVisitorInterface $visitor Visitor to add
+     *
      * @return self
      */
     public function addResponseVisitor($name, ResponseVisitorInterface $visitor)
@@ -116,15 +119,14 @@ class VisitorFlyweight
      * Get a visitor by key value name
      *
      * @param string $key Key name to retrieve
+     *
      * @return mixed
      * @throws InvalidArgumentException
      */
     private function getKey($key)
     {
-        if (!isset($this->cache[$key]))
-        {
-            if (!isset($this->mappings[$key]))
-            {
+        if (!isset($this->cache[$key])) {
+            if (!isset($this->mappings[$key])) {
                 list($type, $name) = explode('.', $key);
                 throw new InvalidArgumentException("No {$type} visitor has been mapped for {$name}");
             }

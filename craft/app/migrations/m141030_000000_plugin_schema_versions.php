@@ -13,8 +13,8 @@ class m141030_000000_plugin_schema_versions extends BaseMigration
      */
     public function safeUp()
     {
-        // Turn the version column into a Varchar
-        $this->alterColumn('plugins', 'version', array('column' => ColumnType::Varchar, 'length' => 15, 'null' => false));
+    	// Turn the version column into a Varchar
+    	$this->alterColumn('plugins', 'version', array('column' => ColumnType::Varchar, 'length' => 15, 'null' => false));
 
         // Add the schemaVersion column
         $this->addColumnAfter('plugins', 'schemaVersion', array('column' => ColumnType::Varchar, 'length' => 15), 'version');

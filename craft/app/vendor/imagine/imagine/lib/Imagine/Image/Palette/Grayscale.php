@@ -78,8 +78,7 @@ class Grayscale implements PaletteInterface
      */
     public function profile()
     {
-        if (!$this->profile)
-        {
+        if (!$this->profile) {
             $this->profile = Profile::fromPath(__DIR__ . '/../../resources/colormanagement.org/ISOcoated_v2_grey1c_bas.ICC');
         }
 
@@ -91,16 +90,14 @@ class Grayscale implements PaletteInterface
      */
     public function color($color, $alpha = null)
     {
-        if (null === $alpha)
-        {
+        if (null === $alpha) {
             $alpha = 0;
         }
 
         $color = $this->parser->parseToGrayscale($color);
         $index = sprintf('#%02x%02x%02x-%d', $color[0], $color[0], $color[0], $alpha);
 
-        if (false === array_key_exists($index, static::$colors))
-        {
+        if (false === array_key_exists($index, static::$colors)) {
             static::$colors[$index] = new GrayColor($this, $color, $alpha);
         }
 
@@ -112,16 +109,15 @@ class Grayscale implements PaletteInterface
      */
     public function blend(ColorInterface $color1, ColorInterface $color2, $amount)
     {
-        if (!$color1 instanceof GrayColor || !$color2 instanceof GrayColor)
-        {
+        if (!$color1 instanceof GrayColor || ! $color2 instanceof GrayColor) {
             throw new RuntimeException('Grayscale palette can only blend Grayscale colors');
         }
 
         return $this->color(
             array(
-                (int)min(255, min($color1->getGray(), $color2->getGray()) + round(abs($color2->getGray() - $color1->getGray()) * $amount)),
+                (int) min(255, min($color1->getGray(), $color2->getGray()) + round(abs($color2->getGray() - $color1->getGray()) * $amount)),
             ),
-            (int)min(100, min($color1->getAlpha(), $color2->getAlpha()) + round(abs($color2->getAlpha() - $color1->getAlpha()) * $amount))
+            (int) min(100, min($color1->getAlpha(), $color2->getAlpha()) + round(abs($color2->getAlpha() - $color1->getAlpha()) * $amount))
         );
     }
 }

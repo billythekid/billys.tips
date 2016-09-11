@@ -2,6 +2,4 @@
 
 namespace Guzzle\Common\Exception;
 
-class RuntimeException extends \RuntimeException implements GuzzleException
-{
-}
+class RuntimeException extends \RuntimeException implements GuzzleException {}

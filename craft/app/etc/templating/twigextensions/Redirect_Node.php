@@ -13,23 +13,24 @@ namespace Craft;
  */
 class Redirect_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles a Redirect_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $compiler
-            ->addDebugInfo($this)
-            ->write('\Craft\craft()->request->redirect(\Craft\UrlHelper::getUrl(')
-            ->subcompile($this->getNode('path'))
-            ->raw("), true, ")
-            ->subcompile($this->getNode('httpStatusCode'))
-            ->raw(");\n");
-    }
+	/**
+	 * Compiles a Redirect_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler
+		    ->addDebugInfo($this)
+		    ->write('\Craft\craft()->request->redirect(\Craft\UrlHelper::getUrl(')
+		    ->subcompile($this->getNode('path'))
+		    ->raw("), true, ")
+		    ->subcompile($this->getNode('httpStatusCode'))
+		    ->raw(");\n");
+	}
 }

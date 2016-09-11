@@ -12,6 +12,7 @@
 
 /**
  * Tests a condition.
+ *
  * <pre>
  * {% if users %}
  *  <ul>
@@ -27,18 +28,16 @@ class Twig_TokenParser_If extends Twig_TokenParser
     public function parse(Twig_Token $token)
     {
         $lineno = $token->getLine();
-        $expr   = $this->parser->getExpressionParser()->parseExpression();
+        $expr = $this->parser->getExpressionParser()->parseExpression();
         $stream = $this->parser->getStream();
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
-        $body  = $this->parser->subparse(array($this, 'decideIfFork'));
+        $body = $this->parser->subparse(array($this, 'decideIfFork'));
         $tests = array($expr, $body);
-        $else  = null;
+        $else = null;
 
         $end = false;
-        while (!$end)
-        {
-            switch ($stream->next()->getValue())
-            {
+        while (!$end) {
+            switch ($stream->next()->getValue()) {
                 case 'else':
                     $stream->expect(Twig_Token::BLOCK_END_TYPE);
                     $else = $this->parser->subparse(array($this, 'decideIfEnd'));
@@ -47,7 +46,7 @@ class Twig_TokenParser_If extends Twig_TokenParser
                 case 'elseif':
                     $expr = $this->parser->getExpressionParser()->parseExpression();
                     $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                    $body    = $this->parser->subparse(array($this, 'decideIfFork'));
+                    $body = $this->parser->subparse(array($this, 'decideIfFork'));
                     $tests[] = $expr;
                     $tests[] = $body;
                     break;

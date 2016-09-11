@@ -14,6 +14,7 @@ interface CacheStorageInterface
      * Get a Response from the cache for a request
      *
      * @param RequestInterface $request
+     *
      * @return null|Response
      */
     public function fetch(RequestInterface $request);

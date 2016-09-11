@@ -14,6 +14,7 @@ class Cookie implements ToArrayInterface
 
     /**
      * @var string ASCII codes not valid for for use in a cookie name
+     *
      * Cookie names are defined as 'token', according to RFC 2616, Section 2.2
      * A valid token may contain any CHAR except CTLs (ASCII 0 - 31 or 127)
      * or any of the following separators
@@ -27,8 +28,7 @@ class Cookie implements ToArrayInterface
      */
     protected static function getInvalidCharacters()
     {
-        if (!self::$invalidCharString)
-        {
+        if (!self::$invalidCharString) {
             self::$invalidCharString = implode('', array_map('chr', array_merge(
                 range(0, 32),
                 array(34, 40, 41, 44, 47),
@@ -57,17 +57,15 @@ class Cookie implements ToArrayInterface
             'version'     => null,
             'secure'      => false,
             'discard'     => false,
-            'http_only'   => false,
+            'http_only'   => false
         );
 
         $this->data = array_merge($defaults, $data);
         // Extract the expires value and turn it into a UNIX timestamp if needed
-        if (!$this->getExpires() && $this->getMaxAge())
-        {
+        if (!$this->getExpires() && $this->getMaxAge()) {
             // Calculate the expires date
-            $this->setExpires(time() + (int)$this->getMaxAge());
-        } elseif ($this->getExpires() && !is_numeric($this->getExpires()))
-        {
+            $this->setExpires(time() + (int) $this->getMaxAge());
+        } elseif ($this->getExpires() && !is_numeric($this->getExpires())) {
             $this->setExpires(strtotime($this->getExpires()));
         }
     }
@@ -96,6 +94,7 @@ class Cookie implements ToArrayInterface
      * Set the cookie name
      *
      * @param string $name Cookie name
+     *
      * @return Cookie
      */
     public function setName($name)
@@ -117,6 +116,7 @@ class Cookie implements ToArrayInterface
      * Set the cookie value
      *
      * @param string $value Cookie value
+     *
      * @return Cookie
      */
     public function setValue($value)
@@ -138,6 +138,7 @@ class Cookie implements ToArrayInterface
      * Set the domain of the cookie
      *
      * @param string $domain
+     *
      * @return Cookie
      */
     public function setDomain($domain)
@@ -159,6 +160,7 @@ class Cookie implements ToArrayInterface
      * Set the path of the cookie
      *
      * @param string $path Path of the cookie
+     *
      * @return Cookie
      */
     public function setPath($path)
@@ -180,6 +182,7 @@ class Cookie implements ToArrayInterface
      * Set the max-age of the cookie
      *
      * @param int $maxAge Max age of the cookie in seconds
+     *
      * @return Cookie
      */
     public function setMaxAge($maxAge)
@@ -201,6 +204,7 @@ class Cookie implements ToArrayInterface
      * Set the unix timestamp for which the cookie will expire
      *
      * @param int $timestamp Unix timestamp
+     *
      * @return Cookie
      */
     public function setExpires($timestamp)
@@ -222,6 +226,7 @@ class Cookie implements ToArrayInterface
      * Set the cookie version
      *
      * @param string|int $version Version to set
+     *
      * @return Cookie
      */
     public function setVersion($version)
@@ -243,11 +248,12 @@ class Cookie implements ToArrayInterface
      * Set whether or not the cookie is secure
      *
      * @param bool $secure Set to true or false if secure
+     *
      * @return Cookie
      */
     public function setSecure($secure)
     {
-        return $this->setData('secure', (bool)$secure);
+        return $this->setData('secure', (bool) $secure);
     }
 
     /**
@@ -264,6 +270,7 @@ class Cookie implements ToArrayInterface
      * Set whether or not this is a session cookie
      *
      * @param bool $discard Set to true or false if this is a session cookie
+     *
      * @return Cookie
      */
     public function setDiscard($discard)
@@ -285,6 +292,7 @@ class Cookie implements ToArrayInterface
      * Set the comment of the cookie
      *
      * @param string $comment Cookie comment
+     *
      * @return Cookie
      */
     public function setComment($comment)
@@ -306,6 +314,7 @@ class Cookie implements ToArrayInterface
      * Set the comment URL of the cookie
      *
      * @param string $commentUrl Cookie comment URL for more information
+     *
      * @return Cookie
      */
     public function setCommentUrl($commentUrl)
@@ -327,6 +336,7 @@ class Cookie implements ToArrayInterface
      * Set a list of acceptable ports this cookie can be used with
      *
      * @param array $ports Array of acceptable ports
+     *
      * @return Cookie
      */
     public function setPorts(array $ports)
@@ -348,6 +358,7 @@ class Cookie implements ToArrayInterface
      * Set whether or not this is an HTTP only cookie
      *
      * @param bool $httpOnly Set to true or false if this is HTTP only
+     *
      * @return Cookie
      */
     public function setHttpOnly($httpOnly)
@@ -369,6 +380,7 @@ class Cookie implements ToArrayInterface
      * Get a specific data point from the extra cookie data
      *
      * @param string $name Name of the data point to retrieve
+     *
      * @return null|string
      */
     public function getAttribute($name)
@@ -381,6 +393,7 @@ class Cookie implements ToArrayInterface
      *
      * @param string $name  Name of the attribute to set
      * @param string $value Value to set
+     *
      * @return Cookie
      */
     public function setAttribute($name, $value)
@@ -394,6 +407,7 @@ class Cookie implements ToArrayInterface
      * Check if the cookie matches a path value
      *
      * @param string $path Path to check against
+     *
      * @return bool
      */
     public function matchesPath($path)
@@ -403,26 +417,22 @@ class Cookie implements ToArrayInterface
         // the following conditions holds:
 
         // o  The cookie-path and the request-path are identical.
-        if ($path == $this->getPath())
-        {
+        if ($path == $this->getPath()) {
             return true;
         }
 
         $pos = stripos($path, $this->getPath());
-        if ($pos === 0)
-        {
+        if ($pos === 0) {
             // o  The cookie-path is a prefix of the request-path, and the last
             // character of the cookie-path is %x2F ("/").
-            if (substr($this->getPath(), -1, 1) === "/")
-            {
+            if (substr($this->getPath(), -1, 1) === "/") {
                 return true;
             }
 
             // o  The cookie-path is a prefix of the request-path, and the first
             // character of the request-path that is not included in the cookie-
             // path is a %x2F ("/") character.
-            if (substr($path, strlen($this->getPath()), 1) === "/")
-            {
+            if (substr($path, strlen($this->getPath()), 1) === "/") {
                 return true;
             }
         }
@@ -434,6 +444,7 @@ class Cookie implements ToArrayInterface
      * Check if the cookie matches a domain value
      *
      * @param string $domain Domain to check against
+     *
      * @return bool
      */
     public function matchesDomain($domain)
@@ -442,24 +453,23 @@ class Cookie implements ToArrayInterface
         $cookieDomain = ltrim($this->getDomain(), '.');
 
         // Domain not set or exact match.
-        if (!$cookieDomain || !strcasecmp($domain, $cookieDomain))
-        {
+        if (!$cookieDomain || !strcasecmp($domain, $cookieDomain)) {
             return true;
         }
 
         // Matching the subdomain according to RFC 6265: http://tools.ietf.org/html/rfc6265#section-5.1.3
-        if (filter_var($domain, FILTER_VALIDATE_IP))
-        {
+        if (filter_var($domain, FILTER_VALIDATE_IP)) {
             return false;
         }
 
-        return (bool)preg_match('/\.' . preg_quote($cookieDomain, '/') . '$/i', $domain);
+        return (bool) preg_match('/\.' . preg_quote($cookieDomain, '/') . '$/i', $domain);
     }
 
     /**
      * Check if the cookie is compatible with a specific port
      *
      * @param int $port Port to check
+     *
      * @return bool
      */
     public function matchesPort($port)
@@ -486,29 +496,25 @@ class Cookie implements ToArrayInterface
     {
         // Names must not be empty, but can be 0
         $name = $this->getName();
-        if (empty($name) && !is_numeric($name))
-        {
+        if (empty($name) && !is_numeric($name)) {
             return 'The cookie name must not be empty';
         }
 
         // Check if any of the invalid characters are present in the cookie name
-        if (strpbrk($name, self::getInvalidCharacters()) !== false)
-        {
+        if (strpbrk($name, self::getInvalidCharacters()) !== false) {
             return 'The cookie name must not contain invalid characters: ' . $name;
         }
 
         // Value must not be empty, but can be 0
         $value = $this->getValue();
-        if (empty($value) && !is_numeric($value))
-        {
+        if (empty($value) && !is_numeric($value)) {
             return 'The cookie value must not be empty';
         }
 
         // Domains must not be empty, but can be 0
         // A "0" is not a valid internet domain, but may be used as server name in a private network
         $domain = $this->getDomain();
-        if (empty($domain) && !is_numeric($domain))
-        {
+        if (empty($domain) && !is_numeric($domain)) {
             return 'The cookie domain must not be empty';
         }
 
@@ -520,6 +526,7 @@ class Cookie implements ToArrayInterface
      *
      * @param string $key   Key to set
      * @param string $value Value to set
+     *
      * @return Cookie
      */
     private function setData($key, $value)

@@ -59,15 +59,11 @@ class Twig_Tests_Node_Expression_CallTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        Twig_Error_Syntax
-     * @expectedExceptionMessage Argument "case_sensitivity" could not be assigned for function
-     *                           "substr_compare(main_str, str, offset, length, case_sensitivity)" because it is mapped
-     *                           to an internal PHP function which cannot determine default value for optional argument
-     *                           "length".
+     * @expectedExceptionMessage Argument "case_sensitivity" could not be assigned for function "substr_compare(main_str, str, offset, length, case_sensitivity)" because it is mapped to an internal PHP function which cannot determine default value for optional argument "length".
      */
     public function testResolveArgumentsWithMissingValueForOptionalArgument()
     {
-        if (defined('HHVM_VERSION'))
-        {
+        if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('Skip under HHVM as the behavior is not the same as plain PHP (which is an edge case anyway)');
         }
 
@@ -85,14 +81,12 @@ class Twig_Tests_Node_Expression_CallTest extends PHPUnit_Framework_TestCase
     public function testGetArgumentsForStaticMethod()
     {
         $node = new Twig_Tests_Node_Expression_Call(array(), array('type' => 'function', 'name' => 'custom_static_function'));
-        $this->assertEquals(array('arg1'), $node->getArguments(__CLASS__ . '::customStaticFunction', array('arg1' => 'arg1')));
+        $this->assertEquals(array('arg1'), $node->getArguments(__CLASS__.'::customStaticFunction', array('arg1' => 'arg1')));
     }
 
     /**
      * @expectedException        LogicException
-     * @expectedExceptionMessage The last parameter of
-     *                           "Twig_Tests_Node_Expression_CallTest::customFunctionWithArbitraryArguments" for
-     *                           function "foo" must be an array with default value, eg. "array $arg = array()".
+     * @expectedExceptionMessage The last parameter of "Twig_Tests_Node_Expression_CallTest::customFunctionWithArbitraryArguments" for function "foo" must be an array with default value, eg. "array $arg = array()".
      */
     public function testResolveArgumentsWithMissingParameterForArbitraryArguments()
     {

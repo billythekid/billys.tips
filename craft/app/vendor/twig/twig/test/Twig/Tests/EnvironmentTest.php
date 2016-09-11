@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-require_once dirname(__FILE__) . '/FilesystemHelper.php';
+require_once dirname(__FILE__).'/FilesystemHelper.php';
 
 class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException        LogicException
      * @expectedExceptionMessage You must set a loader first.
-     * @group                    legacy
+     * @group legacy
      */
     public function testRenderNoLoader()
     {
@@ -30,12 +30,12 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
     {
         $loader = new Twig_Loader_Array(array(
             'html' => '{{ foo }} {{ foo }}',
-            'js'   => '{{ bar }} {{ bar }}',
+            'js' => '{{ bar }} {{ bar }}',
         ));
 
         $twig = new Twig_Environment($loader, array(
-            'debug'      => true,
-            'cache'      => false,
+            'debug' => true,
+            'cache' => false,
             'autoescape' => array($this, 'escapingStrategyCallback'),
         ));
 
@@ -146,7 +146,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
     {
         $twig = new Twig_Environment($this->getMock('Twig_LoaderInterface'));
 
-        $source   = "<? */*foo*/ ?>\r\nbar\n";
+        $source = "<? */*foo*/ ?>\r\nbar\n";
         $expected = "/* <? *//* *foo*//*  ?>*/\n/* bar*/\n/* */\n";
         $compiled = $twig->compileSource($source, 'index');
 
@@ -156,7 +156,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
 
     public function testExtensionsAreNotInitializedWhenRenderingACompiledTemplate()
     {
-        $cache   = new Twig_Cache_Filesystem($dir = sys_get_temp_dir() . '/twig');
+        $cache = new Twig_Cache_Filesystem($dir = sys_get_temp_dir().'/twig');
         $options = array('cache' => $cache, 'auto_reload' => false, 'debug' => false);
 
         // force compilation
@@ -170,7 +170,8 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder('Twig_Environment')
             ->setConstructorArgs(array($loader, $options))
             ->setMethods(array('initExtensions'))
-            ->getMock();
+            ->getMock()
+        ;
 
         $twig->expects($this->never())->method('initExtensions');
 
@@ -183,12 +184,12 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
 
     public function testAutoReloadCacheMiss()
     {
-        $templateName    = __FUNCTION__;
+        $templateName = __FUNCTION__;
         $templateContent = __FUNCTION__;
 
-        $cache  = $this->getMock('Twig_CacheInterface');
+        $cache = $this->getMock('Twig_CacheInterface');
         $loader = $this->getMockLoader($templateName, $templateContent);
-        $twig   = new Twig_Environment($loader, array('cache' => $cache, 'auto_reload' => true, 'debug' => false));
+        $twig = new Twig_Environment($loader, array('cache' => $cache, 'auto_reload' => true, 'debug' => false));
 
         // Cache miss: getTimestamp returns 0 and as a result the load() is
         // skipped.
@@ -208,12 +209,12 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
 
     public function testAutoReloadCacheHit()
     {
-        $templateName    = __FUNCTION__;
+        $templateName = __FUNCTION__;
         $templateContent = __FUNCTION__;
 
-        $cache  = $this->getMock('Twig_CacheInterface');
+        $cache = $this->getMock('Twig_CacheInterface');
         $loader = $this->getMockLoader($templateName, $templateContent);
-        $twig   = new Twig_Environment($loader, array('cache' => $cache, 'auto_reload' => true, 'debug' => false));
+        $twig = new Twig_Environment($loader, array('cache' => $cache, 'auto_reload' => true, 'debug' => false));
 
         $now = time();
 
@@ -236,12 +237,12 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
 
     public function testAutoReloadOutdatedCacheHit()
     {
-        $templateName    = __FUNCTION__;
+        $templateName = __FUNCTION__;
         $templateContent = __FUNCTION__;
 
-        $cache  = $this->getMock('Twig_CacheInterface');
+        $cache = $this->getMock('Twig_CacheInterface');
         $loader = $this->getMockLoader($templateName, $templateContent);
-        $twig   = new Twig_Environment($loader, array('cache' => $cache, 'auto_reload' => true, 'debug' => false));
+        $twig = new Twig_Environment($loader, array('cache' => $cache, 'auto_reload' => true, 'debug' => false));
 
         $now = time();
 
@@ -359,8 +360,7 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
 
     public function handleError($type, $msg)
     {
-        if (E_USER_DEPRECATED === $type)
-        {
+        if (E_USER_DEPRECATED === $type) {
             $this->deprecations[] = $msg;
         }
     }
@@ -389,13 +389,13 @@ class Twig_Tests_EnvironmentTest extends PHPUnit_Framework_TestCase
     {
         $loader = $this->getMock('Twig_LoaderInterface');
         $loader->expects($this->any())
-            ->method('getSource')
-            ->with($templateName)
-            ->will($this->returnValue($templateContent));
+          ->method('getSource')
+          ->with($templateName)
+          ->will($this->returnValue($templateContent));
         $loader->expects($this->any())
-            ->method('getCacheKey')
-            ->with($templateName)
-            ->will($this->returnValue($templateName));
+          ->method('getCacheKey')
+          ->with($templateName)
+          ->will($this->returnValue($templateName));
 
         return $loader;
     }
@@ -516,8 +516,7 @@ class Twig_Tests_EnvironmentTest_ExtensionWithDeprecationInitRuntime extends Twi
     }
 }
 
-class Twig_Tests_EnvironmentTest_ExtensionWithoutDeprecationInitRuntime extends Twig_Extension implements
-    Twig_Extension_InitRuntimeInterface
+class Twig_Tests_EnvironmentTest_ExtensionWithoutDeprecationInitRuntime extends Twig_Extension implements Twig_Extension_InitRuntimeInterface
 {
     public function initRuntime(Twig_Environment $env)
     {

@@ -4,15 +4,19 @@
  * PEL: PHP Exif Library.
  * A library with support for reading and
  * writing all Exif headers in JPEG and TIFF images using PHP.
+ *
  * Copyright (C) 2004, 2005, 2006, 2007, 2008 Martin Geisler.
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program in the file COPYING; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
@@ -20,22 +24,23 @@
  */
 namespace lsolesen\pel;
 
-    /**
-     * Classes for dealing with Exif IFDs.
-     *
-     * @author  Martin Geisler <mgeisler@users.sourceforge.net>
-     * @license http://www.gnu.org/licenses/gpl.html GNU General Public
-     *          License (GPL)
-     * @package PEL
-     */
+/**
+ * Classes for dealing with Exif IFDs.
+ *
+ * @author Martin Geisler <mgeisler@users.sourceforge.net>
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public
+ *          License (GPL)
+ * @package PEL
+ */
 
 /**
  * Class representing an Image File Directory (IFD).
+ *
  * {@link PelTiff TIFF data} is structured as a number of Image File
  * Directories, IFDs for short. Each IFD contains a number of {@link
  * PelEntry entries}, some data and finally a link to the next IFD.
  *
- * @author  Martin Geisler <mgeisler@users.sourceforge.net>
+ * @author Martin Geisler <mgeisler@users.sourceforge.net>
  * @package PEL
  */
 class PelIfd implements \IteratorAggregate, \ArrayAccess
@@ -43,6 +48,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Main image IFD.
+     *
      * Pass this to the constructor when creating an IFD which will be
      * the IFD of the main image.
      */
@@ -50,6 +56,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Thumbnail image IFD.
+     *
      * Pass this to the constructor when creating an IFD which will be
      * the IFD of the thumbnail image.
      */
@@ -57,6 +64,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Exif IFD.
+     *
      * Pass this to the constructor when creating an IFD which will be
      * the Exif sub-IFD.
      */
@@ -64,6 +72,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * GPS IFD.
+     *
      * Pass this to the constructor when creating an IFD which will be
      * the GPS sub-IFD.
      */
@@ -71,6 +80,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Interoperability IFD.
+     *
      * Pass this to the constructor when creating an IFD which will be
      * the interoperability sub-IFD.
      */
@@ -78,6 +88,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * The entries held by this directory.
+     *
      * Each tag in the directory is represented by a {@link PelEntry}
      * object in this array.
      *
@@ -87,6 +98,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * The type of this directory.
+     *
      * Initialized in the constructor. Must be one of {@link IFD0},
      * {@link IFD1}, {@link EXIF}, {@link GPS}, or {@link
      * INTEROPERABILITY}.
@@ -97,6 +109,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * The next directory.
+     *
      * This will be initialized in the constructor, or be left as null
      * if this is the last directory.
      *
@@ -106,6 +119,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Sub-directories pointed to by this directory.
+     *
      * This will be an array of ({@link PelTag}, {@link PelIfd}) pairs.
      *
      * @var array
@@ -114,6 +128,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * The thumbnail data.
+     *
      * This will be initialized in the constructor, or be left as null
      * if there are no thumbnail as part of this directory.
      *
@@ -126,6 +141,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Construct a new Image File Directory (IFD).
+     *
      * The IFD will be empty, use the {@link addEntry()} method to add
      * an {@link PelEntry}. Use the {@link setNext()} method to link
      * this IFD to another.
@@ -138,8 +154,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      */
     public function __construct($type)
     {
-        if ($type != PelIfd::IFD0 && $type != PelIfd::IFD1 && $type != PelIfd::EXIF && $type != PelIfd::GPS && $type != PelIfd::INTEROPERABILITY)
-        {
+        if ($type != PelIfd::IFD0 && $type != PelIfd::IFD1 && $type != PelIfd::EXIF && $type != PelIfd::GPS && $type != PelIfd::INTEROPERABILITY) {
             throw new PelIfdException('Unknown IFD type: %d', $type);
         }
 
@@ -151,7 +166,8 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      *
      * @param PelDataWindow $d
      *            the data window that will provide the data.
-     * @param int           $offset
+     *
+     * @param int $offset
      *            the offset within the window where the directory will
      *            be found.
      */
@@ -169,20 +185,17 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
         $offset += 2;
 
         /* Check if we have enough data. */
-        if ($offset + 12 * $n > $d->getSize())
-        {
+        if ($offset + 12 * $n > $d->getSize()) {
             $n = floor(($offset - $d->getSize()) / 12);
             Pel::maybeThrow(new PelIfdException('Adjusted to: %d.', $n));
         }
 
-        for ($i = 0; $i < $n; $i++)
-        {
+        for ($i = 0; $i < $n; $i ++) {
             // TODO: increment window start instead of using offsets.
             $tag = $d->getShort($offset + 12 * $i);
             Pel::debug('Loading entry with tag 0x%04X: %s (%d of %d)...', $tag, PelTag::getName($this->type, $tag), $i + 1, $n);
 
-            switch ($tag)
-            {
+            switch ($tag) {
                 case PelTag::EXIF_IFD_POINTER:
                 case PelTag::GPS_INFO_IFD_POINTER:
                 case PelTag::INTEROPERABILITY_IFD_POINTER:
@@ -190,14 +203,11 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                     Pel::debug('Found sub IFD at offset %d', $o);
 
                     /* Map tag to IFD type. */
-                    if ($tag == PelTag::EXIF_IFD_POINTER)
-                    {
+                    if ($tag == PelTag::EXIF_IFD_POINTER) {
                         $type = PelIfd::EXIF;
-                    } elseif ($tag == PelTag::GPS_INFO_IFD_POINTER)
-                    {
+                    } elseif ($tag == PelTag::GPS_INFO_IFD_POINTER) {
                         $type = PelIfd::GPS;
-                    } elseif ($tag == PelTag::INTEROPERABILITY_IFD_POINTER)
-                    {
+                    } elseif ($tag == PelTag::INTEROPERABILITY_IFD_POINTER) {
                         $type = PelIfd::INTEROPERABILITY;
                     }
 
@@ -213,7 +223,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                     $this->safeSetThumbnail($d, $thumb_offset, $thumb_length);
                     break;
                 default:
-                    $format     = $d->getShort($offset + 12 * $i + 2);
+                    $format = $d->getShort($offset + 12 * $i + 2);
                     $components = $d->getLong($offset + 12 * $i + 4);
 
                     /*
@@ -222,25 +232,20 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                      * in the entry.
                      */
                     $s = PelFormat::getSize($format) * $components;
-                    if ($s > 0)
-                    {
+                    if ($s > 0) {
                         $doff = $offset + 12 * $i + 8;
-                        if ($s > 4)
-                        {
+                        if ($s > 4) {
                             $doff = $d->getLong($doff);
                         }
                         $data = $d->getClone($doff, $s);
-                    } else
-                    {
+                    } else {
                         $data = new PelDataWindow();
                     }
 
-                    try
-                    {
+                    try {
                         $entry = $this->newEntryFromData($tag, $format, $components, $data);
                         $this->addEntry($entry);
-                    } catch (PelException $e)
-                    {
+                    } catch (PelException $e) {
                         /*
                          * Throw the exception when running in strict mode, store
                          * otherwise.
@@ -261,38 +266,36 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
         $o = $d->getLong($offset + 12 * $n);
         Pel::debug('Current offset is %d, link at %d points to %d.', $offset, $offset + 12 * $n, $o);
 
-        if ($o > 0)
-        {
+        if ($o > 0) {
             /* Sanity check: we need 6 bytes */
-            if ($o > $d->getSize() - 6)
-            {
+            if ($o > $d->getSize() - 6) {
                 Pel::maybeThrow(new PelIfdException('Bogus offset to next IFD: ' . '%d > %d!', $o, $d->getSize() - 6));
-            } else
-            {
-                if ($this->type == PelIfd::IFD1)
-                {
+            } else {
+                if ($this->type == PelIfd::IFD1) {
                     // IFD1 shouldn't link further...
                     Pel::maybeThrow(new PelIfdException('IFD1 links to another IFD!'));
                 }
                 $this->next = new PelIfd(PelIfd::IFD1);
                 $this->next->load($d, $o);
             }
-        } else
-        {
+        } else {
             Pel::debug('Last IFD.');
         }
     }
 
     /**
      * Make a new entry from a bunch of bytes.
+     *
      * This method will create the proper subclass of {@link PelEntry}
      * corresponding to the {@link PelTag} and {@link PelFormat} given.
      * The entry will be initialized with the data given.
+     *
      * Please note that the data you pass to this method should come
      * from an image, that is, it should be raw bytes. If instead you
      * want to create an entry for holding, say, an short integer, then
      * create a {@link PelEntryShort} object directly and load the data
      * into it.
+     *
      * A {@link PelUnexpectedFormatException} is thrown if a mismatch is
      * discovered between the tag and format, and likewise a {@link
      * PelWrongComponentCountException} is thrown if the number of
@@ -300,15 +303,19 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      * requirements for a given tag (if any) can be found in the
      * documentation for {@link PelTag}.
      *
-     * @param PelTag        $tag
+     * @param PelTag $tag
      *            the tag of the entry.
-     * @param PelFormat     $format
+     *
+     * @param PelFormat $format
      *            the format of the entry.
-     * @param int           $components
+     *
+     * @param int $components
      *            the components in the entry.
+     *
      * @param PelDataWindow $data
      *            the data which will be used to construct the
      *            entry.
+     *
      * @return PelEntry a newly created entry, holding the data given.
      */
     public function newEntryFromData($tag, $format, $components, PelDataWindow $data)
@@ -318,66 +325,52 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
          * First handle tags for which we have a specific PelEntryXXX
          * class.
          */
-        switch ($this->type)
-        {
+        switch ($this->type) {
 
             case self::IFD0:
             case self::IFD1:
             case self::EXIF:
             case self::INTEROPERABILITY:
-
-                switch ($tag)
-                {
+                switch ($tag) {
                     case PelTag::DATE_TIME:
                     case PelTag::DATE_TIME_ORIGINAL:
                     case PelTag::DATE_TIME_DIGITIZED:
-                        if ($format != PelFormat::ASCII)
-                        {
+                        if ($format != PelFormat::ASCII) {
                             throw new PelUnexpectedFormatException($this->type, $tag, $format, PelFormat::ASCII);
                         }
-                        if ($components != 20)
-                        {
+                        if ($components != 20) {
                             throw new PelWrongComponentCountException($this->type, $tag, $components, 20);
                         }
-
                         // TODO: handle timezones.
-                        return new PelEntryTime($tag, $data->getBytes(0, -1), PelEntryTime::EXIF_STRING);
+                        return new PelEntryTime($tag, $data->getBytes(0, - 1), PelEntryTime::EXIF_STRING);
 
                     case PelTag::COPYRIGHT:
-                        if ($format != PelFormat::ASCII)
-                        {
+                        if ($format != PelFormat::ASCII) {
                             throw new PelUnexpectedFormatException($this->type, $tag, $format, PelFormat::ASCII);
                         }
                         $v = explode("\0", trim($data->getBytes(), ' '));
-                        if (!isset($v[1]))
-                        {
+                        if (! isset($v[1])) {
                             Pel::maybeThrow(new PelException('Invalid copyright: %s', $data->getBytes()));
                             // when not in strict mode, set empty copyright and continue
                             $v[1] = '';
                         }
-
                         return new PelEntryCopyright($v[0], $v[1]);
 
                     case PelTag::EXIF_VERSION:
                     case PelTag::FLASH_PIX_VERSION:
                     case PelTag::INTEROPERABILITY_VERSION:
-                        if ($format != PelFormat::UNDEFINED)
-                        {
+                        if ($format != PelFormat::UNDEFINED) {
                             throw new PelUnexpectedFormatException($this->type, $tag, $format, PelFormat::UNDEFINED);
                         }
-
                         return new PelEntryVersion($tag, $data->getBytes() / 100);
 
                     case PelTag::USER_COMMENT:
-                        if ($format != PelFormat::UNDEFINED)
-                        {
+                        if ($format != PelFormat::UNDEFINED) {
                             throw new PelUnexpectedFormatException($this->type, $tag, $format, PelFormat::UNDEFINED);
                         }
-                        if ($data->getSize() < 8)
-                        {
+                        if ($data->getSize() < 8) {
                             return new PelEntryUserComment();
-                        } else
-                        {
+                        } else {
                             return new PelEntryUserComment($data->getBytes(8), rtrim($data->getBytes(0, 8)));
                         }
                     // this point can not be reached
@@ -386,13 +379,11 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                     case PelTag::XP_AUTHOR:
                     case PelTag::XP_KEYWORDS:
                     case PelTag::XP_SUBJECT:
-                        if ($format != PelFormat::BYTE)
-                        {
+                        if ($format != PelFormat::BYTE) {
                             throw new PelUnexpectedFormatException($this->type, $tag, $format, PelFormat::BYTE);
                         }
                         $v = '';
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $b = $data->getByte($i);
                             /*
                              * Convert the byte to a character if it is non-null ---
@@ -401,8 +392,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                              * that characters in the Latin-1 character set are stored in
                              * a single byte followed by a NULL byte.
                              */
-                            if ($b != 0)
-                            {
+                            if ($b != 0) {
                                 $v .= chr($b);
                             }
                         }
@@ -411,84 +401,66 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                 }
             // This point can be reached! Continue with default.
             case self::GPS:
-
             default:
                 /* Then handle the basic formats. */
-                switch ($format)
-                {
+                switch ($format) {
                     case PelFormat::BYTE:
                         $v = new PelEntryByte($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getByte($i));
                         }
-
                         return $v;
 
                     case PelFormat::SBYTE:
                         $v = new PelEntrySByte($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getSByte($i));
                         }
-
                         return $v;
 
                     case PelFormat::ASCII:
-                        return new PelEntryAscii($tag, $data->getBytes(0, -1));
+                        return new PelEntryAscii($tag, $data->getBytes(0, - 1));
 
                     case PelFormat::SHORT:
                         $v = new PelEntryShort($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getShort($i * 2));
                         }
-
                         return $v;
 
                     case PelFormat::SSHORT:
                         $v = new PelEntrySShort($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getSShort($i * 2));
                         }
-
                         return $v;
 
                     case PelFormat::LONG:
                         $v = new PelEntryLong($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getLong($i * 4));
                         }
-
                         return $v;
 
                     case PelFormat::SLONG:
                         $v = new PelEntrySLong($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getSLong($i * 4));
                         }
-
                         return $v;
 
                     case PelFormat::RATIONAL:
                         $v = new PelEntryRational($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getRational($i * 8));
                         }
-
                         return $v;
 
                     case PelFormat::SRATIONAL:
                         $v = new PelEntrySRational($tag);
-                        for ($i = 0; $i < $components; $i++)
-                        {
+                        for ($i = 0; $i < $components; $i ++) {
                             $v->addNumber($data->getSRational($i * 8));
                         }
-
                         return $v;
 
                     case PelFormat::UNDEFINED:
@@ -502,9 +474,11 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Extract thumbnail data safely.
+     *
      * It is safe to call this method repeatedly with either the offset
      * or the length set to zero, since it requires both of these
      * arguments to be positive before the thumbnail is extracted.
+     *
      * When both parameters are set it will check the length against the
      * available data and adjust as necessary. Only then is the
      * thumbnail data loaded.
@@ -512,9 +486,11 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      * @param PelDataWindow $d
      *            the data from which the thumbnail will be
      *            extracted.
-     * @param int           $offset
+     *
+     * @param int $offset
      *            the offset into the data.
-     * @param int           $length
+     *
+     * @param int $length
      *            the length of the thumbnail.
      */
     private function safeSetThumbnail(PelDataWindow $d, $offset, $length)
@@ -523,14 +499,12 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
          * Load the thumbnail if both the offset and the length is
          * available.
          */
-        if ($offset > 0 && $length > 0)
-        {
+        if ($offset > 0 && $length > 0) {
             /*
              * Some images have a broken length, so we try to carefully
              * check the length before we store the thumbnail.
              */
-            if ($offset + $length > $d->getSize())
-            {
+            if ($offset + $length > $d->getSize()) {
                 Pel::maybeThrow(new PelIfdException('Thumbnail length %d bytes ' . 'adjusted to %d bytes.', $length, $d->getSize() - $offset));
                 $length = $d->getSize() - $offset;
             }
@@ -542,6 +516,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Set thumbnail data.
+     *
      * Use this to embed an arbitrary JPEG image within this IFD. The
      * data will be checked to ensure that it has a proper {@link
      * PelJpegMarker::EOI} at the end. If not, then the length is
@@ -555,13 +530,11 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
     {
         $size = $d->getSize();
         /* Now move backwards until we find the EOI JPEG marker. */
-        while ($d->getByte($size - 2) != 0xFF || $d->getByte($size - 1) != PelJpegMarker::EOI)
-        {
-            $size--;
+        while ($d->getByte($size - 2) != 0xFF || $d->getByte($size - 1) != PelJpegMarker::EOI) {
+            $size --;
         }
 
-        if ($size != $d->getSize())
-        {
+        if ($size != $d->getSize()) {
             Pel::maybeThrow(new PelIfdException('Decrementing thumbnail size ' . 'to %d bytes', $size));
         }
         $this->thumb_data = $d->getClone(0, $size);
@@ -581,17 +554,21 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Is a given tag valid for this IFD?
+     *
      * Different types of IFDs can contain different kinds of tags ---
      * the {@link IFD0} type, for example, cannot contain a {@link
      * PelTag::GPS_LONGITUDE} tag.
+     *
      * A special exception is tags with values above 0xF000. They are
      * treated as private tags and will be allowed everywhere (use this
      * for testing or for implementing your own types of tags).
      *
      * @param PelTag $tag
      *            the tag.
+     *
      * @return boolean true if the tag is considered valid in this IFD,
-     *            false otherwise.
+     *         false otherwise.
+     *
      * @see getValidTags()
      */
     public function isValidTag($tag)
@@ -607,8 +584,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      */
     public function getValidTags()
     {
-        switch ($this->type)
-        {
+        switch ($this->type) {
             case PelIfd::IFD0:
             case PelIfd::IFD1:
                 return array(
@@ -649,7 +625,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                     PelTag::XP_COMMENT,
                     PelTag::XP_AUTHOR,
                     PelTag::XP_KEYWORDS,
-                    PelTag::XP_SUBJECT,
+                    PelTag::XP_SUBJECT
                 );
 
             case PelIfd::EXIF:
@@ -710,7 +686,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                     PelTag::SUBJECT_DISTANCE_RANGE,
                     PelTag::IMAGE_UNIQUE_ID,
                     PelTag::INTEROPERABILITY_IFD_POINTER,
-                    PelTag::GAMMA,
+                    PelTag::GAMMA
                 );
 
             case PelIfd::GPS:
@@ -745,7 +721,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                     PelTag::GPS_PROCESSING_METHOD,
                     PelTag::GPS_AREA_INFORMATION,
                     PelTag::GPS_DATE_STAMP,
-                    PelTag::GPS_DIFFERENTIAL,
+                    PelTag::GPS_DIFFERENTIAL
                 );
 
             case PelIfd::INTEROPERABILITY:
@@ -754,7 +730,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
                     PelTag::INTEROPERABILITY_VERSION,
                     PelTag::RELATED_IMAGE_FILE_FORMAT,
                     PelTag::RELATED_IMAGE_WIDTH,
-                    PelTag::RELATED_IMAGE_LENGTH,
+                    PelTag::RELATED_IMAGE_LENGTH
                 );
 
             /*
@@ -778,12 +754,12 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      *            one of {@link PelIfd::IFD0}, {@link PelIfd::IFD1},
      *            {@link PelIfd::EXIF}, {@link PelIfd::GPS}, or {@link
      *            PelIfd::INTEROPERABILITY}.
+     *
      * @return string the name of type.
      */
     public static function getTypeName($type)
     {
-        switch ($type)
-        {
+        switch ($type) {
             case self::IFD0:
                 return '0';
             case self::IFD1:
@@ -816,27 +792,28 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      *            the entry that will be added. If the entry is not
      *            valid in this IFD (as per {@link isValidTag()}) an
      *            {@link PelInvalidDataException} is thrown.
+     *
      * @todo The entry will be identified with its tag, so each
-     *            directory can only contain one entry with each tag. Is this a
-     *            bug?
+     *       directory can only contain one entry with each tag. Is this a
+     *       bug?
      */
     public function addEntry(PelEntry $e)
     {
-        if ($this->isValidTag($e->getTag()))
-        {
+        if ($this->isValidTag($e->getTag())) {
             $e->setIfdType($this->type);
             $this->entries[$e->getTag()] = $e;
-        } else
-        {
+        } else {
             throw new PelInvalidDataException("IFD %s cannot hold\n%s", $this->getName(), $e->__toString());
         }
     }
 
     /**
      * Does a given tag exist in this IFD?
+     *
      * This methods is part of the ArrayAccess SPL interface for
      * overriding array access of objects, it allows you to check for
      * existance of an entry in the IFD:
+     *
      * <code>
      * if (isset($ifd[PelTag::FNUMBER]))
      * // ... do something with the F-number.
@@ -844,6 +821,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      *
      * @param PelTag $tag
      *            the offset to check.
+     *
      * @return boolean whether the tag exists.
      */
     public function offsetExists($tag)
@@ -853,9 +831,11 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Retrieve a given tag from this IFD.
+     *
      * This methods is part of the ArrayAccess SPL interface for
      * overriding array access of objects, it allows you to read entries
      * from the IFD the same was as for an array:
+     *
      * <code>
      * $entry = $ifd[PelTag::FNUMBER];
      * </code>
@@ -864,6 +844,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      *            the tag to return. It is an error to ask for a tag
      *            which is not in the IFD, just like asking for a non-existant
      *            array entry.
+     *
      * @return PelEntry the entry.
      */
     public function offsetGet($tag)
@@ -873,37 +854,41 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Set or update a given tag in this IFD.
+     *
      * This methods is part of the ArrayAccess SPL interface for
      * overriding array access of objects, it allows you to add new
      * entries or replace esisting entries by doing:
+     *
      * <code>
      * $ifd[PelTag::EXPOSURE_BIAS_VALUE] = $entry;
      * </code>
+     *
      * Note that the actual array index passed is ignored! Instead the
      * {@link PelTag} from the entry is used.
      *
-     * @param PelTag   $tag
+     * @param PelTag $tag
      *            the offset to update.
+     *
      * @param PelEntry $e
      *            the new value.
      */
     public function offsetSet($tag, $e)
     {
-        if ($e instanceof PelEntry)
-        {
-            $tag                 = $e->getTag();
+        if ($e instanceof PelEntry) {
+            $tag = $e->getTag();
             $this->entries[$tag] = $e;
-        } else
-        {
+        } else {
             throw new PelInvalidArgumentException('Argument "%s" must be a PelEntry.', $e);
         }
     }
 
     /**
      * Unset a given tag in this IFD.
+     *
      * This methods is part of the ArrayAccess SPL interface for
      * overriding array access of objects, it allows you to delete
      * entries in the IFD by doing:
+     *
      * <code>
      * unset($ifd[PelTag::EXPOSURE_BIAS_VALUE])
      * </code>
@@ -921,16 +906,15 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      *
      * @param PelTag $tag
      *            the tag identifying the entry.
+     *
      * @return PelEntry the entry associated with the tag, or null if no
-     *            such entry exists.
+     *         such entry exists.
      */
     public function getEntry($tag)
     {
-        if (isset($this->entries[$tag]))
-        {
+        if (isset($this->entries[$tag])) {
             return $this->entries[$tag];
-        } else
-        {
+        } else {
             return null;
         }
     }
@@ -941,6 +925,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      * @return array an array of {@link PelEntry} objects, or rather
      *         descendant classes. The array has {@link PelTag}s as keys
      *         and the entries as values.
+     *
      * @see getEntry
      * @see getIterator
      */
@@ -951,7 +936,9 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Return an iterator for all entries contained in this IFD.
+     *
      * Used with foreach as in
+     *
      * <code>
      * foreach ($ifd as $tag => $entry) {
      * // $tag is now a PelTag and $entry is a PelEntry object.
@@ -972,16 +959,16 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      * @return string the bytes in the thumbnail, if any. If the IFD
      *         does not contain any thumbnail data, the empty string is
      *         returned.
+     *
      * @todo Throw an exception instead when no data is available?
+     *
      * @todo Return the $this->thumb_data object instead of the bytes?
      */
     public function getThumbnailData()
     {
-        if ($this->thumb_data != null)
-        {
+        if ($this->thumb_data != null) {
             return $this->thumb_data->getBytes();
-        } else
-        {
+        } else {
             return '';
         }
     }
@@ -1021,6 +1008,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Add a sub-IFD.
+     *
      * Any previous sub-IFD of the same type will be overwritten.
      *
      * @param PelIfd $sub
@@ -1040,16 +1028,15 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      *            the type of the sub IFD. This must be one of {@link
      *            PelIfd::EXIF}, {@link PelIfd::GPS}, or {@link
      *            PelIfd::INTEROPERABILITY}.
+     *
      * @return PelIfd the IFD associated with the type, or null if that
-     *            sub IFD does not exist.
+     *         sub IFD does not exist.
      */
     public function getSubIfd($type)
     {
-        if (isset($this->sub[$type]))
-        {
+        if (isset($this->sub[$type])) {
             return $this->sub[$type];
-        } else
-        {
+        } else {
             return null;
         }
     }
@@ -1067,12 +1054,14 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
     /**
      * Turn this directory into bytes.
+     *
      * This directory will be turned into a byte string, with the
      * specified byte order. The offsets will be calculated from the
      * offset given.
      *
-     * @param int          $offset
+     * @param int $offset
      *            the offset of the first byte of this directory.
+     *
      * @param PelByteOrder $order
      *            the byte order that should be used when
      *            turning integers into bytes. This should be one of {@link
@@ -1080,14 +1069,13 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
      */
     public function getBytes($offset, $order)
     {
-        $bytes       = '';
+        $bytes = '';
         $extra_bytes = '';
 
         Pel::debug('Bytes from IDF will start at offset %d within Exif data', $offset);
 
         $n = count($this->entries) + count($this->sub);
-        if ($this->thumb_data != null)
-        {
+        if ($this->thumb_data != null) {
             /*
              * We need two extra entries for the thumbnail offset and
              * length.
@@ -1105,8 +1093,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
          */
         $end = $offset + 2 + 12 * $n + 4;
 
-        foreach ($this->entries as $tag => $entry)
-        {
+        foreach ($this->entries as $tag => $entry) {
             /* Each entry is 12 bytes long. */
             $bytes .= PelConvert::shortToBytes($entry->getTag(), $order);
             $bytes .= PelConvert::shortToBytes($entry->getFormat(), $order);
@@ -1117,15 +1104,13 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
              * the entry but somewhere else.
              */
             $data = $entry->getBytes($order);
-            $s    = strlen($data);
-            if ($s > 4)
-            {
+            $s = strlen($data);
+            if ($s > 4) {
                 Pel::debug('Data size %d too big, storing at offset %d instead.', $s, $end);
                 $bytes .= PelConvert::longToBytes($end, $order);
                 $extra_bytes .= $data;
                 $end += $s;
-            } else
-            {
+            } else {
                 Pel::debug('Data size %d fits.', $s);
                 /*
                  * Copy data directly, pad with NULL bytes as necessary to
@@ -1135,8 +1120,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
             }
         }
 
-        if ($this->thumb_data != null)
-        {
+        if ($this->thumb_data != null) {
             Pel::debug('Appending %d bytes of thumbnail data at %d', $this->thumb_data->getSize(), $end);
             // TODO: make PelEntry a class that can be constructed with
             // arguments corresponding to the newt four lines.
@@ -1156,16 +1140,12 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
         /* Find bytes from sub IFDs. */
         $sub_bytes = '';
-        foreach ($this->sub as $type => $sub)
-        {
-            if ($type == PelIfd::EXIF)
-            {
+        foreach ($this->sub as $type => $sub) {
+            if ($type == PelIfd::EXIF) {
                 $tag = PelTag::EXIF_IFD_POINTER;
-            } elseif ($type == PelIfd::GPS)
-            {
+            } elseif ($type == PelIfd::GPS) {
                 $tag = PelTag::GPS_INFO_IFD_POINTER;
-            } elseif ($type == PelIfd::INTEROPERABILITY)
-            {
+            } elseif ($type == PelIfd::INTEROPERABILITY) {
                 $tag = PelTag::INTEROPERABILITY_IFD_POINTER;
             }
             /* Make an aditional entry with the pointer. */
@@ -1176,7 +1156,7 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
             $bytes .= PelConvert::longToBytes(1, $order);
 
             $data = $sub->getBytes($end, $order);
-            $s    = strlen($data);
+            $s = strlen($data);
             $sub_bytes .= $data;
 
             $bytes .= PelConvert::longToBytes($end, $order);
@@ -1184,11 +1164,9 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
         }
 
         /* Make link to next IFD, if any */
-        if ($this->isLastIFD())
-        {
+        if ($this->isLastIFD()) {
             $link = 0;
-        } else
-        {
+        } else {
             $link = $end;
         }
 
@@ -1198,11 +1176,9 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
 
         $bytes .= $extra_bytes . $sub_bytes;
 
-        if (!$this->isLastIfd())
-        {
+        if (! $this->isLastIfd()) {
             $bytes .= $this->next->getBytes($end, $order);
         }
-
         return $bytes;
     }
 
@@ -1216,21 +1192,17 @@ class PelIfd implements \IteratorAggregate, \ArrayAccess
     {
         $str = Pel::fmt("Dumping IFD %s with %d entries...\n", $this->getName(), count($this->entries));
 
-        foreach ($this->entries as $entry)
-        {
+        foreach ($this->entries as $entry) {
             $str .= $entry->__toString();
         }
         $str .= Pel::fmt("Dumping %d sub IFDs...\n", count($this->sub));
 
-        foreach ($this->sub as $type => $ifd)
-        {
+        foreach ($this->sub as $type => $ifd) {
             $str .= $ifd->__toString();
         }
-        if ($this->next != null)
-        {
+        if ($this->next != null) {
             $str .= $this->next->__toString();
         }
-
         return $str;
     }
 }

@@ -35,7 +35,8 @@ class ContainerAwareEventDispatcherTest extends AbstractEventDispatcherTest
         $service
             ->expects($this->once())
             ->method('onEvent')
-            ->with($event);
+            ->with($event)
+        ;
 
         $container = new Container();
         $container->set('service.listener', $service);
@@ -55,17 +56,20 @@ class ContainerAwareEventDispatcherTest extends AbstractEventDispatcherTest
         $service
             ->expects($this->once())
             ->method('onEvent')
-            ->with($event);
+            ->with($event)
+        ;
 
         $service
             ->expects($this->once())
             ->method('onEventWithPriority')
-            ->with($event);
+            ->with($event)
+        ;
 
         $service
             ->expects($this->once())
             ->method('onEventNested')
-            ->with($event);
+            ->with($event)
+        ;
 
         $container = new Container();
         $container->set('service.subscriber', $service);
@@ -87,7 +91,8 @@ class ContainerAwareEventDispatcherTest extends AbstractEventDispatcherTest
         $service
             ->expects($this->once())
             ->method('onEvent')
-            ->with($event);
+            ->with($event)
+        ;
 
         $container = new Container();
         $container->set('service.listener', $service);
@@ -107,7 +112,7 @@ class ContainerAwareEventDispatcherTest extends AbstractEventDispatcherTest
     {
         $service = $this->getMock('Symfony\Component\EventDispatcher\Tests\Service');
 
-        $scope     = new Scope('scope');
+        $scope = new Scope('scope');
         $container = new Container();
         $container->addScope($scope);
         $container->enterScope('scope');
@@ -133,9 +138,10 @@ class ContainerAwareEventDispatcherTest extends AbstractEventDispatcherTest
         $service1
             ->expects($this->exactly(2))
             ->method('onEvent')
-            ->with($event);
+            ->with($event)
+        ;
 
-        $scope     = new Scope('scope');
+        $scope = new Scope('scope');
         $container = new Container();
         $container->addScope($scope);
         $container->enterScope('scope');
@@ -151,7 +157,8 @@ class ContainerAwareEventDispatcherTest extends AbstractEventDispatcherTest
         $service2
             ->expects($this->once())
             ->method('onEvent')
-            ->with($event);
+            ->with($event)
+        ;
 
         $container->enterScope('scope');
         $container->set('service.listener', $service2, 'scope');
@@ -181,12 +188,12 @@ class ContainerAwareEventDispatcherTest extends AbstractEventDispatcherTest
         $service
             ->expects($this->once())
             ->method('onEvent')
-            ->with($event);
+            ->with($event)
+        ;
 
         $this->assertTrue($dispatcher->hasListeners());
 
-        if ($dispatcher->hasListeners('onEvent'))
-        {
+        if ($dispatcher->hasListeners('onEvent')) {
             $dispatcher->dispatch('onEvent');
         }
     }
@@ -250,9 +257,9 @@ class SubscriberService implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'onEvent'             => 'onEvent',
+            'onEvent' => 'onEvent',
             'onEventWithPriority' => array('onEventWithPriority', 10),
-            'onEventNested'       => array(array('onEventNested')),
+            'onEventNested' => array(array('onEventNested')),
         );
     }
 

@@ -26,7 +26,6 @@ class Twig_Tests_Node_SandboxedPrintTest extends Twig_Test_NodeTestCase
 // line 1
 echo \$this->env->getExtension('sandbox')->ensureToStringAllowed("foo");
 EOF
-    ,
         );
 
         return $tests;

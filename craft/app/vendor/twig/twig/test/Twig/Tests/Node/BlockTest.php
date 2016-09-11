@@ -33,7 +33,6 @@ public function block_foo(\$context, array \$blocks = array())
     echo "foo";
 }
 EOF
-    ,
             ),
         );
     }

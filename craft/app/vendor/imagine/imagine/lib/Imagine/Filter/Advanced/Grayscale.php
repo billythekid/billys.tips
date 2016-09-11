@@ -22,8 +22,7 @@ class Grayscale extends OnPixelBased implements FilterInterface
 {
     public function __construct()
     {
-        parent::__construct(function (ImageInterface $image, Point $point)
-        {
+        parent::__construct(function (ImageInterface $image, Point $point) {
             $color = $image->getColorAt($point);
             $image->draw()->dot($point, $color->grayscale());
         });

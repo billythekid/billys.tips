@@ -13,52 +13,55 @@ namespace Craft;
  */
 class GeneratePendingTransformsTask extends BaseTask
 {
-    private $_indexIds;
+	private $_indexIds;
 
-    /**
-     * @inheritDoc ITask::getDescription()
-     * @return string
-     */
-    public function getDescription()
-    {
-        return Craft::t('Generating pending image transforms');
-    }
+	/**
+	 * @inheritDoc ITask::getDescription()
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return Craft::t('Generating pending image transforms');
+	}
 
-    /**
-     * @inheritDoc ITask::getTotalSteps()
-     * @return int
-     */
-    public function getTotalSteps()
-    {
-        // Get all of the pending transform index IDs
-        $this->_indexIds = craft()->assetTransforms->getPendingTransformIndexIds();
+	/**
+	 * @inheritDoc ITask::getTotalSteps()
+	 *
+	 * @return int
+	 */
+	public function getTotalSteps()
+	{
+		// Get all of the pending transform index IDs
+		$this->_indexIds = craft()->assetTransforms->getPendingTransformIndexIds();
 
-        return count($this->_indexIds);
-    }
+		return count($this->_indexIds);
+	}
 
-    /**
-     * @inheritDoc ITask::runStep()
-     * @param int $step
-     * @return bool
-     */
-    public function runStep($step)
-    {
-        // Don't let an exception stop us from processing the rest
-        try
-        {
-            $index = craft()->assetTransforms->getTransformIndexModelById($this->_indexIds[$step]);
+	/**
+	 * @inheritDoc ITask::runStep()
+	 *
+	 * @param int $step
+	 *
+	 * @return bool
+	 */
+	public function runStep($step)
+	{
+		// Don't let an exception stop us from processing the rest
+		try
+		{
+			$index = craft()->assetTransforms->getTransformIndexModelById($this->_indexIds[$step]);
 
-            // No transform means a probably already finished transform.
-            if (!$index)
-            {
-                return true;
-            }
+			// No transform means a probably already finished transform.
+			if (!$index)
+			{
+				return true;
+			}
 
-            craft()->assetTransforms->ensureTransformUrlByIndexModel($index);
-        } catch (\Exception $e)
-        {
-        }
+			craft()->assetTransforms->ensureTransformUrlByIndexModel($index);
+		}
+		catch (\Exception $e) { }
 
-        return true;
-    }
+		return true;
+	}
 }

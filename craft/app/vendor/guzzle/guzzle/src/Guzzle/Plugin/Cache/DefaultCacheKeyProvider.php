@@ -17,32 +17,26 @@ class DefaultCacheKeyProvider implements CacheKeyProviderInterface
         // See if the key has already been calculated
         $key = $request->getParams()->get(self::CACHE_KEY);
 
-        if (!$key)
-        {
+        if (!$key) {
 
             $cloned = clone $request;
             $cloned->removeHeader('Cache-Control');
 
             // Check to see how and if the key should be filtered
-            foreach (explode(';', $request->getParams()->get(self::CACHE_KEY_FILTER)) as $part)
-            {
+            foreach (explode(';', $request->getParams()->get(self::CACHE_KEY_FILTER)) as $part) {
                 $pieces = array_map('trim', explode('=', $part));
-                if (isset($pieces[1]))
-                {
-                    foreach (array_map('trim', explode(',', $pieces[1])) as $remove)
-                    {
-                        if ($pieces[0] == 'header')
-                        {
+                if (isset($pieces[1])) {
+                    foreach (array_map('trim', explode(',', $pieces[1])) as $remove) {
+                        if ($pieces[0] == 'header') {
                             $cloned->removeHeader($remove);
-                        } elseif ($pieces[0] == 'query')
-                        {
+                        } elseif ($pieces[0] == 'query') {
                             $cloned->getQuery()->remove($remove);
                         }
                     }
                 }
             }
 
-            $raw = (string)$cloned;
+            $raw = (string) $cloned;
             $key = 'GZ' . md5($raw);
             $request->getParams()->set(self::CACHE_KEY, $key)->set(self::CACHE_KEY_RAW, $raw);
         }

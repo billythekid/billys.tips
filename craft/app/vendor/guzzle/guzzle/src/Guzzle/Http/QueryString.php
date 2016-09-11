@@ -41,51 +41,43 @@ class QueryString extends Collection
      * Parse a query string into a QueryString object
      *
      * @param string $query Query string to parse
+     *
      * @return self
      */
     public static function fromString($query)
     {
         $q = new static();
-        if ($query === '')
-        {
+        if ($query === '') {
             return $q;
         }
 
         $foundDuplicates = $foundPhpStyle = false;
 
-        foreach (explode('&', $query) as $kvp)
-        {
+        foreach (explode('&', $query) as $kvp) {
             $parts = explode('=', $kvp, 2);
-            $key   = rawurldecode($parts[0]);
-            if ($paramIsPhpStyleArray = substr($key, -2) == '[]')
-            {
+            $key = rawurldecode($parts[0]);
+            if ($paramIsPhpStyleArray = substr($key, -2) == '[]') {
                 $foundPhpStyle = true;
-                $key           = substr($key, 0, -2);
+                $key = substr($key, 0, -2);
             }
-            if (isset($parts[1]))
-            {
+            if (isset($parts[1])) {
                 $value = rawurldecode(str_replace('+', '%20', $parts[1]));
-                if (isset($q[$key]))
-                {
+                if (isset($q[$key])) {
                     $q->add($key, $value);
                     $foundDuplicates = true;
-                } elseif ($paramIsPhpStyleArray)
-                {
+                } elseif ($paramIsPhpStyleArray) {
                     $q[$key] = array($value);
-                } else
-                {
+                } else {
                     $q[$key] = $value;
                 }
-            } else
-            {
+            } else {
                 // Uses false by default to represent keys with no trailing "=" sign.
                 $q->add($key, false);
             }
         }
 
         // Use the duplicate aggregator if duplicates were found and not using PHP style arrays
-        if ($foundDuplicates && !$foundPhpStyle)
-        {
+        if ($foundDuplicates && !$foundPhpStyle) {
             $q->setAggregator(new DuplicateAggregator());
         }
 
@@ -100,14 +92,12 @@ class QueryString extends Collection
      */
     public function __toString()
     {
-        if (!$this->data)
-        {
+        if (!$this->data) {
             return '';
         }
 
         $queryList = array();
-        foreach ($this->prepareData($this->data) as $name => $value)
-        {
+        foreach ($this->prepareData($this->data) as $name => $value) {
             $queryList[] = $this->convertKvp($name, $value);
         }
 
@@ -136,6 +126,7 @@ class QueryString extends Collection
 
     /**
      * Returns the type of URL encoding used by the query string
+     *
      * One of: false, "RFC 3986", or "application/x-www-form-urlencoded"
      *
      * @return bool|string
@@ -169,10 +160,8 @@ class QueryString extends Collection
     public function setAggregator(QueryAggregatorInterface $aggregator = null)
     {
         // Use the default aggregator if none was set
-        if (!$aggregator)
-        {
-            if (!self::$defaultAggregator)
-            {
+        if (!$aggregator) {
+            if (!self::$defaultAggregator) {
                 self::$defaultAggregator = new PhpAggregator();
             }
             $aggregator = self::$defaultAggregator;
@@ -201,6 +190,7 @@ class QueryString extends Collection
      * Set the query string separator
      *
      * @param string $separator The query string separator that will separate fields
+     *
      * @return self
      */
     public function setFieldSeparator($separator)
@@ -214,6 +204,7 @@ class QueryString extends Collection
      * Set the query string value separator
      *
      * @param string $separator The query string separator that will separate values from fields
+     *
      * @return self
      */
     public function setValueSeparator($separator)
@@ -237,19 +228,17 @@ class QueryString extends Collection
      * URL encodes a value based on the url encoding type of the query string object
      *
      * @param string $value Value to encode
+     *
      * @return string
      */
     public function encodeValue($value)
     {
-        if ($this->urlEncode == self::RFC_3986)
-        {
+        if ($this->urlEncode == self::RFC_3986) {
             return rawurlencode($value);
-        } elseif ($this->urlEncode == self::FORM_URLENCODED)
-        {
+        } elseif ($this->urlEncode == self::FORM_URLENCODED) {
             return urlencode($value);
-        } else
-        {
-            return (string)$value;
+        } else {
+            return (string) $value;
         }
     }
 
@@ -257,28 +246,24 @@ class QueryString extends Collection
      * Url encode parameter data and convert nested query strings into a flattened hash.
      *
      * @param array $data The data to encode
+     *
      * @return array Returns an array of encoded values and keys
      */
     protected function prepareData(array $data)
     {
         // If no aggregator is present then set the default
-        if (!$this->aggregator)
-        {
+        if (!$this->aggregator) {
             $this->setAggregator(null);
         }
 
         $temp = array();
-        foreach ($data as $key => $value)
-        {
-            if ($value === false || $value === null)
-            {
+        foreach ($data as $key => $value) {
+            if ($value === false || $value === null) {
                 // False and null will not include the "=". Use an empty string to include the "=".
                 $temp[$this->encodeValue($key)] = $value;
-            } elseif (is_array($value))
-            {
+            } elseif (is_array($value)) {
                 $temp = array_merge($temp, $this->aggregator->aggregate($key, $value, $this));
-            } else
-            {
+            } else {
                 $temp[$this->encodeValue($key)] = $this->encodeValue($value);
             }
         }
@@ -296,17 +281,14 @@ class QueryString extends Collection
      */
     private function convertKvp($name, $value)
     {
-        if ($value === self::BLANK || $value === null || $value === false)
-        {
+        if ($value === self::BLANK || $value === null || $value === false) {
             return $name;
-        } elseif (!is_array($value))
-        {
+        } elseif (!is_array($value)) {
             return $name . $this->valueSeparator . $value;
         }
 
         $result = '';
-        foreach ($value as $v)
-        {
+        foreach ($value as $v) {
             $result .= $this->convertKvp($name, $v) . $this->fieldSeparator;
         }
 

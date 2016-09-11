@@ -28,6 +28,7 @@ class CacheControl extends Header
      * Check if a specific cache control directive exists
      *
      * @param string $param Directive to retrieve
+     *
      * @return bool
      */
     public function hasDirective($param)
@@ -41,6 +42,7 @@ class CacheControl extends Header
      * Get a specific cache control directive
      *
      * @param string $param Directive to retrieve
+     *
      * @return string|bool|null
      */
     public function getDirective($param)
@@ -55,11 +57,12 @@ class CacheControl extends Header
      *
      * @param string $param Directive to add
      * @param string $value Value to set
+     *
      * @return self
      */
     public function addDirective($param, $value)
     {
-        $directives         = $this->getDirectives();
+        $directives = $this->getDirectives();
         $directives[$param] = $value;
         $this->updateFromDirectives($directives);
 
@@ -70,6 +73,7 @@ class CacheControl extends Header
      * Remove a cache control directive by name
      *
      * @param string $param Directive to remove
+     *
      * @return self
      */
     public function removeDirective($param)
@@ -88,13 +92,10 @@ class CacheControl extends Header
      */
     public function getDirectives()
     {
-        if ($this->directives === null)
-        {
+        if ($this->directives === null) {
             $this->directives = array();
-            foreach ($this->parseParams() as $collection)
-            {
-                foreach ($collection as $key => $value)
-                {
+            foreach ($this->parseParams() as $collection) {
+                foreach ($collection as $key => $value) {
                     $this->directives[$key] = $value === '' ? true : $value;
                 }
             }
@@ -111,10 +112,9 @@ class CacheControl extends Header
     protected function updateFromDirectives(array $directives)
     {
         $this->directives = $directives;
-        $this->values     = array();
+        $this->values = array();
 
-        foreach ($directives as $key => $value)
-        {
+        foreach ($directives as $key => $value) {
             $this->values[] = $value === true ? $key : "{$key}={$value}";
         }
     }

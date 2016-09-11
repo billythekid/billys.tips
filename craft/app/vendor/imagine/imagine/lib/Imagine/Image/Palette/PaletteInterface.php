@@ -17,17 +17,19 @@ use Imagine\Image\Palette\Color\ColorInterface;
 interface PaletteInterface
 {
     const PALETTE_GRAYSCALE = 'gray';
-    const PALETTE_RGB       = 'rgb';
-    const PALETTE_CMYK      = 'cmyk';
+    const PALETTE_RGB = 'rgb';
+    const PALETTE_CMYK = 'cmyk';
 
     /**
      * Returns a color given some values
      *
      * @param string|array|integer $color A color
      * @param integer|null         $alpha Set alpha to null to disable it
+     *
      * @return ColorInterface
+     *
      * @throws InvalidArgumentException In case you pass an alpha value to a
-     *                                    Palette that does not support alpha
+     *                                  Palette that does not support alpha
      */
     public function color($color, $alpha = null);
 
@@ -37,15 +39,18 @@ interface PaletteInterface
      * @param ColorInterface $color1
      * @param ColorInterface $color2
      * @param float          $amount The amount of color2 in color1
+     *
      * @return ColorInterface
      */
     public function blend(ColorInterface $color1, ColorInterface $color2, $amount);
 
     /**
      * Attachs an ICC profile to this Palette.
+     *
      * (A default profile is provided by default)
      *
      * @param ProfileInterface $profile
+     *
      * @return PaletteInterface
      */
     public function useProfile(ProfileInterface $profile);

@@ -19,17 +19,17 @@ class BatchClosureDivisor implements BatchDivisorInterface
      * @param callable $callable Method used to divide the batches. The method must accept an \SplQueue and return an
      *                           array of arrays containing the divided items.
      * @param mixed    $context  Optional context to pass to the batch divisor
+     *
      * @throws InvalidArgumentException if the callable is not callable
      */
     public function __construct($callable, $context = null)
     {
-        if (!is_callable($callable))
-        {
+        if (!is_callable($callable)) {
             throw new InvalidArgumentException('Must pass a callable');
         }
 
         $this->callable = $callable;
-        $this->context  = $context;
+        $this->context = $context;
     }
 
     public function createBatches(\SplQueue $queue)

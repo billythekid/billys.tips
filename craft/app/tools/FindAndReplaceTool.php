@@ -13,60 +13,65 @@ namespace Craft;
  */
 class FindAndReplaceTool extends BaseTool
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Find and Replace');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Find and Replace');
+	}
 
-    /**
-     * @inheritDoc ITool::getIconValue()
-     * @return string
-     */
-    public function getIconValue()
-    {
-        return 'wand';
-    }
+	/**
+	 * @inheritDoc ITool::getIconValue()
+	 *
+	 * @return string
+	 */
+	public function getIconValue()
+	{
+		return 'wand';
+	}
 
-    /**
-     * @inheritDoc ITool::getOptionsHtml()
-     * @return string
-     */
-    public function getOptionsHtml()
-    {
-        return craft()->templates->renderMacro('_includes/forms', 'textField', array(
-            array(
-                'name'        => 'find',
-                'placeholder' => Craft::t('Find'),
-            ),
-        )) .
-        craft()->templates->renderMacro('_includes/forms', 'textField', array(
-            array(
-                'name'        => 'replace',
-                'placeholder' => Craft::t('Replace'),
-            ),
-        ));
-    }
+	/**
+	 * @inheritDoc ITool::getOptionsHtml()
+	 *
+	 * @return string
+	 */
+	public function getOptionsHtml()
+	{
+		return craft()->templates->renderMacro('_includes/forms', 'textField', array(
+			array(
+				'name'        => 'find',
+				'placeholder' => Craft::t('Find'),
+			)
+		)) .
+		craft()->templates->renderMacro('_includes/forms', 'textField', array(
+			array(
+				'name'        => 'replace',
+				'placeholder' => Craft::t('Replace'),
+			)
+		));
+	}
 
-    /**
-     * @inheritDoc ITool::performAction()
-     * @param array $params
-     * @return array
-     */
-    public function performAction($params = array())
-    {
-        if (!empty($params['find']) && !empty($params['replace']))
-        {
-            craft()->tasks->createTask('FindAndReplace', null, array(
-                'find'    => $params['find'],
-                'replace' => $params['replace'],
-            ));
-        }
-    }
+	/**
+	 * @inheritDoc ITool::performAction()
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 */
+	public function performAction($params = array())
+	{
+		if (!empty($params['find']) && !empty($params['replace']))
+		{
+			craft()->tasks->createTask('FindAndReplace', null, array(
+				'find'    => $params['find'],
+				'replace' => $params['replace']
+			));
+		}
+	}
 }

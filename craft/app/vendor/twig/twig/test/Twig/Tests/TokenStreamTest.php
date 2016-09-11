@@ -30,9 +30,8 @@ class Twig_Tests_TokenStreamTest extends PHPUnit_Framework_TestCase
     public function testNext()
     {
         $stream = new Twig_TokenStream(self::$tokens);
-        $repr   = array();
-        while (!$stream->isEOF())
-        {
+        $repr = array();
+        while (!$stream->isEOF()) {
             $token = $stream->next();
 
             $repr[] = $token->getValue();
@@ -49,8 +48,7 @@ class Twig_Tests_TokenStreamTest extends PHPUnit_Framework_TestCase
         $stream = new Twig_TokenStream(array(
             new Twig_Token(Twig_Token::BLOCK_START_TYPE, 1, 1),
         ));
-        while (!$stream->isEOF())
-        {
+        while (!$stream->isEOF()) {
             $stream->next();
         }
     }
@@ -64,8 +62,7 @@ class Twig_Tests_TokenStreamTest extends PHPUnit_Framework_TestCase
         $stream = new Twig_TokenStream(array(
             new Twig_Token(Twig_Token::BLOCK_START_TYPE, 1, 1),
         ));
-        while (!$stream->isEOF())
-        {
+        while (!$stream->isEOF()) {
             $stream->look();
             $stream->next();
         }

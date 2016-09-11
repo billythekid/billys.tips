@@ -20,8 +20,8 @@ class Twig_Node_CheckSecurity extends Twig_Node
 
     public function __construct(array $usedFilters, array $usedTags, array $usedFunctions)
     {
-        $this->usedFilters   = $usedFilters;
-        $this->usedTags      = $usedTags;
+        $this->usedFilters = $usedFilters;
+        $this->usedTags = $usedTags;
         $this->usedFunctions = $usedFunctions;
 
         parent::__construct();
@@ -30,15 +30,11 @@ class Twig_Node_CheckSecurity extends Twig_Node
     public function compile(Twig_Compiler $compiler)
     {
         $tags = $filters = $functions = array();
-        foreach (array('tags', 'filters', 'functions') as $type)
-        {
-            foreach ($this->{'used' . ucfirst($type)} as $name => $node)
-            {
-                if ($node instanceof Twig_Node)
-                {
+        foreach (array('tags', 'filters', 'functions') as $type) {
+            foreach ($this->{'used'.ucfirst($type)} as $name => $node) {
+                if ($node instanceof Twig_Node) {
                     ${$type}[$name] = $node->getLine();
-                } else
-                {
+                } else {
                     ${$type}[$node] = null;
                 }
             }
@@ -52,9 +48,9 @@ class Twig_Node_CheckSecurity extends Twig_Node
             ->indent()
             ->write("\$this->env->getExtension('sandbox')->checkSecurity(\n")
             ->indent()
-            ->write(!$tags ? "array(),\n" : "array('" . implode("', '", array_keys($tags)) . "'),\n")
-            ->write(!$filters ? "array(),\n" : "array('" . implode("', '", array_keys($filters)) . "'),\n")
-            ->write(!$functions ? "array()\n" : "array('" . implode("', '", array_keys($functions)) . "')\n")
+            ->write(!$tags ? "array(),\n" : "array('".implode("', '", array_keys($tags))."'),\n")
+            ->write(!$filters ? "array(),\n" : "array('".implode("', '", array_keys($filters))."'),\n")
+            ->write(!$functions ? "array()\n" : "array('".implode("', '", array_keys($functions))."')\n")
             ->outdent()
             ->write(");\n")
             ->outdent()
@@ -76,6 +72,7 @@ class Twig_Node_CheckSecurity extends Twig_Node
             ->write("}\n\n")
             ->write("throw \$e;\n")
             ->outdent()
-            ->write("}\n\n");
+            ->write("}\n\n")
+        ;
     }
 }

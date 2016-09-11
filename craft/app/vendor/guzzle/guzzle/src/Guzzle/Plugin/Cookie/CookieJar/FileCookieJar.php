@@ -16,6 +16,7 @@ class FileCookieJar extends ArrayCookieJar
      * Create a new FileCookieJar object
      *
      * @param string $cookieFile File to store the cookie data
+     *
      * @throws RuntimeException if the file cannot be found or created
      */
     public function __construct($cookieFile)
@@ -39,8 +40,7 @@ class FileCookieJar extends ArrayCookieJar
      */
     protected function persist()
     {
-        if (false === file_put_contents($this->filename, $this->serialize()))
-        {
+        if (false === file_put_contents($this->filename, $this->serialize())) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException('Unable to open file ' . $this->filename);
             // @codeCoverageIgnoreEnd
@@ -53,8 +53,7 @@ class FileCookieJar extends ArrayCookieJar
     protected function load()
     {
         $json = file_get_contents($this->filename);
-        if (false === $json)
-        {
+        if (false === $json) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException('Unable to open file ' . $this->filename);
             // @codeCoverageIgnoreEnd

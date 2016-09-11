@@ -26,15 +26,14 @@ class Layers extends AbstractLayers
 
     public function __construct(Image $image, PaletteInterface $palette, $resource)
     {
-        if (!is_resource($resource))
-        {
+        if (!is_resource($resource)) {
             throw new RuntimeException('Invalid Gd resource provided');
         }
 
-        $this->image    = $image;
+        $this->image = $image;
         $this->resource = $resource;
-        $this->offset   = 0;
-        $this->palette  = $palette;
+        $this->offset = 0;
+        $this->palette = $palette;
     }
 
     /**
@@ -120,8 +119,7 @@ class Layers extends AbstractLayers
      */
     public function offsetGet($offset)
     {
-        if (0 === $offset)
-        {
+        if (0 === $offset) {
             return new Image($this->resource, $this->palette, new MetadataBag());
         }
 

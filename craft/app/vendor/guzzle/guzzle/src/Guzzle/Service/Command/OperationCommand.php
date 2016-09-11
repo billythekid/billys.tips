@@ -19,6 +19,7 @@ class OperationCommand extends AbstractCommand
      * Set the response parser used with the command
      *
      * @param ResponseParserInterface $parser Response parser
+     *
      * @return self
      */
     public function setResponseParser(ResponseParserInterface $parser)
@@ -32,6 +33,7 @@ class OperationCommand extends AbstractCommand
      * Set the request serializer used with the command
      *
      * @param RequestSerializerInterface $serializer Request serializer
+     *
      * @return self
      */
     public function setRequestSerializer(RequestSerializerInterface $serializer)
@@ -48,8 +50,7 @@ class OperationCommand extends AbstractCommand
      */
     public function getRequestSerializer()
     {
-        if (!$this->requestSerializer)
-        {
+        if (!$this->requestSerializer) {
             // Use the default request serializer if none was found
             $this->requestSerializer = DefaultRequestSerializer::getInstance();
         }
@@ -64,8 +65,7 @@ class OperationCommand extends AbstractCommand
      */
     public function getResponseParser()
     {
-        if (!$this->responseParser)
-        {
+        if (!$this->responseParser) {
             // Use the default response parser if none was found
             $this->responseParser = OperationResponseParser::getInstance();
         }

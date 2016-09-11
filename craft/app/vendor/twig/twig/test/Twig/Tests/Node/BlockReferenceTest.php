@@ -25,7 +25,6 @@ class Twig_Tests_Node_BlockReferenceTest extends Twig_Test_NodeTestCase
 // line 1
 \$this->displayBlock('foo', \$context, \$blocks);
 EOF
-    ,
             ),
         );
     }

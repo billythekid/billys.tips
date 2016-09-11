@@ -7,7 +7,7 @@ Displaying Deprecation Notices
 ------------------------------
 
 .. versionadded:: 1.21
-This works as of Twig 1.21.
+    This works as of Twig 1.21.
 
 Deprecated features generate deprecation notices (via a call to the
 ``trigger_error()`` PHP function). By default, they are silenced and never
@@ -280,7 +280,7 @@ For functions, use ``registerUndefinedFunctionCallback()``::
     // don't try this at home as it's not secure at all!
     $twig->registerUndefinedFunctionCallback(function ($name) {
         if (function_exists($name)) {
-            return new Twig_Function_Function($name);
+            return new Twig_SimpleFunction($name, $name);
         }
 
         return false;
@@ -499,11 +499,11 @@ Loading a Template from a String
 
 From a template, you can easily load a template stored in a string via the
 ``template_from_string`` function (available as of Twig 1.11 via the
-``Twig_Extension_StringLoader`` extension)::
+``Twig_Extension_StringLoader`` extension):
 
 .. code-block:: jinja
 
-{{ include(template_from_string("Hello {{ name }}")) }}
+    {{ include(template_from_string("Hello {{ name }}")) }}
 
 From PHP, it's also possible to load a template stored in a string via
 ``Twig_Environment::createTemplate()`` (available as of Twig 1.18)::

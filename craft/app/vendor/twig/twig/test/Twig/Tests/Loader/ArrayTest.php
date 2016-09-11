@@ -71,7 +71,7 @@ class Twig_Tests_Loader_ArrayTest extends PHPUnit_Framework_TestCase
 
     public function testTemplateReference()
     {
-        $name   = new Twig_Test_Loader_TemplateReference('foo');
+        $name = new Twig_Test_Loader_TemplateReference('foo');
         $loader = new Twig_Loader_Array(array('foo' => 'bar'));
 
         $loader->getCacheKey($name);

@@ -11,12 +11,14 @@
 
 /**
  * Remove whitespaces between HTML tags.
+ *
  * <pre>
  * {% spaceless %}
  *      <div>
  *          <strong>foo</strong>
  *      </div>
  * {% endspaceless %}
+ *
  * {# output will be <div><strong>foo</strong></div> #}
  * </pre>
  */

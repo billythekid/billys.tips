@@ -38,16 +38,15 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
      * {@inheritdoc}
      * @param string|array $config  File to build or array of operation information
      * @param array        $options Service description factory options
+     *
      * @return self
      */
     public static function factory($config, array $options = array())
     {
         // @codeCoverageIgnoreStart
-        if (!self::$descriptionLoader)
-        {
+        if (!self::$descriptionLoader) {
             self::$descriptionLoader = new ServiceDescriptionLoader();
         }
-
         // @codeCoverageIgnoreEnd
 
         return self::$descriptionLoader->load($config, $options);
@@ -74,23 +73,20 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
 
     public function toArray()
     {
-        $result               = array(
-                'name'        => $this->name,
-                'apiVersion'  => $this->apiVersion,
-                'baseUrl'     => $this->baseUrl,
-                'description' => $this->description,
-            ) + $this->extraData;
+        $result = array(
+            'name'        => $this->name,
+            'apiVersion'  => $this->apiVersion,
+            'baseUrl'     => $this->baseUrl,
+            'description' => $this->description
+        ) + $this->extraData;
         $result['operations'] = array();
-        foreach ($this->getOperations() as $name => $operation)
-        {
+        foreach ($this->getOperations() as $name => $operation) {
             $result['operations'][$operation->getName() ?: $name] = $operation->toArray();
         }
-        if (!empty($this->models))
-        {
+        if (!empty($this->models)) {
             $result['models'] = array();
-            foreach ($this->models as $id => $model)
-            {
-                $result['models'][$id] = $model instanceof Parameter ? $model->toArray() : $model;
+            foreach ($this->models as $id => $model) {
+                $result['models'][$id] = $model instanceof Parameter ? $model->toArray(): $model;
             }
         }
 
@@ -106,6 +102,7 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
      * Set the baseUrl of the description
      *
      * @param string $baseUrl Base URL of each operation
+     *
      * @return self
      */
     public function setBaseUrl($baseUrl)
@@ -117,8 +114,7 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
 
     public function getOperations()
     {
-        foreach (array_keys($this->operations) as $name)
-        {
+        foreach (array_keys($this->operations) as $name) {
             $this->getOperation($name);
         }
 
@@ -133,13 +129,11 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
     public function getOperation($name)
     {
         // Lazily retrieve and build operations
-        if (!isset($this->operations[$name]))
-        {
+        if (!isset($this->operations[$name])) {
             return null;
         }
 
-        if (!($this->operations[$name] instanceof Operation))
-        {
+        if (!($this->operations[$name] instanceof Operation)) {
             $this->operations[$name] = new Operation($this->operations[$name], $this);
         }
 
@@ -150,6 +144,7 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
      * Add a operation to the service description
      *
      * @param OperationInterface $operation Operation to add
+     *
      * @return self
      */
     public function addOperation(OperationInterface $operation)
@@ -161,13 +156,11 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
 
     public function getModel($id)
     {
-        if (!isset($this->models[$id]))
-        {
+        if (!isset($this->models[$id])) {
             return null;
         }
 
-        if (!($this->models[$id] instanceof Parameter))
-        {
+        if (!($this->models[$id] instanceof Parameter)) {
             $this->models[$id] = new Parameter($this->models[$id] + array('name' => $id), $this);
         }
 
@@ -177,8 +170,7 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
     public function getModels()
     {
         // Ensure all models are converted into parameter objects
-        foreach (array_keys($this->models) as $id)
-        {
+        foreach (array_keys($this->models) as $id) {
             $this->getModel($id);
         }
 
@@ -194,6 +186,7 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
      * Add a model to the service description
      *
      * @param Parameter $model Model to add
+     *
      * @return self
      */
     public function addModel(Parameter $model)
@@ -241,34 +234,28 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
         // Keep a list of default keys used in service descriptions that is later used to determine extra data keys
         static $defaultKeys = array('name', 'models', 'apiVersion', 'baseUrl', 'description');
         // Pull in the default configuration values
-        foreach ($defaultKeys as $key)
-        {
-            if (isset($config[$key]))
-            {
+        foreach ($defaultKeys as $key) {
+            if (isset($config[$key])) {
                 $this->{$key} = $config[$key];
             }
         }
 
         // Account for the Swagger name for Guzzle's baseUrl
-        if (isset($config['basePath']))
-        {
+        if (isset($config['basePath'])) {
             $this->baseUrl = $config['basePath'];
         }
 
         // Ensure that the models and operations properties are always arrays
-        $this->models     = (array)$this->models;
-        $this->operations = (array)$this->operations;
+        $this->models = (array) $this->models;
+        $this->operations = (array) $this->operations;
 
         // We want to add operations differently than adding the other properties
         $defaultKeys[] = 'operations';
 
         // Create operations for each operation
-        if (isset($config['operations']))
-        {
-            foreach ($config['operations'] as $name => $operation)
-            {
-                if (!($operation instanceof Operation) && !is_array($operation))
-                {
+        if (isset($config['operations'])) {
+            foreach ($config['operations'] as $name => $operation) {
+                if (!($operation instanceof Operation) && !is_array($operation)) {
                     throw new InvalidArgumentException('Invalid operation in service description: '
                         . gettype($operation));
                 }
@@ -277,8 +264,7 @@ class ServiceDescription implements ServiceDescriptionInterface, ToArrayInterfac
         }
 
         // Get all of the additional properties of the service description and store them in a data array
-        foreach (array_diff(array_keys($config), $defaultKeys) as $key)
-        {
+        foreach (array_diff(array_keys($config), $defaultKeys) as $key) {
             $this->extraData[$key] = $config[$key];
         }
     }

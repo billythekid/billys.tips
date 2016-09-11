@@ -33,7 +33,7 @@ class GenericEventTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->subject = new \stdClass();
-        $this->event   = new GenericEvent($this->subject, array('name' => 'Event'));
+        $this->event = new GenericEvent($this->subject, array('name' => 'Event'));
     }
 
     /**
@@ -42,7 +42,7 @@ class GenericEventTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->subject = null;
-        $this->event   = null;
+        $this->event = null;
 
         parent::tearDown();
     }
@@ -131,8 +131,7 @@ class GenericEventTest extends \PHPUnit_Framework_TestCase
     public function testHasIterator()
     {
         $data = array();
-        foreach ($this->event as $key => $value)
-        {
+        foreach ($this->event as $key => $value) {
             $data[$key] = $value;
         }
         $this->assertEquals(array('name' => 'Event'), $data);

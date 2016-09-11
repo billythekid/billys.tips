@@ -12,6 +12,7 @@
 
 /**
  * Marks a section of a template as being reusable.
+ *
  * <pre>
  *  {% block head %}
  *    <link rel="stylesheet" href="style.css" />
@@ -25,29 +26,24 @@ class Twig_TokenParser_Block extends Twig_TokenParser
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
-        $name   = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
-        if ($this->parser->hasBlock($name))
-        {
+        $name = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
+        if ($this->parser->hasBlock($name)) {
             throw new Twig_Error_Syntax(sprintf("The block '%s' has already been defined line %d.", $name, $this->parser->getBlock($name)->getLine()), $stream->getCurrent()->getLine(), $stream->getFilename());
         }
         $this->parser->setBlock($name, $block = new Twig_Node_Block($name, new Twig_Node(array()), $lineno));
         $this->parser->pushLocalScope();
         $this->parser->pushBlockStack($name);
 
-        if ($stream->nextIf(Twig_Token::BLOCK_END_TYPE))
-        {
+        if ($stream->nextIf(Twig_Token::BLOCK_END_TYPE)) {
             $body = $this->parser->subparse(array($this, 'decideBlockEnd'), true);
-            if ($token = $stream->nextIf(Twig_Token::NAME_TYPE))
-            {
+            if ($token = $stream->nextIf(Twig_Token::NAME_TYPE)) {
                 $value = $token->getValue();
 
-                if ($value != $name)
-                {
+                if ($value != $name) {
                     throw new Twig_Error_Syntax(sprintf('Expected endblock for block "%s" (but "%s" given).', $name, $value), $stream->getCurrent()->getLine(), $stream->getFilename());
                 }
             }
-        } else
-        {
+        } else {
             $body = new Twig_Node(array(
                 new Twig_Node_Print($this->parser->getExpressionParser()->parseExpression(), $lineno),
             ));

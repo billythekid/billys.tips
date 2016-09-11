@@ -2,7 +2,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 /**
  * Abstract base class for Highlighter renderers
+ *
  * PHP versions 4 and 5
+ *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
  * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
@@ -21,7 +23,7 @@
 /**
  * Abstract base class for Highlighter renderers
  *
- * @author     Andrey Demenev <demenev@gmail.com>
+ * @author Andrey Demenev <demenev@gmail.com>
  * @category   Text
  * @package    Text_Highlighter
  * @copyright  2004-2006 Andrey Demenev
@@ -30,6 +32,7 @@
  * @link       http://pear.php.net/package/Text_Highlighter
  * @abstract
  */
+
 class Text_Highlighter_Renderer
 {
     /**
@@ -52,7 +55,8 @@ class Text_Highlighter_Renderer
      * Constructor
      *
      * @access public
-     * @param  array $options Rendering options. Renderer-specific.
+     *
+     * @param  array $options  Rendering options. Renderer-specific.
      */
     function __construct($options = array())
     {
@@ -63,7 +67,8 @@ class Text_Highlighter_Renderer
      * Resets renderer state
      *
      * @access public
-     * @param  array $options Rendering options. Renderer-specific.
+     *
+     * @param  array $options  Rendering options. Renderer-specific.
      */
     function reset()
     {
@@ -74,6 +79,7 @@ class Text_Highlighter_Renderer
      * Preprocesses code
      *
      * @access public
+     *
      * @param  string $str Code to preprocess
      * @return string Preprocessed code
      */
@@ -87,6 +93,7 @@ class Text_Highlighter_Renderer
      *
      * @abstract
      * @access public
+     *
      * @param  string $class   Token class
      * @param  string $content Token content
      */
@@ -99,6 +106,7 @@ class Text_Highlighter_Renderer
      * Signals that no more tokens are available
      *
      * @access public
+     *
      */
     function finalize()
     {
@@ -111,6 +119,7 @@ class Text_Highlighter_Renderer
      * @abstract
      * @return mixed Renderer-specific
      * @access public
+     *
      */
     function getOutput()
     {
@@ -123,6 +132,7 @@ class Text_Highlighter_Renderer
      * @abstract
      * @return void
      * @access public
+     *
      */
     function setCurrentLanguage($lang)
     {

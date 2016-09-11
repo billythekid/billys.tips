@@ -28,6 +28,7 @@ class MultiTransferException extends ExceptionCollection
      * Add to the array of successful requests
      *
      * @param RequestInterface $request Successful request
+     *
      * @return self
      */
     public function addSuccessfulRequest(RequestInterface $request)
@@ -41,6 +42,7 @@ class MultiTransferException extends ExceptionCollection
      * Add to the array of failed requests
      *
      * @param RequestInterface $request Failed request
+     *
      * @return self
      */
     public function addFailedRequest(RequestInterface $request)
@@ -55,13 +57,14 @@ class MultiTransferException extends ExceptionCollection
      *
      * @param RequestInterface $request   Failed request
      * @param \Exception       $exception Exception to add and associate with
+     *
      * @return self
      */
     public function addFailedRequestWithException(RequestInterface $request, \Exception $exception)
     {
         $this->add($exception)
-            ->addFailedRequest($request)
-            ->exceptionForRequest[spl_object_hash($request)] = $exception;
+             ->addFailedRequest($request)
+             ->exceptionForRequest[spl_object_hash($request)] = $exception;
 
         return $this;
     }
@@ -70,6 +73,7 @@ class MultiTransferException extends ExceptionCollection
      * Get the Exception that caused the given $request to fail
      *
      * @param RequestInterface $request Failed command
+     *
      * @return \Exception|null
      */
     public function getExceptionForFailedRequest(RequestInterface $request)
@@ -83,6 +87,7 @@ class MultiTransferException extends ExceptionCollection
      * Set all of the successful requests
      *
      * @param array Array of requests
+     *
      * @return self
      */
     public function setSuccessfulRequests(array $requests)
@@ -96,6 +101,7 @@ class MultiTransferException extends ExceptionCollection
      * Set all of the failed requests
      *
      * @param array Array of requests
+     *
      * @return self
      */
     public function setFailedRequests(array $requests)
@@ -129,6 +135,7 @@ class MultiTransferException extends ExceptionCollection
      * Check if the exception object contains a request
      *
      * @param RequestInterface $request Request to check
+     *
      * @return bool
      */
     public function containsRequest(RequestInterface $request)

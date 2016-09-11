@@ -13,68 +13,71 @@ namespace Craft;
  */
 class GlobalSetModel extends BaseElementModel
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var string
-     */
-    protected $elementType = ElementType::GlobalSet;
+	/**
+	 * @var string
+	 */
+	protected $elementType = ElementType::GlobalSet;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Use the global set's name as its string representation.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->name;
-    }
+	/**
+	 * Use the global set's name as its string representation.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->name;
+	}
 
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        return array(
-            'fieldLayout' => new FieldLayoutBehavior(ElementType::GlobalSet),
-        );
-    }
+	/**
+	 * @return array
+	 */
+	public function behaviors()
+	{
+		return array(
+			'fieldLayout' => new FieldLayoutBehavior(ElementType::GlobalSet),
+		);
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getFieldLayout()
-     * @return FieldLayoutModel|null
-     */
-    public function getFieldLayout()
-    {
-        return $this->asa('fieldLayout')->getFieldLayout();
-    }
+	/**
+	 * @inheritDoc BaseElementModel::getFieldLayout()
+	 *
+	 * @return FieldLayoutModel|null
+	 */
+	public function getFieldLayout()
+	{
+		return $this->asa('fieldLayout')->getFieldLayout();
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getCpEditUrl()
-     * @return string|false
-     */
-    public function getCpEditUrl()
-    {
-        return UrlHelper::getCpUrl('globals/' . $this->handle);
-    }
+	/**
+	 * @inheritDoc BaseElementModel::getCpEditUrl()
+	 *
+	 * @return string|false
+	 */
+	public function getCpEditUrl()
+	{
+		return UrlHelper::getCpUrl('globals/'.$this->handle);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array_merge(parent::defineAttributes(), array(
-            'name'          => AttributeType::Name,
-            'handle'        => AttributeType::Handle,
-            'fieldLayoutId' => AttributeType::Number,
-        ));
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array_merge(parent::defineAttributes(), array(
+			'name'          => AttributeType::Name,
+			'handle'        => AttributeType::Handle,
+			'fieldLayoutId' => AttributeType::Number,
+		));
+	}
 }

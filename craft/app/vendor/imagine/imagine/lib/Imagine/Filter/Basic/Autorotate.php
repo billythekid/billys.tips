@@ -17,6 +17,7 @@ use Imagine\Image\Palette\Color\ColorInterface;
 
 /**
  * Rotates an image automatically based on exif information.
+ *
  * Your attention please: This filter requires the use of the
  * ExifMetadataReader to work.
  *
@@ -41,8 +42,7 @@ class Autorotate implements FilterInterface
     {
         $metadata = $image->metadata();
 
-        switch (isset($metadata['ifd0.Orientation']) ? $metadata['ifd0.Orientation'] : null)
-        {
+        switch (isset($metadata['ifd0.Orientation']) ? $metadata['ifd0.Orientation'] : null) {
             case 1: // top-left
                 break;
             case 2: // top-right
@@ -78,8 +78,7 @@ class Autorotate implements FilterInterface
 
     private function getColor(ImageInterface $image)
     {
-        if ($this->color instanceof ColorInterface)
-        {
+        if ($this->color instanceof ColorInterface) {
             return $this->color;
         }
 

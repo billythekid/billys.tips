@@ -13,56 +13,60 @@ namespace Craft;
  */
 class AssetIndexDataRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'assetindexdata';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'assetindexdata';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineRelations()
-     * @return array
-     */
-    public function defineRelations()
-    {
-        return array(
-            'source' => array(static::BELONGS_TO, 'AssetSourceRecord', 'required' => true, 'onDelete' => static::CASCADE),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineRelations()
+	 *
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'source' => array(static::BELONGS_TO, 'AssetSourceRecord', 'required' => true, 'onDelete' => static::CASCADE),
+		);
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('sessionId', 'sourceId', 'offset'), 'unique' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('sessionId', 'sourceId', 'offset'), 'unique' => true),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'sessionId' => array(ColumnType::Char, 'length' => 36, 'required' => true, 'default' => ''),
-            'sourceId'  => array(AttributeType::Number, 'required' => true),
-            'offset'    => array(AttributeType::Number, 'required' => true),
-            'uri'       => array(ColumnType::Varchar, 'maxLength' => 255),
-            'size'      => array(ColumnType::BigInt, 'unsigned' => true),
-            'recordId'  => array(AttributeType::Number),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'sessionId' 	=> array(ColumnType::Char, 'length' => 36, 'required' => true, 'default' => ''),
+			'sourceId' 		=> array(AttributeType::Number, 'required' => true),
+			'offset'  		=> array(AttributeType::Number, 'required' => true),
+			'uri'  			=> array(ColumnType::Text),
+			'size' 			=> array(ColumnType::BigInt, 'unsigned' => true),
+			'recordId'		=> array(AttributeType::Number),
+		);
+	}
 }

@@ -13,63 +13,67 @@ namespace Craft;
  */
 abstract class BaseTask extends BaseSavableComponentType implements ITask
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * The type of component, e.g. "Plugin", "Widget", "FieldType", etc. Defined by the component type's base class.
-     *
-     * @var string
-     */
-    protected $componentType = 'Task';
+	/**
+	 * The type of component, e.g. "Plugin", "Widget", "FieldType", etc. Defined by the component type's base class.
+	 *
+	 * @var string
+	 */
+	protected $componentType = 'Task';
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc ITask::getDescription()
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->getName();
-    }
+	/**
+	 * @inheritDoc ITask::getDescription()
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->getName();
+	}
 
-    /**
-     * @inheritDoc ITask::getTotalSteps()
-     * @return int
-     */
-    public function getTotalSteps()
-    {
-        return 0;
-    }
+	/**
+	 * @inheritDoc ITask::getTotalSteps()
+	 *
+	 * @return int
+	 */
+	public function getTotalSteps()
+	{
+		return 0;
+	}
 
-    /**
-     * @inheritDoc ITask::runStep()
-     * @param int $step
-     * @return bool
-     */
-    public function runStep($step)
-    {
-        return true;
-    }
+	/**
+	 * @inheritDoc ITask::runStep()
+	 *
+	 * @param int $step
+	 *
+	 * @return bool
+	 */
+	public function runStep($step)
+	{
+		return true;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * Creates and runs a subtask.
-     *
-     * @param string      $taskClassName
-     * @param string|null $taskDescription
-     * @param array|null  $settings
-     * @return bool
-     */
-    protected function runSubTask($taskClassName, $taskDescription = null, $settings = null)
-    {
-        $task
-            = craft()->tasks->createTask($taskClassName, $taskDescription, $settings, $this->model->id);
-
-        return craft()->tasks->runTask($task);
-    }
+	/**
+	 * Creates and runs a subtask.
+	 *
+	 * @param string      $taskClassName
+	 * @param string|null $taskDescription
+	 * @param array|null  $settings
+	 *
+	 * @return bool
+	 */
+	protected function runSubTask($taskClassName, $taskDescription = null, $settings = null)
+	{
+		$task
+			= craft()->tasks->createTask($taskClassName, $taskDescription, $settings, $this->model->id);
+		return craft()->tasks->runTask($task);
+	}
 }

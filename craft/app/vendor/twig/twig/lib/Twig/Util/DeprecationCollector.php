@@ -27,6 +27,7 @@ class Twig_Util_DeprecationCollector
      *
      * @param string $dir A directory where templates are stored
      * @param string $ext Limit the loaded templates by extension
+     *
      * @return array() An array of deprecations
      */
     public function collectDir($dir, $ext = '.twig')
@@ -34,7 +35,7 @@ class Twig_Util_DeprecationCollector
         $iterator = new RegexIterator(
             new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::LEAVES_ONLY
-            ), '{' . preg_quote($ext) . '$}'
+            ), '{'.preg_quote($ext).'$}'
         );
 
         return $this->collect(new Twig_Util_TemplateDirIterator($iterator));
@@ -43,8 +44,8 @@ class Twig_Util_DeprecationCollector
     /**
      * Returns deprecations for passed templates.
      *
-     * @param Iterator $iterator An iterator of templates (where keys are template names and values the contents of the
-     *                           template)
+     * @param Iterator $iterator An iterator of templates (where keys are template names and values the contents of the template)
+     *
      * @return array() An array of deprecations
      */
     public function collect(Iterator $iterator)
@@ -53,20 +54,17 @@ class Twig_Util_DeprecationCollector
 
         set_error_handler(array($this, 'errorHandler'));
 
-        foreach ($iterator as $name => $contents)
-        {
-            try
-            {
+        foreach ($iterator as $name => $contents) {
+            try {
                 $this->twig->parse($this->twig->tokenize($contents, $name));
-            } catch (Twig_Error_Syntax $e)
-            {
+            } catch (Twig_Error_Syntax $e) {
                 // ignore templates containing syntax errors
             }
         }
 
         restore_error_handler();
 
-        $deprecations       = $this->deprecations;
+        $deprecations = $this->deprecations;
         $this->deprecations = array();
 
         return $deprecations;
@@ -77,8 +75,7 @@ class Twig_Util_DeprecationCollector
      */
     public function errorHandler($type, $msg)
     {
-        if (E_USER_DEPRECATED === $type)
-        {
+        if (E_USER_DEPRECATED === $type) {
             $this->deprecations[] = $msg;
         }
     }

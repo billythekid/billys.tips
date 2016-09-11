@@ -13,28 +13,25 @@ class ServiceDescriptionLoader extends AbstractConfigLoader
     protected function build($config, array $options)
     {
         $operations = array();
-        if (!empty($config['operations']))
-        {
-            foreach ($config['operations'] as $name => $op)
-            {
+        if (!empty($config['operations'])) {
+            foreach ($config['operations'] as $name => $op) {
                 $name = $op['name'] = isset($op['name']) ? $op['name'] : $name;
                 // Extend other operations
-                if (!empty($op['extends']))
-                {
+                if (!empty($op['extends'])) {
                     $this->resolveExtension($name, $op, $operations);
                 }
-                $op['parameters']  = isset($op['parameters']) ? $op['parameters'] : array();
+                $op['parameters'] = isset($op['parameters']) ? $op['parameters'] : array();
                 $operations[$name] = $op;
             }
         }
 
         return new ServiceDescription(array(
-                'apiVersion'  => isset($config['apiVersion']) ? $config['apiVersion'] : null,
-                'baseUrl'     => isset($config['baseUrl']) ? $config['baseUrl'] : null,
-                'description' => isset($config['description']) ? $config['description'] : null,
-                'operations'  => $operations,
-                'models'      => isset($config['models']) ? $config['models'] : null,
-            ) + $config);
+            'apiVersion'  => isset($config['apiVersion']) ? $config['apiVersion'] : null,
+            'baseUrl'     => isset($config['baseUrl']) ? $config['baseUrl'] : null,
+            'description' => isset($config['description']) ? $config['description'] : null,
+            'operations'  => $operations,
+            'models'      => isset($config['models']) ? $config['models'] : null
+        ) + $config);
     }
 
     /**
@@ -46,22 +43,19 @@ class ServiceDescriptionLoader extends AbstractConfigLoader
     protected function resolveExtension($name, array &$op, array &$operations)
     {
         $resolved = array();
-        $original = empty($op['parameters']) ? false : $op['parameters'];
+        $original = empty($op['parameters']) ? false: $op['parameters'];
         $hasClass = !empty($op['class']);
-        foreach ((array)$op['extends'] as $extendedCommand)
-        {
-            if (empty($operations[$extendedCommand]))
-            {
+        foreach ((array) $op['extends'] as $extendedCommand) {
+            if (empty($operations[$extendedCommand])) {
                 throw new DescriptionBuilderException("{$name} extends missing operation {$extendedCommand}");
             }
-            $toArray  = $operations[$extendedCommand];
+            $toArray = $operations[$extendedCommand];
             $resolved = empty($resolved)
                 ? $toArray['parameters']
                 : array_merge($resolved, $toArray['parameters']);
 
             $op = $op + $toArray;
-            if (!$hasClass && isset($toArray['class']))
-            {
+            if (!$hasClass && isset($toArray['class'])) {
                 $op['class'] = $toArray['class'];
             }
         }

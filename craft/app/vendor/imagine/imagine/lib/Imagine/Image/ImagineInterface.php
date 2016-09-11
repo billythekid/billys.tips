@@ -27,8 +27,10 @@ interface ImagineInterface
      *
      * @param BoxInterface   $size
      * @param ColorInterface $color
+     *
      * @throws InvalidArgumentException
      * @throws RuntimeException
+     *
      * @return ImageInterface
      */
     public function create(BoxInterface $size, ColorInterface $color = null);
@@ -37,7 +39,9 @@ interface ImagineInterface
      * Opens an existing image from $path
      *
      * @param string $path
+     *
      * @throws RuntimeException
+     *
      * @return ImageInterface
      */
     public function open($path);
@@ -46,7 +50,9 @@ interface ImagineInterface
      * Loads an image from a binary $string
      *
      * @param string $string
+     *
      * @throws RuntimeException
+     *
      * @return ImageInterface
      */
     public function load($string);
@@ -55,18 +61,22 @@ interface ImagineInterface
      * Loads an image from a resource $resource
      *
      * @param resource $resource
+     *
      * @throws RuntimeException
+     *
      * @return ImageInterface
      */
     public function read($resource);
 
     /**
      * Constructs a font with specified $file, $size and $color
+     *
      * The font size is to be specified in points (e.g. 10pt means 10)
      *
      * @param string         $file
      * @param integer        $size
      * @param ColorInterface $color
+     *
      * @return FontInterface
      */
     public function font($file, $size, ColorInterface $color);

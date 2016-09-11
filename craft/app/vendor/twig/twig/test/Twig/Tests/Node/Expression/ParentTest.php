@@ -20,7 +20,7 @@ class Twig_Tests_Node_Expression_ParentTest extends Twig_Test_NodeTestCase
 
     public function getTests()
     {
-        $tests   = array();
+        $tests = array();
         $tests[] = array(new Twig_Node_Expression_Parent('foo', 1), '$this->renderParentBlock("foo", $context, $blocks)');
 
         return $tests;

@@ -38,6 +38,7 @@ final class CMYK implements ColorInterface
     private $k;
 
     /**
+     *
      * @var CMYK
      */
     private $palette;
@@ -53,8 +54,7 @@ final class CMYK implements ColorInterface
      */
     public function getValue($component)
     {
-        switch ($component)
-        {
+        switch ($component) {
             case ColorInterface::COLOR_CYAN:
                 return $this->getCyan();
             case ColorInterface::COLOR_MAGENTA:
@@ -200,18 +200,17 @@ final class CMYK implements ColorInterface
      * Internal, Performs checks for color validity (an of array(C, M, Y, K))
      *
      * @param array $color
+     *
      * @throws InvalidArgumentException
      */
     private function setColor(array $color)
     {
-        if (count($color) !== 4)
-        {
+        if (count($color) !== 4) {
             throw new InvalidArgumentException('Color argument must look like array(C, M, Y, K), where C, M, Y, K are the integer values between 0 and 255 for cyan, magenta, yellow and black color indexes accordingly');
         }
 
         $colors = array_values($color);
-        array_walk($colors, function ($color)
-        {
+        array_walk($colors, function ($color) {
             return max(0, min(100, $color));
         });
 

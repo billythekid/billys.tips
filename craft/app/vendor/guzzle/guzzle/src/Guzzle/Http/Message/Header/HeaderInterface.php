@@ -17,6 +17,7 @@ interface HeaderInterface extends ToArrayInterface, \Countable, \IteratorAggrega
      * Add a value to the list of header values
      *
      * @param string $value Value to add to the header
+     *
      * @return self
      */
     public function add($value);
@@ -32,6 +33,7 @@ interface HeaderInterface extends ToArrayInterface, \Countable, \IteratorAggrega
      * Change the name of the header
      *
      * @param string $name Name to change to
+     *
      * @return self
      */
     public function setName($name);
@@ -40,6 +42,7 @@ interface HeaderInterface extends ToArrayInterface, \Countable, \IteratorAggrega
      * Change the glue used to implode the values
      *
      * @param string $glue Glue used to implode multiple values
+     *
      * @return self
      */
     public function setGlue($glue);
@@ -55,6 +58,7 @@ interface HeaderInterface extends ToArrayInterface, \Countable, \IteratorAggrega
      * Check if the collection of headers has a particular value
      *
      * @param string $searchValue Value to search for
+     *
      * @return bool
      */
     public function hasValue($searchValue);
@@ -63,6 +67,7 @@ interface HeaderInterface extends ToArrayInterface, \Countable, \IteratorAggrega
      * Remove a specific value from the header
      *
      * @param string $searchValue Value to remove
+     *
      * @return self
      */
     public function removeValue($searchValue);

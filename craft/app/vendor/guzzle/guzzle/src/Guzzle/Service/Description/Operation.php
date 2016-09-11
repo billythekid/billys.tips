@@ -14,10 +14,10 @@ class Operation implements OperationInterface
 
     /** @var array Hashmap of properties that can be specified. Represented as a hash to speed up constructor. */
     protected static $properties = array(
-        'name'           => true, 'httpMethod' => true, 'uri' => true, 'class' => true, 'responseClass' => true,
-        'responseType'   => true, 'responseNotes' => true, 'notes' => true, 'summary' => true, 'documentationUrl' => true,
-        'deprecated'     => true, 'data' => true, 'parameters' => true, 'additionalParameters' => true,
-        'errorResponses' => true,
+        'name' => true, 'httpMethod' => true, 'uri' => true, 'class' => true, 'responseClass' => true,
+        'responseType' => true, 'responseNotes' => true, 'notes' => true, 'summary' => true, 'documentationUrl' => true,
+        'deprecated' => true, 'data' => true, 'parameters' => true, 'additionalParameters' => true,
+        'errorResponses' => true
     );
 
     /** @var array Parameters */
@@ -101,53 +101,42 @@ class Operation implements OperationInterface
         $this->description = $description;
 
         // Get the intersection of the available properties and properties set on the operation
-        foreach (array_intersect_key($config, self::$properties) as $key => $value)
-        {
+        foreach (array_intersect_key($config, self::$properties) as $key => $value) {
             $this->{$key} = $value;
         }
 
-        $this->class          = $this->class ?: self::DEFAULT_COMMAND_CLASS;
-        $this->deprecated     = (bool)$this->deprecated;
+        $this->class = $this->class ?: self::DEFAULT_COMMAND_CLASS;
+        $this->deprecated = (bool) $this->deprecated;
         $this->errorResponses = $this->errorResponses ?: array();
-        $this->data           = $this->data ?: array();
+        $this->data = $this->data ?: array();
 
-        if (!$this->responseClass)
-        {
+        if (!$this->responseClass) {
             $this->responseClass = 'array';
-            $this->responseType  = 'primitive';
-        } elseif ($this->responseType)
-        {
+            $this->responseType = 'primitive';
+        } elseif ($this->responseType) {
             // Set the response type to perform validation
             $this->setResponseType($this->responseType);
-        } else
-        {
+        } else {
             // A response class was set and no response type was set, so guess what the type is
             $this->inferResponseType();
         }
 
         // Parameters need special handling when adding
-        if ($this->parameters)
-        {
-            foreach ($this->parameters as $name => $param)
-            {
-                if ($param instanceof Parameter)
-                {
+        if ($this->parameters) {
+            foreach ($this->parameters as $name => $param) {
+                if ($param instanceof Parameter) {
                     $param->setName($name)->setParent($this);
-                } elseif (is_array($param))
-                {
+                } elseif (is_array($param)) {
                     $param['name'] = $name;
                     $this->addParam(new Parameter($param, $this->description));
                 }
             }
         }
 
-        if ($this->additionalParameters)
-        {
-            if ($this->additionalParameters instanceof Parameter)
-            {
+        if ($this->additionalParameters) {
+            if ($this->additionalParameters instanceof Parameter) {
                 $this->additionalParameters->setParent($this);
-            } elseif (is_array($this->additionalParameters))
-            {
+            } elseif (is_array($this->additionalParameters)) {
                 $this->setadditionalParameters(new Parameter($this->additionalParameters, $this->description));
             }
         }
@@ -157,10 +146,8 @@ class Operation implements OperationInterface
     {
         $result = array();
         // Grab valid properties and filter out values that weren't set
-        foreach (array_keys(self::$properties) as $check)
-        {
-            if ($value = $this->{$check})
-            {
+        foreach (array_keys(self::$properties) as $check) {
+            if ($value = $this->{$check}) {
                 $result[$check] = $value;
             }
         }
@@ -168,13 +155,11 @@ class Operation implements OperationInterface
         unset($result['name']);
         // Parameters need to be converted to arrays
         $result['parameters'] = array();
-        foreach ($this->parameters as $key => $param)
-        {
+        foreach ($this->parameters as $key => $param) {
             $result['parameters'][$key] = $param->toArray();
         }
         // Additional parameters need to be cast to an array
-        if ($this->additionalParameters instanceof Parameter)
-        {
+        if ($this->additionalParameters instanceof Parameter) {
             $result['additionalParameters'] = $this->additionalParameters->toArray();
         }
 
@@ -217,6 +202,7 @@ class Operation implements OperationInterface
      * Add a parameter to the command
      *
      * @param Parameter $param Parameter to add
+     *
      * @return self
      */
     public function addParam(Parameter $param)
@@ -231,6 +217,7 @@ class Operation implements OperationInterface
      * Remove a parameter from the command
      *
      * @param string $name Name of the parameter to remove
+     *
      * @return self
      */
     public function removeParam($name)
@@ -249,6 +236,7 @@ class Operation implements OperationInterface
      * Set the HTTP method of the command
      *
      * @param string $httpMethod Method to set
+     *
      * @return self
      */
     public function setHttpMethod($httpMethod)
@@ -267,6 +255,7 @@ class Operation implements OperationInterface
      * Set the concrete class of the command
      *
      * @param string $className Concrete class name
+     *
      * @return self
      */
     public function setClass($className)
@@ -285,6 +274,7 @@ class Operation implements OperationInterface
      * Set the name of the command
      *
      * @param string $name Name of the command
+     *
      * @return self
      */
     public function setName($name)
@@ -303,6 +293,7 @@ class Operation implements OperationInterface
      * Set a short summary of what the operation does
      *
      * @param string $summary Short summary of the operation
+     *
      * @return self
      */
     public function setSummary($summary)
@@ -321,6 +312,7 @@ class Operation implements OperationInterface
      * Set a longer text field to explain the behavior of the operation.
      *
      * @param string $notes Notes on the operation
+     *
      * @return self
      */
     public function setNotes($notes)
@@ -339,6 +331,7 @@ class Operation implements OperationInterface
      * Set the URL pointing to additional documentation on the command
      *
      * @param string $docUrl Documentation URL
+     *
      * @return self
      */
     public function setDocumentationUrl($docUrl)
@@ -358,6 +351,7 @@ class Operation implements OperationInterface
      * 'Guzzle\\Foo\\Baz', or 'MyModelName' (to reference a model by ID).
      *
      * @param string $responseClass Type of response
+     *
      * @return self
      */
     public function setResponseClass($responseClass)
@@ -377,19 +371,19 @@ class Operation implements OperationInterface
      * Set qualifying information about the responseClass. One of 'primitive', 'class', 'model', or 'documentation'
      *
      * @param string $responseType Response type information
+     *
      * @return self
      * @throws InvalidArgumentException
      */
     public function setResponseType($responseType)
     {
         static $types = array(
-            self::TYPE_PRIMITIVE     => true,
-            self::TYPE_CLASS         => true,
-            self::TYPE_MODEL         => true,
-            self::TYPE_DOCUMENTATION => true,
+            self::TYPE_PRIMITIVE => true,
+            self::TYPE_CLASS => true,
+            self::TYPE_MODEL => true,
+            self::TYPE_DOCUMENTATION => true
         );
-        if (!isset($types[$responseType]))
-        {
+        if (!isset($types[$responseType])) {
             throw new InvalidArgumentException('responseType must be one of ' . implode(', ', array_keys($types)));
         }
 
@@ -407,6 +401,7 @@ class Operation implements OperationInterface
      * Set notes about the response of the operation
      *
      * @param string $notes Response notes
+     *
      * @return self
      */
     public function setResponseNotes($notes)
@@ -425,6 +420,7 @@ class Operation implements OperationInterface
      * Set whether or not the command is deprecated
      *
      * @param bool $isDeprecated Set to true to mark as deprecated
+     *
      * @return self
      */
     public function setDeprecated($isDeprecated)
@@ -443,6 +439,7 @@ class Operation implements OperationInterface
      * Set the URI template of the command
      *
      * @param string $uri URI template to set
+     *
      * @return self
      */
     public function setUri($uri)
@@ -463,6 +460,7 @@ class Operation implements OperationInterface
      * @param string $code   HTTP response code
      * @param string $reason HTTP response reason phrase or information about the error
      * @param string $class  Exception class associated with the error
+     *
      * @return self
      */
     public function addErrorResponse($code, $reason, $class)
@@ -476,6 +474,7 @@ class Operation implements OperationInterface
      * Set all of the error responses of the operation
      *
      * @param array $errorResponses Hash of error name to a hash containing a code, reason, class
+     *
      * @return self
      */
     public function setErrorResponses(array $errorResponses)
@@ -495,6 +494,7 @@ class Operation implements OperationInterface
      *
      * @param string $name  Name of the data value
      * @param mixed  $value Value to set
+     *
      * @return self
      */
     public function setData($name, $value)
@@ -518,12 +518,12 @@ class Operation implements OperationInterface
      * Set the additionalParameters of the operation
      *
      * @param Parameter|null $parameter Parameter to set
+     *
      * @return self
      */
     public function setAdditionalParameters($parameter)
     {
-        if ($this->additionalParameters = $parameter)
-        {
+        if ($this->additionalParameters = $parameter) {
             $this->additionalParameters->setParent($this);
         }
 
@@ -536,14 +536,11 @@ class Operation implements OperationInterface
     protected function inferResponseType()
     {
         static $primitives = array('array' => 1, 'boolean' => 1, 'string' => 1, 'integer' => 1, '' => 1);
-        if (isset($primitives[$this->responseClass]))
-        {
+        if (isset($primitives[$this->responseClass])) {
             $this->responseType = self::TYPE_PRIMITIVE;
-        } elseif ($this->description && $this->description->hasModel($this->responseClass))
-        {
+        } elseif ($this->description && $this->description->hasModel($this->responseClass)) {
             $this->responseType = self::TYPE_MODEL;
-        } else
-        {
+        } else {
             $this->responseType = self::TYPE_CLASS;
         }
     }

@@ -13,19 +13,20 @@ namespace Craft;
  */
 class RequireAdmin_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles a RequireAdmin_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $compiler
-            ->addDebugInfo($this)
-            ->write("\Craft\craft()->userSession->requireAdmin();\n");
-    }
+	/**
+	 * Compiles a RequireAdmin_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler
+		    ->addDebugInfo($this)
+		    ->write("\Craft\craft()->userSession->requireAdmin();\n");
+	}
 }

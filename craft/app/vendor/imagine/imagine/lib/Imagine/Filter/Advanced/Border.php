@@ -45,8 +45,8 @@ class Border implements FilterInterface
      */
     public function __construct(ColorInterface $color, $width = 1, $height = 1)
     {
-        $this->color  = $color;
-        $this->width  = $width;
+        $this->color = $color;
+        $this->width = $width;
         $this->height = $height;
     }
 
@@ -55,8 +55,8 @@ class Border implements FilterInterface
      */
     public function apply(ImageInterface $image)
     {
-        $size   = $image->getSize();
-        $width  = $size->getWidth();
+        $size = $image->getSize();
+        $width = $size->getWidth();
         $height = $size->getHeight();
 
         $draw = $image->draw();
@@ -74,7 +74,8 @@ class Border implements FilterInterface
                 new Point(0, $height - 1),
                 $this->color,
                 $this->height
-            );
+            )
+        ;
 
         // Draw sides
         $draw
@@ -89,7 +90,8 @@ class Border implements FilterInterface
                 new Point($width - 1, $height - 1),
                 $this->color,
                 $this->width
-            );
+            )
+        ;
 
         return $image;
     }

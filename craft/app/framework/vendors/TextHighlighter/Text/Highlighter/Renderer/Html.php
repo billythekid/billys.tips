@@ -2,7 +2,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 /**
  * HTML renderer
+ *
  * PHP versions 4 and 5
+ *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
  * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
@@ -22,26 +24,24 @@
  * @ignore
  */
 
-require_once dirname(__FILE__) . '/../Renderer.php';
-require_once dirname(__FILE__) . '/../Renderer/Array.php';
+require_once dirname(__FILE__).'/../Renderer.php';
+require_once dirname(__FILE__).'/../Renderer/Array.php';
 
 // BC trick : only define constants if Text/Highlighter.php
 // is not yet included
-if (!defined('HL_NUMBERS_LI'))
-{
+if (!defined('HL_NUMBERS_LI')) {
     /**#@+
      * Constant for use with $options['numbers']
      */
     /**
      * use numbered list, deprecated, use HL_NUMBERS_OL instaed
-     *
      * @deprecated
      */
-    define('HL_NUMBERS_LI', 1);
+    define ('HL_NUMBERS_LI'    ,    1);
     /**
      * Use 2-column table with line numbers in left column and code in  right column.
      */
-    define('HL_NUMBERS_TABLE', 2);
+    define ('HL_NUMBERS_TABLE'    , 2);
     /**#@-*/
 }
 
@@ -52,17 +52,19 @@ if (!defined('HL_NUMBERS_LI'))
 /**
  * Use numbered list
  */
-define('HL_NUMBERS_OL', 1);
+define ('HL_NUMBERS_OL',    1);
 /**
  * Use non-numbered list
  */
-define('HL_NUMBERS_UL', 3);
+define ('HL_NUMBERS_UL',    3);
 /**#@-*/
 
 
 /**
  * HTML renderer
+ *
  * Elements of $options argument of constructor (each being optional):
+ *
  * - 'numbers' - Line numbering style 0 or {@link HL_NUMBERS_TABLE}
  *               or {@link HL_NUMBERS_UL} or {@link HL_NUMBERS_OL}
  * - 'numbers_start' - starting number for numbered lines
@@ -72,12 +74,14 @@ define('HL_NUMBERS_UL', 3);
  * - 'doclinks' - array that has keys "url", "target" and "elements", used for
  *                generating links to online documentation
  * - 'use_language' - class names will be prefixed with language, like "php-reserved" or "css-code"
+ *
  * Example of setting documentation links:
  * $options['doclinks'] = array(
  *   'url' => 'http://php.net/%s',
  *   'target' => '_blank',
  *   'elements' => array('reserved', 'identifier')
  * );
+ *
  * Example of setting class names map:
  * $options['class_map'] = array(
  *       'main'       => 'my-main',
@@ -100,6 +104,7 @@ define('HL_NUMBERS_UL', 3);
  *       'url'        => 'my-url',
  *       'var'        => 'my-var',
  * );
+ *
  * Example of setting styles mapping:
  * $options['style_map'] = array(
  *       'main'       => 'color: black',
@@ -112,7 +117,8 @@ define('HL_NUMBERS_UL', 3);
  *       // ....
  * );
  *
- * @author     Andrey Demenev <demenev@gmail.com>
+ *
+ * @author Andrey Demenev <demenev@gmail.com>
  * @category   Text
  * @package    Text_Highlighter
  * @copyright  2004-2006 Andrey Demenev
@@ -120,6 +126,7 @@ define('HL_NUMBERS_UL', 3);
  * @version    Release: 0.7.1
  * @link       http://pear.php.net/package/Text_Highlighter
  */
+
 class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
 {
 
@@ -191,6 +198,7 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
 
     /**
      * Setup for links to online documentation
+     *
      * This is an array with keys:
      * - url, ex. http://php.net/%s
      * - target, ex. _blank, default - no target
@@ -206,51 +214,45 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
      * Resets renderer state
      *
      * @access protected
-     *         Descendents of Text_Highlighter call this method from the constructor,
-     *         passing $options they get as parameter.
+     *
+     *
+     * Descendents of Text_Highlighter call this method from the constructor,
+     * passing $options they get as parameter.
      */
     function reset()
     {
         $this->_output = '';
-        if (isset($this->_options['numbers']))
-        {
+        if (isset($this->_options['numbers'])) {
             $this->_numbers = (int)$this->_options['numbers'];
             if ($this->_numbers != HL_NUMBERS_LI
-                && $this->_numbers != HL_NUMBERS_UL
-                && $this->_numbers != HL_NUMBERS_OL
-                && $this->_numbers != HL_NUMBERS_TABLE
-            )
-            {
+             && $this->_numbers != HL_NUMBERS_UL
+             && $this->_numbers != HL_NUMBERS_OL
+             && $this->_numbers != HL_NUMBERS_TABLE
+             ) {
                 $this->_numbers = 0;
             }
         }
-        if (isset($this->_options['tabsize']))
-        {
+        if (isset($this->_options['tabsize'])) {
             $this->_tabsize = $this->_options['tabsize'];
         }
-        if (isset($this->_options['numbers_start']))
-        {
+        if (isset($this->_options['numbers_start'])) {
             $this->_numbers_start = intval($this->_options['numbers_start']);
         }
         if (isset($this->_options['doclinks']) &&
             is_array($this->_options['doclinks']) &&
             !empty($this->_options['doclinks']['url'])
-        )
-        {
+        ) {
 
             $this->_doclinks = $this->_options['doclinks']; // keys: url, target, elements array
 
-            if (empty($this->_options['doclinks']['elements']))
-            {
+            if (empty($this->_options['doclinks']['elements'])) {
                 $this->_doclinks['elements'] = array('reserved', 'identifier');
             }
         }
-        if (isset($this->_options['style_map']))
-        {
+        if (isset($this->_options['style_map'])) {
             $this->_style_map = $this->_options['style_map'];
         }
-        if (isset($this->_options['class_map']))
-        {
+        if (isset($this->_options['class_map'])) {
             $this->_class_map = array_merge($this->_class_map, $this->_options['class_map']);
         }
         $this->_htmlspecialchars = true;
@@ -263,18 +265,16 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
      * with language name prepended, if necessary
      *
      * @access private
-     * @param  string $class Token class
+     *
+     * @param  string $class   Token class
      */
     function _getFullClassName($class)
     {
-        if (!empty($this->_options['use_language']))
-        {
+        if (!empty($this->_options['use_language'])) {
             $the_class = $this->_language . '-' . $class;
-        } else
-        {
+        } else {
             $the_class = $class;
         }
-
         return $the_class;
     }
 
@@ -289,8 +289,8 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
         // get parent's output
         parent::finalize();
         $output = parent::getOutput();
-        if (empty($output))
-            return;
+        if(empty($output))
+        	return;
 
         $html_output = '';
 
@@ -300,36 +300,32 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
             $this->_numbers == HL_NUMBERS_LI ||
             $this->_numbers == HL_NUMBERS_UL ||
             $this->_numbers == HL_NUMBERS_OL
-        )
+           )
         {
             $numbers_li = true;
         }
 
         // loop through each class=>content pair
-        foreach ($output AS $token)
-        {
+        foreach ($output AS $token) {
 
-            if ($this->_enumerated)
-            {
-                $key       = false;
+            if ($this->_enumerated) {
+                $key = false;
                 $the_class = $token[0];
-                $content   = $token[1];
-            } else
-            {
-                $key       = key($token);
+                $content = $token[1];
+            } else {
+                $key = key($token);
                 $the_class = $key;
-                $content   = $token[$key];
+                $content = $token[$key];
             }
 
-            $span             = $this->_getStyling($the_class);
+            $span = $this->_getStyling($the_class);
             $decorated_output = $this->_decorate($content, $key);
-            //print "<pre> token = ".var_export($token, true)." -- span = " . htmlentities($span). "-- deco = ".$decorated_output."</pre>\n";
-            $html_output .= sprintf($span, $decorated_output);
+			//print "<pre> token = ".var_export($token, true)." -- span = " . htmlentities($span). "-- deco = ".$decorated_output."</pre>\n";
+			$html_output .= sprintf($span, $decorated_output);
         }
 
         // format lists
-        if (!empty($this->_numbers) && $numbers_li == true)
-        {
+        if (!empty($this->_numbers) && $numbers_li == true) {
 
             //$html_output = "<pre>".$html_output."</pre>";
             // additional whitespace for browsers that do not display
@@ -338,48 +334,42 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
 
 
             $start = '';
-            if ($this->_numbers == HL_NUMBERS_OL && intval($this->_numbers_start) > 0)
-            {
+            if ($this->_numbers == HL_NUMBERS_OL && intval($this->_numbers_start) > 0)  {
                 $start = ' start="' . $this->_numbers_start . '"';
             }
 
             $list_tag = 'ol';
-            if ($this->_numbers == HL_NUMBERS_UL)
-            {
+            if ($this->_numbers == HL_NUMBERS_UL)  {
                 $list_tag = 'ul';
             }
 
 
             $this->_output = '<' . $list_tag . $start
-                . ' ' . $this->_getStyling('main', false) . '>'
-                . $this->_output . '</' . $list_tag . '>';
+                             . ' ' . $this->_getStyling('main', false) . '>'
+                             . $this->_output . '</'. $list_tag .'>';
 
-            // render a table
-        } else if ($this->_numbers == HL_NUMBERS_TABLE)
-        {
+        // render a table
+        } else if ($this->_numbers == HL_NUMBERS_TABLE) {
 
 
             $start_number = 0;
-            if (intval($this->_numbers_start))
-            {
+            if (intval($this->_numbers_start)) {
                 $start_number = $this->_numbers_start - 1;
             }
 
             $numbers = '';
 
-            $nlines = substr_count($html_output, "\n") + 1;
-            for ($i = 1; $i <= $nlines; $i++)
-            {
+            $nlines = substr_count($html_output,"\n")+1;
+            for ($i=1; $i <= $nlines; $i++) {
                 $numbers .= ($start_number + $i) . "\n";
             }
             $this->_output = '<table ' . $this->_getStyling('table', false) . ' width="100%"><tr>' .
-                '<td ' . $this->_getStyling('gutter', false) . ' align="right" valign="top">' .
-                '<pre>' . $numbers . '</pre></td><td ' . $this->_getStyling('main', false) .
-                ' valign="top"><pre>' .
-                $html_output . '</pre></td></tr></table>';
+                             '<td '. $this->_getStyling('gutter', false) .' align="right" valign="top">' .
+                             '<pre>' . $numbers . '</pre></td><td '. $this->_getStyling('main', false) .
+                             ' valign="top"><pre>' .
+                             $html_output . '</pre></td></tr></table>';
         }
-        if (!$this->_numbers)
-        {
+        if (!$this->_numbers) {
             $this->_output = '<pre>' . $html_output . '</pre>';
         }
         $this->_output = '<div ' . $this->_getStyling('main', false) . '>' . $this->_output . '</div>';
@@ -392,6 +382,7 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
      * @param string $content Keyword
      * @return string Keyword with additional formatting
      * @access public
+     *
      */
     function _decorate($content, $key = false)
     {
@@ -399,17 +390,15 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
         if (!empty($this->_doclinks) &&
             !empty($this->_doclinks['url']) &&
             in_array($key, $this->_doclinks['elements'])
-        )
-        {
+        ) {
 
-            $link = '<a href="' . sprintf($this->_doclinks['url'], $content) . '"';
-            if (!empty($this->_doclinks['target']))
-            {
-                $link .= ' target="' . $this->_doclinks['target'] . '"';
+            $link = '<a href="'. sprintf($this->_doclinks['url'], $content) . '"';
+            if (!empty($this->_doclinks['target'])) {
+                $link.= ' target="' . $this->_doclinks['target'] . '"';
             }
             $link .= '>';
-            $link .= $content;
-            $link .= '</a>';
+            $link.= $content;
+            $link.= '</a>';
 
             $content = $link;
 
@@ -423,7 +412,7 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
      * optionally enclosed in a <code>span</code> tag
      *
      * @param string $class Class name
-     * @paran  boolean $span_tag Whether or not to return styling attributes in a <code>&gt;span&lt;</code> tag
+     * @paran boolean $span_tag Whether or not to return styling attributes in a <code>&gt;span&lt;</code> tag
      * @return string <code>span</code> tag or just a <code>class</code> and/or <code>style</code> attributes
      * @access private
      */
@@ -432,28 +421,22 @@ class Text_Highlighter_Renderer_Html extends Text_Highlighter_Renderer_Array
         $attrib = '';
         if (!empty($this->_style_map) &&
             !empty($this->_style_map[$class])
-        )
-        {
-            $attrib = 'style="' . $this->_style_map[$class] . '"';
+        ) {
+            $attrib = 'style="'. $this->_style_map[$class] .'"';
         }
         if (!empty($this->_class_map) &&
             !empty($this->_class_map[$class])
-        )
-        {
-            if ($attrib)
-            {
+        ) {
+            if ($attrib) {
                 $attrib .= ' ';
             }
-            $attrib .= 'class="' . $this->_getFullClassName($this->_class_map[$class]) . '"';
+            $attrib .= 'class="'. $this->_getFullClassName($this->_class_map[$class]) .'"';
         }
 
-        if ($span_tag)
-        {
+        if ($span_tag) {
             $span = '<span ' . $attrib . '>%s</span>';
-
             return $span;
-        } else
-        {
+        } else {
             return $attrib;
         }
 

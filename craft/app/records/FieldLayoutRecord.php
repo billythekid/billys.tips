@@ -13,52 +13,56 @@ namespace Craft;
  */
 class FieldLayoutRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'fieldlayouts';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'fieldlayouts';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineRelations()
-     * @return array
-     */
-    public function defineRelations()
-    {
-        return array(
-            'tabs'   => array(static::HAS_MANY, 'FieldLayoutTabRecord', 'layoutId', 'order' => 'tabs.sortOrder'),
-            'fields' => array(static::HAS_MANY, 'FieldLayoutFieldRecord', 'layoutId', 'order' => 'fields.sortOrder'),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineRelations()
+	 *
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'tabs'   => array(static::HAS_MANY, 'FieldLayoutTabRecord', 'layoutId', 'order' => 'tabs.sortOrder'),
+			'fields' => array(static::HAS_MANY, 'FieldLayoutFieldRecord', 'layoutId', 'order' => 'fields.sortOrder'),
+		);
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('type')),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('type')),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'type' => array(AttributeType::ClassName, 'required' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'type' => array(AttributeType::ClassName, 'required' => true),
+		);
+	}
 }

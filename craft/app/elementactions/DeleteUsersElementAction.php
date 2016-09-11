@@ -13,36 +13,39 @@ namespace Craft;
  */
 class DeleteUsersElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Delete…');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Delete…');
+	}
 
-    /**
-     * @inheritDoc IElementAction::isDestructive()
-     * @return bool
-     */
-    public function isDestructive()
-    {
-        return true;
-    }
+	/**
+	 * @inheritDoc IElementAction::isDestructive()
+	 *
+	 * @return bool
+	 */
+	public function isDestructive()
+	{
+		return true;
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $undeletableIds = JsonHelper::encode($this->_getUndeletableUserIds());
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$undeletableIds = JsonHelper::encode($this->_getUndeletableUserIds());
 
-        $js = <<<EOT
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -76,88 +79,93 @@ class DeleteUsersElementAction extends BaseElementAction
 })();
 EOT;
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 
-    /**
-     * @inheritDoc IElementAction::performAction()
-     * @param ElementCriteriaModel $criteria
-     * @return bool
-     */
-    public function performAction(ElementCriteriaModel $criteria)
-    {
-        $users          = $criteria->find();
-        $undeletableIds = $this->_getUndeletableUserIds();
+	/**
+	 * @inheritDoc IElementAction::performAction()
+	 *
+	 * @param ElementCriteriaModel $criteria
+	 *
+	 * @return bool
+	 */
+	public function performAction(ElementCriteriaModel $criteria)
+	{
+		$users = $criteria->find();
+		$undeletableIds = $this->_getUndeletableUserIds();
 
-        // Are we transfering the user's content to a different user?
-        $transferContentToId = $this->getParams()->transferContentTo;
+		// Are we transfering the user's content to a different user?
+		$transferContentToId = $this->getParams()->transferContentTo;
 
-        if (is_array($transferContentToId) && isset($transferContentToId[0]))
-        {
-            $transferContentToId = $transferContentToId[0];
-        }
+		if (is_array($transferContentToId) && isset($transferContentToId[0]))
+		{
+			$transferContentToId = $transferContentToId[0];
+		}
 
-        if ($transferContentToId)
-        {
-            $transferContentTo = craft()->users->getUserById($transferContentToId);
+		if ($transferContentToId)
+		{
+			$transferContentTo = craft()->users->getUserById($transferContentToId);
 
-            if (!$transferContentTo)
-            {
-                throw new Exception(Craft::t('No user exists with the ID “{id}”.', array('id' => $transferContentTo)));
-            }
-        } else
-        {
-            $transferContentTo = null;
-        }
+			if (!$transferContentTo)
+			{
+				throw new Exception(Craft::t('No user exists with the ID “{id}”.', array('id' => $transferContentTo)));
+			}
+		}
+		else
+		{
+			$transferContentTo = null;
+		}
 
-        // Delete the users
-        foreach ($users as $user)
-        {
-            if (!in_array($user->id, $undeletableIds))
-            {
-                craft()->users->deleteUser($user, $transferContentTo);
-            }
-        }
+		// Delete the users
+		foreach ($users as $user)
+		{
+			if (!in_array($user->id, $undeletableIds))
+			{
+				craft()->users->deleteUser($user, $transferContentTo);
+			}
+		}
 
-        $this->setMessage(Craft::t('Users deleted.'));
+		$this->setMessage(Craft::t('Users deleted.'));
 
-        return true;
-    }
+		return true;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseElementAction::defineParams()
-     * @return array
-     */
-    protected function defineParams()
-    {
-        return array(
-            'transferContentTo' => AttributeType::Mixed,
-        );
-    }
+	/**
+	 * @inheritDoc BaseElementAction::defineParams()
+	 *
+	 * @return array
+	 */
+	protected function defineParams()
+	{
+		return array(
+			'transferContentTo' => AttributeType::Mixed,
+		);
+	}
 
-    // Private Methods
-    // =========================================================================
+	// Private Methods
+	// =========================================================================
 
-    /**
-     * Returns a list of the user IDs that can't be deleted.
-     *
-     * @return array
-     */
-    private function _getUndeletableUserIds()
-    {
-        if (!craft()->userSession->isAdmin())
-        {
-            // Only admins can delete other admins
-            return craft()->elements->getCriteria(ElementType::User, array(
-                'admin' => true,
-            ))->ids();
-        } else
-        {
-            // Can't delete your own account from here
-            return array(craft()->userSession->getUser()->id);
-        }
-    }
+	/**
+	 * Returns a list of the user IDs that can't be deleted.
+	 *
+	 * @return array
+	 */
+	private function _getUndeletableUserIds()
+	{
+		if (!craft()->userSession->isAdmin())
+		{
+			// Only admins can delete other admins
+			return craft()->elements->getCriteria(ElementType::User, array(
+				'admin' => true
+			))->ids();
+		}
+		else
+		{
+			// Can't delete your own account from here
+			return array(craft()->userSession->getUser()->id);
+		}
+	}
 }

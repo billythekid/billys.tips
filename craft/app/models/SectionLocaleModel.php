@@ -13,59 +13,61 @@ namespace Craft;
  */
 class SectionLocaleModel extends BaseModel
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var bool
-     */
-    public $urlFormatIsRequired = false;
+	/**
+	 * @var bool
+	 */
+	public $urlFormatIsRequired = false;
 
-    /**
-     * @var bool
-     */
-    public $nestedUrlFormatIsRequired = false;
+	/**
+	 * @var bool
+	 */
+	public $nestedUrlFormatIsRequired = false;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::rules()
-     * @return array
-     */
-    public function rules()
-    {
-        $rules = parent::rules();
+	/**
+	 * @inheritDoc BaseModel::rules()
+	 *
+	 * @return array
+	 */
+	public function rules()
+	{
+		$rules = parent::rules();
 
-        if ($this->urlFormatIsRequired)
-        {
-            $rules[] = array('urlFormat', 'required');
-        }
+		if ($this->urlFormatIsRequired)
+		{
+			$rules[] = array('urlFormat', 'required');
+		}
 
-        if ($this->nestedUrlFormatIsRequired)
-        {
-            $rules[] = array('nestedUrlFormat', 'required');
-        }
+		if ($this->nestedUrlFormatIsRequired)
+		{
+			$rules[] = array('nestedUrlFormat', 'required');
+		}
 
-        return $rules;
-    }
+		return $rules;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'id'               => AttributeType::Number,
-            'sectionId'        => AttributeType::Number,
-            'locale'           => AttributeType::Locale,
-            'enabledByDefault' => array(AttributeType::Bool, 'default' => true),
-            'urlFormat'        => array(AttributeType::UrlFormat, 'label' => 'URL Format'),
-            'nestedUrlFormat'  => array(AttributeType::UrlFormat, 'label' => 'URL Format'),
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'id'               => AttributeType::Number,
+			'sectionId'        => AttributeType::Number,
+			'locale'           => AttributeType::Locale,
+			'enabledByDefault' => array(AttributeType::Bool, 'default' => true),
+			'urlFormat'        => array(AttributeType::UrlFormat, 'label' => 'URL Format'),
+			'nestedUrlFormat'  => array(AttributeType::UrlFormat, 'label' => 'URL Format'),
+		);
+	}
 }

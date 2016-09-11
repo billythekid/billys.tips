@@ -48,13 +48,12 @@ final class Drawer implements DrawerInterface
         $width  = $size->getWidth();
         $height = $size->getHeight();
 
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $arc   = new \ImagickDraw();
 
             $arc->setStrokeColor($pixel);
-            $arc->setStrokeWidth(max(1, (int)$thickness));
+            $arc->setStrokeWidth(max(1, (int) $thickness));
             $arc->setFillColor('transparent');
             $arc->arc($x - $width / 2, $y - $height / 2, $x + $width / 2, $y + $height / 2, $start, $end);
 
@@ -65,8 +64,7 @@ final class Drawer implements DrawerInterface
 
             $arc->clear();
             $arc->destroy();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Draw arc operation failed', $e->getCode(), $e);
         }
 
@@ -83,19 +81,16 @@ final class Drawer implements DrawerInterface
         $width  = $size->getWidth();
         $height = $size->getHeight();
 
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $chord = new \ImagickDraw();
 
             $chord->setStrokeColor($pixel);
-            $chord->setStrokeWidth(max(1, (int)$thickness));
+            $chord->setStrokeWidth(max(1, (int) $thickness));
 
-            if ($fill)
-            {
+            if ($fill) {
                 $chord->setFillColor($pixel);
-            } else
-            {
+            } else {
                 $this->line(
                     new Point(round($x + $width / 2 * cos(deg2rad($start))), round($y + $height / 2 * sin(deg2rad($start)))),
                     new Point(round($x + $width / 2 * cos(deg2rad($end))), round($y + $height / 2 * sin(deg2rad($end)))),
@@ -121,8 +116,7 @@ final class Drawer implements DrawerInterface
 
             $chord->clear();
             $chord->destroy();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Draw chord operation failed', $e->getCode(), $e);
         }
 
@@ -137,19 +131,16 @@ final class Drawer implements DrawerInterface
         $width  = $size->getWidth();
         $height = $size->getHeight();
 
-        try
-        {
+        try {
             $pixel   = $this->getColor($color);
             $ellipse = new \ImagickDraw();
 
             $ellipse->setStrokeColor($pixel);
-            $ellipse->setStrokeWidth(max(1, (int)$thickness));
+            $ellipse->setStrokeWidth(max(1, (int) $thickness));
 
-            if ($fill)
-            {
+            if ($fill) {
                 $ellipse->setFillColor($pixel);
-            } else
-            {
+            } else {
                 $ellipse->setFillColor('transparent');
             }
 
@@ -161,8 +152,7 @@ final class Drawer implements DrawerInterface
                 0, 360
             );
 
-            if (false === $this->imagick->drawImage($ellipse))
-            {
+            if (false === $this->imagick->drawImage($ellipse)) {
                 throw new RuntimeException('Ellipse operation failed');
             }
 
@@ -171,8 +161,7 @@ final class Drawer implements DrawerInterface
 
             $ellipse->clear();
             $ellipse->destroy();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Draw ellipse operation failed', $e->getCode(), $e);
         }
 
@@ -184,13 +173,12 @@ final class Drawer implements DrawerInterface
      */
     public function line(PointInterface $start, PointInterface $end, ColorInterface $color, $thickness = 1)
     {
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $line  = new \ImagickDraw();
 
             $line->setStrokeColor($pixel);
-            $line->setStrokeWidth(max(1, (int)$thickness));
+            $line->setStrokeWidth(max(1, (int) $thickness));
             $line->setFillColor($pixel);
             $line->line(
                 $start->getX(),
@@ -206,8 +194,7 @@ final class Drawer implements DrawerInterface
 
             $line->clear();
             $line->destroy();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Draw line operation failed', $e->getCode(), $e);
         }
 
@@ -227,8 +214,7 @@ final class Drawer implements DrawerInterface
         $x2 = round($center->getX() + $width / 2 * cos(deg2rad($end)));
         $y2 = round($center->getY() + $height / 2 * sin(deg2rad($end)));
 
-        if ($fill)
-        {
+        if ($fill) {
             $this->chord($center, $size, $start, $end, $color, true, $thickness);
             $this->polygon(
                 array(
@@ -240,8 +226,7 @@ final class Drawer implements DrawerInterface
                 true,
                 $thickness
             );
-        } else
-        {
+        } else {
             $this->arc($center, $size, $start, $end, $color, $thickness);
             $this->line($center, new Point($x1, $y1), $color, $thickness);
             $this->line($center, new Point($x2, $y2), $color, $thickness);
@@ -258,8 +243,7 @@ final class Drawer implements DrawerInterface
         $x = $position->getX();
         $y = $position->getY();
 
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $point = new \ImagickDraw();
 
@@ -273,8 +257,7 @@ final class Drawer implements DrawerInterface
 
             $point->clear();
             $point->destroy();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Draw point operation failed', $e->getCode(), $e);
         }
 
@@ -286,29 +269,24 @@ final class Drawer implements DrawerInterface
      */
     public function polygon(array $coordinates, ColorInterface $color, $fill = false, $thickness = 1)
     {
-        if (count($coordinates) < 3)
-        {
+        if (count($coordinates) < 3) {
             throw new InvalidArgumentException(sprintf('Polygon must consist of at least 3 coordinates, %d given', count($coordinates)));
         }
 
-        $points = array_map(function (PointInterface $p)
-        {
+        $points = array_map(function (PointInterface $p) {
             return array('x' => $p->getX(), 'y' => $p->getY());
         }, $coordinates);
 
-        try
-        {
+        try {
             $pixel   = $this->getColor($color);
             $polygon = new \ImagickDraw();
 
             $polygon->setStrokeColor($pixel);
-            $polygon->setStrokeWidth(max(1, (int)$thickness));
+            $polygon->setStrokeWidth(max(1, (int) $thickness));
 
-            if ($fill)
-            {
+            if ($fill) {
                 $polygon->setFillColor($pixel);
-            } else
-            {
+            } else {
                 $polygon->setFillColor('transparent');
             }
 
@@ -320,8 +298,7 @@ final class Drawer implements DrawerInterface
 
             $polygon->clear();
             $polygon->destroy();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Draw polygon operation failed', $e->getCode(), $e);
         }
 
@@ -333,23 +310,21 @@ final class Drawer implements DrawerInterface
      */
     public function text($string, AbstractFont $font, PointInterface $position, $angle = 0, $width = null)
     {
-        try
-        {
+        try {
             $pixel = $this->getColor($font->getColor());
             $text  = new \ImagickDraw();
 
             $text->setFont($font->getFile());
             /**
              * @see http://www.php.net/manual/en/imagick.queryfontmetrics.php#101027
+             *
              * ensure font resolution is the same as GD's hard-coded 96
              */
-            if (version_compare(phpversion("imagick"), "3.0.2", ">="))
-            {
+            if (version_compare(phpversion("imagick"), "3.0.2", ">=")) {
                 $text->setResolution(96, 96);
                 $text->setFontSize($font->getSize());
-            } else
-            {
-                $text->setFontSize((int)($font->getSize() * (96 / 72)));
+            } else {
+                $text->setFontSize((int) ($font->getSize() * (96 / 72)));
             }
             $text->setFillColor($pixel);
             $text->setTextAntialias(true);
@@ -369,8 +344,7 @@ final class Drawer implements DrawerInterface
             $xdiff = 0 - min($x1, $x2);
             $ydiff = 0 - min($y1, $y2);
 
-            if ($width !== null)
-            {
+            if ($width !== null) {
                 $string = $this->wrapText($string, $text, $angle, $width);
             }
 
@@ -384,8 +358,7 @@ final class Drawer implements DrawerInterface
 
             $text->clear();
             $text->destroy();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Draw text operation failed', $e->getCode(), $e);
         }
 
@@ -396,11 +369,12 @@ final class Drawer implements DrawerInterface
      * Gets specifically formatted color string from ColorInterface instance
      *
      * @param ColorInterface $color
+     *
      * @return string
      */
     private function getColor(ColorInterface $color)
     {
-        $pixel = new \ImagickPixel((string)$color);
+        $pixel = new \ImagickPixel((string) $color);
         $pixel->setColorValue(Imagick::COLOR_ALPHA, $color->getAlpha() / 100);
 
         return $pixel;
@@ -408,21 +382,19 @@ final class Drawer implements DrawerInterface
 
     /**
      * Internal
+     *
      * Fits a string into box with given width
      */
     private function wrapText($string, $text, $angle, $width)
     {
         $result = '';
-        $words  = explode(' ', $string);
-        foreach ($words as $word)
-        {
+        $words = explode(' ', $string);
+        foreach ($words as $word) {
             $teststring = $result . ' ' . $word;
-            $testbox    = $this->imagick->queryFontMetrics($text, $teststring, true);
-            if ($testbox['textWidth'] > $width)
-            {
+            $testbox = $this->imagick->queryFontMetrics($text, $teststring, true);
+            if ($testbox['textWidth'] > $width) {
                 $result .= ($result == '' ? '' : "\n") . $word;
-            } else
-            {
+            } else {
                 $result .= ($result == '' ? '' : ' ') . $word;
             }
         }

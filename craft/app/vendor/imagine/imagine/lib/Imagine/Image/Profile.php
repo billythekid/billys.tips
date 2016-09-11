@@ -44,13 +44,14 @@ class Profile implements ProfileInterface
      * Creates a profile from a path to a file
      *
      * @param String $path
+     *
      * @return Profile
+     *
      * @throws InvalidArgumentException In case the provided path is not valid
      */
     public static function fromPath($path)
     {
-        if (!file_exists($path) || !is_file($path) || !is_readable($path))
-        {
+        if (!file_exists($path) || !is_file($path) || !is_readable($path)) {
             throw new InvalidArgumentException(sprintf('Path %s is an invalid profile file or is not readable', $path));
         }
 

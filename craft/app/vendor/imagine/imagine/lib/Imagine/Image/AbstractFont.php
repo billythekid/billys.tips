@@ -35,6 +35,7 @@ abstract class AbstractFont implements FontInterface
 
     /**
      * Constructs a font with specified $file, $size and $color
+     *
      * The font size is to be specified in points (e.g. 10pt means 10)
      *
      * @param string         $file

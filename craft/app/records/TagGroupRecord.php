@@ -13,66 +13,71 @@ namespace Craft;
  */
 class TagGroupRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'taggroups';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'taggroups';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineRelations()
-     * @return array
-     */
-    public function defineRelations()
-    {
-        return array(
-            'fieldLayout' => array(static::BELONGS_TO, 'FieldLayoutRecord', 'onDelete' => static::SET_NULL),
-            'tags'        => array(static::HAS_MANY, 'TagRecord', 'groupId'),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineRelations()
+	 *
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'fieldLayout' => array(static::BELONGS_TO, 'FieldLayoutRecord', 'onDelete' => static::SET_NULL),
+			'tags'        => array(static::HAS_MANY, 'TagRecord', 'groupId'),
+		);
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('name'), 'unique' => true),
-            array('columns' => array('handle'), 'unique' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('name'), 'unique' => true),
+			array('columns' => array('handle'), 'unique' => true),
+		);
+	}
 
-    /**
-     * @inheritDoc BaseRecord::scopes()
-     * @return array
-     */
-    public function scopes()
-    {
-        return array(
-            'ordered' => array('order' => 'name'),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::scopes()
+	 *
+	 * @return array
+	 */
+	public function scopes()
+	{
+		return array(
+			'ordered' => array('order' => 'name'),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'name'          => array(AttributeType::Name, 'required' => true),
-            'handle'        => array(AttributeType::Handle, 'required' => true),
-            'fieldLayoutId' => AttributeType::Number,
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'name'          => array(AttributeType::Name, 'required' => true),
+			'handle'        => array(AttributeType::Handle, 'required' => true),
+			'fieldLayoutId' => AttributeType::Number,
+		);
+	}
 }

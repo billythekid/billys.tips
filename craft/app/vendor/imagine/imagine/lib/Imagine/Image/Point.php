@@ -33,12 +33,12 @@ final class Point implements PointInterface
      *
      * @param integer $x
      * @param integer $y
+     *
      * @throws InvalidArgumentException
      */
     public function __construct($x, $y)
     {
-        if ($x < 0 || $y < 0)
-        {
+        if ($x < 0 || $y < 0) {
             throw new InvalidArgumentException(sprintf('A coordinate cannot be positioned outside of a bounding box (x: %s, y: %s given)', $x, $y));
         }
 

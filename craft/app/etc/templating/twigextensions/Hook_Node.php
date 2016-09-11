@@ -13,21 +13,22 @@ namespace Craft;
  */
 class Hook_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles a Hook_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $compiler
-            ->addDebugInfo($this)
-            ->write('echo \Craft\craft()->templates->invokeHook(')
-            ->subcompile($this->getNode('hook'))
-            ->raw(", \$context);\n\n");
-    }
+	/**
+	 * Compiles a Hook_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler
+		    ->addDebugInfo($this)
+		    ->write('echo \Craft\craft()->templates->invokeHook(')
+		    ->subcompile($this->getNode('hook'))
+		    ->raw(", \$context);\n\n");
+	}
 }

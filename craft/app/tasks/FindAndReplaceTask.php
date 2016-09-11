@@ -13,188 +13,198 @@ namespace Craft;
  */
 class FindAndReplaceTask extends BaseTask
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var
-     */
-    private $_table;
+	/**
+	 * @var
+	 */
+	private $_table;
 
-    /**
-     * @var
-     */
-    private $_textColumns;
+	/**
+	 * @var
+	 */
+	private $_textColumns;
 
-    /**
-     * @var
-     */
-    private $_matrixFieldIds;
+	/**
+	 * @var
+	 */
+	private $_matrixFieldIds;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc ITask::getDescription()
-     * @return string
-     */
-    public function getDescription()
-    {
-        $settings = $this->getSettings();
+	/**
+	 * @inheritDoc ITask::getDescription()
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		$settings = $this->getSettings();
 
-        return Craft::t('Replacing “{find}” with “{replace}”', array(
-            'find'    => $settings->find,
-            'replace' => $settings->replace,
-        ));
-    }
+		return Craft::t('Replacing “{find}” with “{replace}”', array(
+			'find'    => $settings->find,
+			'replace' => $settings->replace
+		));
+	}
 
-    /**
-     * @inheritDoc ITask::getTotalSteps()
-     * @return int
-     */
-    public function getTotalSteps()
-    {
-        $this->_textColumns    = array();
-        $this->_matrixFieldIds = array();
+	/**
+	 * @inheritDoc ITask::getTotalSteps()
+	 *
+	 * @return int
+	 */
+	public function getTotalSteps()
+	{
+		$this->_textColumns = array();
+		$this->_matrixFieldIds = array();
 
-        // Is this for a Matrix field?
-        $matrixFieldId = $this->getSettings()->matrixFieldId;
+		// Is this for a Matrix field?
+		$matrixFieldId = $this->getSettings()->matrixFieldId;
 
-        if ($matrixFieldId)
-        {
-            $matrixField = craft()->fields->getFieldById($matrixFieldId);
+		if ($matrixFieldId)
+		{
+			$matrixField = craft()->fields->getFieldById($matrixFieldId);
 
-            if (!$matrixField || $matrixField->type != 'Matrix')
-            {
-                return 0;
-            }
+			if (!$matrixField || $matrixField->type != 'Matrix')
+			{
+				return 0;
+			}
 
-            $this->_table = craft()->matrix->getContentTableName($matrixField);
+			$this->_table = craft()->matrix->getContentTableName($matrixField);
 
-            $blockTypes = craft()->matrix->getBlockTypesByFieldId($matrixFieldId);
+			$blockTypes = craft()->matrix->getBlockTypesByFieldId($matrixFieldId);
 
-            foreach ($blockTypes as $blockType)
-            {
-                $fieldColumnPrefix = 'field_' . $blockType->handle . '_';
+			foreach ($blockTypes as $blockType)
+			{
+				$fieldColumnPrefix = 'field_'.$blockType->handle.'_';
 
-                foreach ($blockType->getFields() as $field)
-                {
-                    $this->_checkField($field, $fieldColumnPrefix);
-                }
-            }
-        } else
-        {
-            $this->_table = 'content';
+				foreach ($blockType->getFields() as $field)
+				{
+					$this->_checkField($field, $fieldColumnPrefix);
+				}
+			}
+		}
+		else
+		{
+			$this->_table = 'content';
 
-            foreach (craft()->fields->getAllFields() as $field)
-            {
-                $this->_checkField($field, 'field_');
-            }
-        }
+			foreach (craft()->fields->getAllFields() as $field)
+			{
+				$this->_checkField($field, 'field_');
+			}
+		}
 
-        return count($this->_textColumns) + count($this->_matrixFieldIds);
-    }
+		return count($this->_textColumns) + count($this->_matrixFieldIds);
+	}
 
-    /**
-     * @inheritDoc ITask::runStep()
-     * @param int $step
-     * @return bool
-     */
-    public function runStep($step)
-    {
-        $settings = $this->getSettings();
+	/**
+	 * @inheritDoc ITask::runStep()
+	 *
+	 * @param int $step
+	 *
+	 * @return bool
+	 */
+	public function runStep($step)
+	{
+		$settings = $this->getSettings();
 
-        // If replace is null, there is invalid settings JSON in the database. Guard against it so we don't
-        // inadvertently nuke textual content in the database.
-        if ($settings->replace !== null)
-        {
-            if (isset($this->_textColumns[$step]))
-            {
-                craft()->db->createCommand()->replace($this->_table, $this->_textColumns[$step], $settings->find, $settings->replace);
+		// If replace is null, there is invalid settings JSON in the database. Guard against it so we don't
+		// inadvertently nuke textual content in the database.
+		if ($settings->replace !== null)
+		{
+			if (isset($this->_textColumns[$step]))
+			{
+				craft()->db->createCommand()->replace($this->_table, $this->_textColumns[$step], $settings->find, $settings->replace);
+				return true;
+			}
+			else
+			{
+				$step -= count($this->_textColumns);
 
-                return true;
-            } else
-            {
-                $step -= count($this->_textColumns);
+				if (isset($this->_matrixFieldIds[$step]))
+				{
+					$field = craft()->fields->getFieldById($this->_matrixFieldIds[$step]);
 
-                if (isset($this->_matrixFieldIds[$step]))
-                {
-                    $field = craft()->fields->getFieldById($this->_matrixFieldIds[$step]);
+					if ($field)
+					{
+						return $this->runSubTask('FindAndReplace', Craft::t('Working in Matrix field “{field}”', array('field' => $field->name)), array(
+							'find'          => $settings->find,
+							'replace'       => $settings->replace,
+							'matrixFieldId' => $field->id
+						));
+					}
+					else
+					{
+						// Oh what the hell.
+						return true;
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		else
+		{
+			Craft::log('Invalid "replace" in the Find and Replace task probably caused by invalid JSON in the database.', LogLevel::Error);
+			return false;
+		}
+	}
 
-                    if ($field)
-                    {
-                        return $this->runSubTask('FindAndReplace', Craft::t('Working in Matrix field “{field}”', array('field' => $field->name)), array(
-                            'find'          => $settings->find,
-                            'replace'       => $settings->replace,
-                            'matrixFieldId' => $field->id,
-                        ));
-                    } else
-                    {
-                        // Oh what the hell.
-                        return true;
-                    }
-                } else
-                {
-                    return false;
-                }
-            }
-        } else
-        {
-            Craft::log('Invalid "replace" in the Find and Replace task probably caused by invalid JSON in the database.', LogLevel::Error);
+	// Protected Methods
+	// =========================================================================
 
-            return false;
-        }
-    }
+	/**
+	 * @inheritDoc BaseSavableComponentType::defineSettings()
+	 *
+	 * @return array
+	 */
+	protected function defineSettings()
+	{
+		return array(
+			'find'          => AttributeType::String,
+			'replace'       => AttributeType::String,
+			'matrixFieldId' => AttributeType::String,
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Private Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseSavableComponentType::defineSettings()
-     * @return array
-     */
-    protected function defineSettings()
-    {
-        return array(
-            'find'          => AttributeType::String,
-            'replace'       => AttributeType::String,
-            'matrixFieldId' => AttributeType::String,
-        );
-    }
+	/**
+	 * Checks whether the given field is saving data into a textual column, and saves it accordingly.
+	 *
+	 * @param FieldModel $field
+	 * @param string     $fieldColumnPrefix
+	 *
+	 * @return bool
+	 */
+	private function _checkField(FieldModel $field, $fieldColumnPrefix)
+	{
+		if ($field->type == 'Matrix')
+		{
+			$this->_matrixFieldIds[] = $field->id;
+		}
+		else
+		{
+			$fieldType = $field->getFieldType();
 
-    // Private Methods
-    // =========================================================================
+			if ($fieldType)
+			{
+				$attributeConfig = $fieldType->defineContentAttribute();
 
-    /**
-     * Checks whether the given field is saving data into a textual column, and saves it accordingly.
-     *
-     * @param FieldModel $field
-     * @param string     $fieldColumnPrefix
-     * @return bool
-     */
-    private function _checkField(FieldModel $field, $fieldColumnPrefix)
-    {
-        if ($field->type == 'Matrix')
-        {
-            $this->_matrixFieldIds[] = $field->id;
-        } else
-        {
-            $fieldType = $field->getFieldType();
+				if ($attributeConfig && $attributeConfig != AttributeType::Number)
+				{
+					$attributeConfig = ModelHelper::normalizeAttributeConfig($attributeConfig);
 
-            if ($fieldType)
-            {
-                $attributeConfig = $fieldType->defineContentAttribute();
-
-                if ($attributeConfig && $attributeConfig != AttributeType::Number)
-                {
-                    $attributeConfig = ModelHelper::normalizeAttributeConfig($attributeConfig);
-
-                    if ($attributeConfig['type'] == AttributeType::String)
-                    {
-                        $this->_textColumns[] = $fieldColumnPrefix . $field->handle;
-                    }
-                }
-            }
-        }
-    }
+					if ($attributeConfig['type'] == AttributeType::String)
+					{
+						$this->_textColumns[] = $fieldColumnPrefix.$field->handle;
+					}
+				}
+			}
+		}
+	}
 }

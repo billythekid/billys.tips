@@ -22,6 +22,7 @@ interface ClientInterface extends HasDispatcherInterface
      * Set the configuration object to use with the client
      *
      * @param array|Collection $config Parameters that define how the client behaves
+     *
      * @return self
      */
     public function setConfig($config);
@@ -29,7 +30,9 @@ interface ClientInterface extends HasDispatcherInterface
     /**
      * Get a configuration setting or all of the configuration settings. The Collection result of this method can be
      * modified to change the configuration settings of a client.
+     *
      * A client should honor the following special values:
+     *
      * - request.options: Associative array of default RequestFactory options to apply to each request
      * - request.params: Associative array of request parameters (data values) to apply to each request
      * - curl.options: Associative array of cURL configuration settings to apply to each request
@@ -45,6 +48,7 @@ interface ClientInterface extends HasDispatcherInterface
 
     /**
      * Create and return a new {@see RequestInterface} configured for the client.
+     *
      * Use an absolute path to override the base path of the client, or a relative path to append to the base path of
      * the client. The URI can contain the query string as well. Use an array to provide a URI template and additional
      * variables to use in the URI template expansion.
@@ -54,9 +58,10 @@ interface ClientInterface extends HasDispatcherInterface
      * @param array|Collection                          $headers HTTP headers
      * @param string|resource|array|EntityBodyInterface $body    Entity body of request (POST/PUT) or response (GET)
      * @param array                                     $options Array of options to apply to the request
+     *
      * @return RequestInterface
      * @throws InvalidArgumentException if a URI array is passed that does not contain exactly two elements: the URI
-     *                                                           followed by template variables
+     *                                  followed by template variables
      */
     public function createRequest(
         $method = RequestInterface::GET,
@@ -85,6 +90,7 @@ interface ClientInterface extends HasDispatcherInterface
      * @param string|array     $uri     Resource URI
      * @param array|Collection $headers HTTP headers
      * @param array            $options Options to apply to the request
+     *
      * @return RequestInterface
      * @see    Guzzle\Http\ClientInterface::createRequest()
      */
@@ -97,6 +103,7 @@ interface ClientInterface extends HasDispatcherInterface
      * @param array|Collection                    $headers HTTP headers
      * @param string|resource|EntityBodyInterface $body    Body to send in the request
      * @param array                               $options Options to apply to the request
+     *
      * @return EntityEnclosingRequestInterface
      * @see    Guzzle\Http\ClientInterface::createRequest()
      */
@@ -109,6 +116,7 @@ interface ClientInterface extends HasDispatcherInterface
      * @param array|Collection                    $headers HTTP headers
      * @param string|resource|EntityBodyInterface $body    Body to send in the request
      * @param array                               $options Options to apply to the request
+     *
      * @return EntityEnclosingRequestInterface
      * @see    Guzzle\Http\ClientInterface::createRequest()
      */
@@ -121,6 +129,7 @@ interface ClientInterface extends HasDispatcherInterface
      * @param array|Collection                    $headers HTTP headers
      * @param string|resource|EntityBodyInterface $body    Body to send in the request
      * @param array                               $options Options to apply to the request
+     *
      * @return EntityEnclosingRequestInterface
      * @see    Guzzle\Http\ClientInterface::createRequest()
      */
@@ -132,10 +141,11 @@ interface ClientInterface extends HasDispatcherInterface
      * @param string|array                                $uri      Resource URI
      * @param array|Collection                            $headers  HTTP headers
      * @param array|Collection|string|EntityBodyInterface $postBody POST body. Can be a string, EntityBody, or
-     *                                                              associative array of POST fields to send in the
-     *                                                              body of the request. Prefix a value in the array
-     *                                                              with the @ symbol to reference a file.
-     * @param array                                       $options  Options to apply to the request
+     *                                                    associative array of POST fields to send in the body of the
+     *                                                    request. Prefix a value in the array with the @ symbol to
+     *                                                    reference a file.
+     * @param array                                       $options Options to apply to the request
+     *
      * @return EntityEnclosingRequestInterface
      * @see    Guzzle\Http\ClientInterface::createRequest()
      */
@@ -146,6 +156,7 @@ interface ClientInterface extends HasDispatcherInterface
      *
      * @param string|array $uri     Resource URI
      * @param array        $options Options to apply to the request
+     *
      * @return RequestInterface
      * @see    Guzzle\Http\ClientInterface::createRequest()
      */
@@ -155,6 +166,7 @@ interface ClientInterface extends HasDispatcherInterface
      * Sends a single request or an array of requests in parallel
      *
      * @param array|RequestInterface $requests One or more RequestInterface objects to send
+     *
      * @return \Guzzle\Http\Message\Response|array Returns a single Response or an array of Response objects
      */
     public function send($requests);
@@ -163,6 +175,7 @@ interface ClientInterface extends HasDispatcherInterface
      * Get the client's base URL as either an expanded or raw URI template
      *
      * @param bool $expand Set to FALSE to get the raw base URL without URI template expansion
+     *
      * @return string|null
      */
     public function getBaseUrl($expand = true);
@@ -171,6 +184,7 @@ interface ClientInterface extends HasDispatcherInterface
      * Set the base URL of the client
      *
      * @param string $url The base service endpoint URL of the webservice
+     *
      * @return self
      */
     public function setBaseUrl($url);
@@ -180,16 +194,20 @@ interface ClientInterface extends HasDispatcherInterface
      *
      * @param string $userAgent      User agent string
      * @param bool   $includeDefault Set to true to prepend the value to Guzzle's default user agent string
+     *
      * @return self
      */
     public function setUserAgent($userAgent, $includeDefault = false);
 
     /**
      * Set SSL verification options.
+     *
      * Setting $certificateAuthority to TRUE will result in the bundled cacert.pem being used to verify against the
      * remote host.
+     *
      * Alternate certificates to verify against can be specified with the $certificateAuthority option set to the full
      * path to a certificate file, or the path to a directory containing certificates.
+     *
      * Setting $certificateAuthority to FALSE will turn off peer verification, unset the bundled cacert.pem, and
      * disable host verification. Please don't do this unless you really know what you're doing, and why you're doing
      * it.

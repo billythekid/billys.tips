@@ -16,15 +16,12 @@ class HeaderVisitor extends AbstractResponseVisitor
         Response $response,
         Parameter $param,
         &$value,
-        $context = null
-    )
-    {
-        if ($param->getType() == 'object' && $param->getAdditionalProperties() instanceof Parameter)
-        {
+        $context =  null
+    ) {
+        if ($param->getType() == 'object' && $param->getAdditionalProperties() instanceof Parameter) {
             $this->processPrefixedHeaders($response, $param, $value);
-        } else
-        {
-            $value[$param->getName()] = $param->filter((string)$response->getHeader($param->getWireName()));
+        } else {
+            $value[$param->getName()] = $param->filter((string) $response->getHeader($param->getWireName()));
         }
     }
 
@@ -38,15 +35,12 @@ class HeaderVisitor extends AbstractResponseVisitor
     protected function processPrefixedHeaders(Response $response, Parameter $param, &$value)
     {
         // Grab prefixed headers that should be placed into an array with the prefix stripped
-        if ($prefix = $param->getSentAs())
-        {
+        if ($prefix = $param->getSentAs()) {
             $container = $param->getName();
-            $len       = strlen($prefix);
+            $len = strlen($prefix);
             // Find all matching headers and place them into the containing element
-            foreach ($response->getHeaders()->toArray() as $key => $header)
-            {
-                if (stripos($key, $prefix) === 0)
-                {
+            foreach ($response->getHeaders()->toArray() as $key => $header) {
+                if (stripos($key, $prefix) === 0) {
                     // Account for multi-value headers
                     $value[$container][substr($key, $len)] = count($header) == 1 ? end($header) : $header;
                 }

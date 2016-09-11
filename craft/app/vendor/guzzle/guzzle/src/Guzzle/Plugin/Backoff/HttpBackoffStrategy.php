@@ -8,6 +8,7 @@ use Guzzle\Http\Exception\HttpException;
 
 /**
  * Strategy used to retry HTTP requests based on the response code.
+ *
  * Retries 500 and 503 error by default.
  */
 class HttpBackoffStrategy extends AbstractErrorCodeBackoffStrategy
@@ -17,14 +18,11 @@ class HttpBackoffStrategy extends AbstractErrorCodeBackoffStrategy
 
     protected function getDelay($retries, RequestInterface $request, Response $response = null, HttpException $e = null)
     {
-        if ($response)
-        {
+        if ($response) {
             //Short circuit the rest of the checks if it was successful
-            if ($response->isSuccessful())
-            {
+            if ($response->isSuccessful()) {
                 return false;
-            } else
-            {
+            } else {
                 return isset($this->errorCodes[$response->getStatusCode()]) ? true : null;
             }
         }

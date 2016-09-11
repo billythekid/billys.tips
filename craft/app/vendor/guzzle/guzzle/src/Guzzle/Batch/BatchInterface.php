@@ -11,6 +11,7 @@ interface BatchInterface
      * Add an item to the queue
      *
      * @param mixed $item Item to add
+     *
      * @return self
      */
     public function add($item);

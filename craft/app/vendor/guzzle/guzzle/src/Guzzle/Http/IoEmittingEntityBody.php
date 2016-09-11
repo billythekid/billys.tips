@@ -34,8 +34,7 @@ class IoEmittingEntityBody extends AbstractEntityBodyDecorator implements HasDis
 
     public function getEventDispatcher()
     {
-        if (!$this->eventDispatcher)
-        {
+        if (!$this->eventDispatcher) {
             $this->eventDispatcher = new EventDispatcher();
         }
 
@@ -63,7 +62,7 @@ class IoEmittingEntityBody extends AbstractEntityBodyDecorator implements HasDis
         $event = array(
             'body'   => $this,
             'length' => $length,
-            'read'   => $this->body->read($length),
+            'read'   => $this->body->read($length)
         );
         $this->dispatch('body.read', $event);
 
@@ -75,7 +74,7 @@ class IoEmittingEntityBody extends AbstractEntityBodyDecorator implements HasDis
         $event = array(
             'body'   => $this,
             'write'  => $string,
-            'result' => $this->body->write($string),
+            'result' => $this->body->write($string)
         );
         $this->dispatch('body.write', $event);
 

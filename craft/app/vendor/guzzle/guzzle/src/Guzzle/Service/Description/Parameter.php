@@ -89,46 +89,39 @@ class Parameter
      *
      * @param array                       $data        Array of data as seen in service descriptions
      * @param ServiceDescriptionInterface $description Service description used to resolve models if $ref tags are found
+     *
      * @throws InvalidArgumentException
      */
     public function __construct(array $data = array(), ServiceDescriptionInterface $description = null)
     {
-        if ($description)
-        {
-            if (isset($data['$ref']))
-            {
-                if ($model = $description->getModel($data['$ref']))
-                {
+        if ($description) {
+            if (isset($data['$ref'])) {
+                if ($model = $description->getModel($data['$ref'])) {
                     $data = $model->toArray() + $data;
                 }
-            } elseif (isset($data['extends']))
-            {
+            } elseif (isset($data['extends'])) {
                 // If this parameter extends from another parameter then start with the actual data
                 // union in the parent's data (e.g. actual supersedes parent)
-                if ($extends = $description->getModel($data['extends']))
-                {
+                if ($extends = $description->getModel($data['extends'])) {
                     $data += $extends->toArray();
                 }
             }
         }
 
         // Pull configuration data into the parameter
-        foreach ($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $this->{$key} = $value;
         }
 
         $this->serviceDescription = $description;
-        $this->required           = (bool)$this->required;
-        $this->data               = (array)$this->data;
+        $this->required = (bool) $this->required;
+        $this->data = (array) $this->data;
 
-        if ($this->filters)
-        {
-            $this->setFilters((array)$this->filters);
+        if ($this->filters) {
+            $this->setFilters((array) $this->filters);
         }
 
-        if ($this->type == 'object' && $this->additionalProperties === null)
-        {
+        if ($this->type == 'object' && $this->additionalProperties === null) {
             $this->additionalProperties = true;
         }
     }
@@ -147,43 +140,34 @@ class Parameter
         $result = array();
 
         // Anything that is in the `Items` attribute of an array *must* include it's name if available
-        if ($this->parent instanceof self && $this->parent->getType() == 'array' && isset($this->name))
-        {
+        if ($this->parent instanceof self && $this->parent->getType() == 'array' && isset($this->name)) {
             $result['name'] = $this->name;
         }
 
-        foreach ($checks as $c)
-        {
-            if ($value = $this->{$c})
-            {
+        foreach ($checks as $c) {
+            if ($value = $this->{$c}) {
                 $result[$c] = $value;
             }
         }
 
-        if ($this->default !== null)
-        {
+        if ($this->default !== null) {
             $result['default'] = $this->default;
         }
 
-        if ($this->items !== null)
-        {
+        if ($this->items !== null) {
             $result['items'] = $this->getItems()->toArray();
         }
 
-        if ($this->additionalProperties !== null)
-        {
+        if ($this->additionalProperties !== null) {
             $result['additionalProperties'] = $this->getAdditionalProperties();
-            if ($result['additionalProperties'] instanceof self)
-            {
+            if ($result['additionalProperties'] instanceof self) {
                 $result['additionalProperties'] = $result['additionalProperties']->toArray();
             }
         }
 
-        if ($this->type == 'object' && $this->properties)
-        {
+        if ($this->type == 'object' && $this->properties) {
             $result['properties'] = array();
-            foreach ($this->getProperties() as $name => $property)
-            {
+            foreach ($this->getProperties() as $name => $property) {
                 $result['properties'][$name] = $property->toArray();
             }
         }
@@ -195,12 +179,12 @@ class Parameter
      * Get the default or static value of the command based on a value
      *
      * @param string $value Value that is currently set
+     *
      * @return mixed Returns the value, a static value if one is present, or a default value
      */
     public function getValue($value)
     {
-        if ($this->static || ($this->default !== null && $value === null))
-        {
+        if ($this->static || ($this->default !== null && $value === null)) {
             return $this->default;
         }
 
@@ -211,43 +195,35 @@ class Parameter
      * Run a value through the filters OR format attribute associated with the parameter
      *
      * @param mixed $value Value to filter
+     *
      * @return mixed Returns the filtered value
      */
     public function filter($value)
     {
         // Formats are applied exclusively and supersed filters
-        if ($this->format)
-        {
+        if ($this->format) {
             return SchemaFormatter::format($this->format, $value);
         }
 
         // Convert Boolean values
-        if ($this->type == 'boolean' && !is_bool($value))
-        {
+        if ($this->type == 'boolean' && !is_bool($value)) {
             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
         }
 
         // Apply filters to the value
-        if ($this->filters)
-        {
-            foreach ($this->filters as $filter)
-            {
-                if (is_array($filter))
-                {
+        if ($this->filters) {
+            foreach ($this->filters as $filter) {
+                if (is_array($filter)) {
                     // Convert complex filters that hold value place holders
-                    foreach ($filter['args'] as &$data)
-                    {
-                        if ($data == '@value')
-                        {
+                    foreach ($filter['args'] as &$data) {
+                        if ($data == '@value') {
                             $data = $value;
-                        } elseif ($data == '@api')
-                        {
+                        } elseif ($data == '@api') {
                             $data = $this;
                         }
                     }
                     $value = call_user_func_array($filter['method'], $filter['args']);
-                } else
-                {
+                } else {
                     $value = call_user_func($filter, $value);
                 }
             }
@@ -280,6 +256,7 @@ class Parameter
      * Set the name of the parameter
      *
      * @param string $name Name to set
+     *
      * @return self
      */
     public function setName($name)
@@ -303,6 +280,7 @@ class Parameter
      * Set the type(s) of the parameter
      *
      * @param string|array $type Type of parameter or array of simple types used in a union
+     *
      * @return self
      */
     public function setType($type)
@@ -326,11 +304,12 @@ class Parameter
      * Set if the parameter is required
      *
      * @param bool $isRequired Whether or not the parameter is required
+     *
      * @return self
      */
     public function setRequired($isRequired)
     {
-        $this->required = (bool)$isRequired;
+        $this->required = (bool) $isRequired;
 
         return $this;
     }
@@ -349,6 +328,7 @@ class Parameter
      * Set the default value of the parameter
      *
      * @param string|null $default Default value to set
+     *
      * @return self
      */
     public function setDefault($default)
@@ -372,6 +352,7 @@ class Parameter
      * Set the description of the parameter
      *
      * @param string $description Description
+     *
      * @return self
      */
     public function setDescription($description)
@@ -395,6 +376,7 @@ class Parameter
      * Set the minimum acceptable value for an integer
      *
      * @param int|null $min Minimum
+     *
      * @return self
      */
     public function setMinimum($min)
@@ -418,6 +400,7 @@ class Parameter
      * Set the maximum acceptable value for an integer
      *
      * @param int $max Maximum
+     *
      * @return self
      */
     public function setMaximum($max)
@@ -441,6 +424,7 @@ class Parameter
      * Set the minimum allowed length of a string value
      *
      * @param int|null $min Minimum
+     *
      * @return self
      */
     public function setMinLength($min)
@@ -464,6 +448,7 @@ class Parameter
      * Set the maximum allowed length of a string value
      *
      * @param int $max Maximum length
+     *
      * @return self
      */
     public function setMaxLength($max)
@@ -487,6 +472,7 @@ class Parameter
      * Set the maximum allowed number of items in an array value
      *
      * @param int $max Maximum
+     *
      * @return self
      */
     public function setMaxItems($max)
@@ -510,6 +496,7 @@ class Parameter
      * Set the minimum allowed number of items in an array value
      *
      * @param int|null $min Minimum
+     *
      * @return self
      */
     public function setMinItems($min)
@@ -533,6 +520,7 @@ class Parameter
      * Set the location of the parameter
      *
      * @param string|null $location Location of the parameter
+     *
      * @return self
      */
     public function setLocation($location)
@@ -557,6 +545,7 @@ class Parameter
      * Set the sentAs attribute
      *
      * @param string|null $name Name of the value as it is sent over the wire
+     *
      * @return self
      */
     public function setSentAs($name)
@@ -571,20 +560,18 @@ class Parameter
      * is specified, all data properties will be returned.
      *
      * @param string|null $name Specify a particular property name to retrieve
+     *
      * @return array|mixed|null
      */
     public function getData($name = null)
     {
-        if (!$name)
-        {
+        if (!$name) {
             return $this->data;
         }
 
-        if (isset($this->data[$name]))
-        {
+        if (isset($this->data[$name])) {
             return $this->data[$name];
-        } elseif (isset($this->{$name}))
-        {
+        } elseif (isset($this->{$name})) {
             return $this->{$name};
         }
 
@@ -596,15 +583,14 @@ class Parameter
      *
      * @param string|array|null $nameOrData The name of a specific extra to set or an array of extras to set
      * @param mixed|null        $data       When setting a specific extra property, specify the data to set for it
+     *
      * @return self
      */
     public function setData($nameOrData, $data = null)
     {
-        if (is_array($nameOrData))
-        {
+        if (is_array($nameOrData)) {
             $this->data = $nameOrData;
-        } else
-        {
+        } else {
             $this->data[$nameOrData] = $data;
         }
 
@@ -625,11 +611,12 @@ class Parameter
      * Set to true if the default value cannot be changed
      *
      * @param bool $static True or false
+     *
      * @return self
      */
     public function setStatic($static)
     {
-        $this->static = (bool)$static;
+        $this->static = (bool) $static;
 
         return $this;
     }
@@ -648,13 +635,13 @@ class Parameter
      * Set the array of filters used by the parameter
      *
      * @param array $filters Array of functions to use as filters
+     *
      * @return self
      */
     public function setFilters(array $filters)
     {
         $this->filters = array();
-        foreach ($filters as $filter)
-        {
+        foreach ($filters as $filter) {
             $this->addFilter($filter);
         }
 
@@ -665,24 +652,21 @@ class Parameter
      * Add a filter to the parameter
      *
      * @param string|array $filter Method to filter the value through
+     *
      * @return self
      * @throws InvalidArgumentException
      */
     public function addFilter($filter)
     {
-        if (is_array($filter))
-        {
-            if (!isset($filter['method']))
-            {
+        if (is_array($filter)) {
+            if (!isset($filter['method'])) {
                 throw new InvalidArgumentException('A [method] value must be specified for each complex filter');
             }
         }
 
-        if (!$this->filters)
-        {
+        if (!$this->filters) {
             $this->filters = array($filter);
-        } else
-        {
+        } else {
             $this->filters[] = $filter;
         }
 
@@ -703,6 +687,7 @@ class Parameter
      * Set the parent object of the parameter
      *
      * @param OperationInterface|Parameter|null $parent Parent container of the parameter
+     *
      * @return self
      */
     public function setParent($parent)
@@ -719,11 +704,9 @@ class Parameter
      */
     public function getProperties()
     {
-        if (!$this->propertiesCache)
-        {
+        if (!$this->propertiesCache) {
             $this->propertiesCache = array();
-            foreach (array_keys($this->properties) as $name)
-            {
+            foreach (array_keys($this->properties) as $name) {
                 $this->propertiesCache[$name] = $this->getProperty($name);
             }
         }
@@ -735,19 +718,18 @@ class Parameter
      * Get a specific property from the parameter
      *
      * @param string $name Name of the property to retrieve
+     *
      * @return null|Parameter
      */
     public function getProperty($name)
     {
-        if (!isset($this->properties[$name]))
-        {
+        if (!isset($this->properties[$name])) {
             return null;
         }
 
-        if (!($this->properties[$name] instanceof self))
-        {
+        if (!($this->properties[$name] instanceof self)) {
             $this->properties[$name]['name'] = $name;
-            $this->properties[$name]         = new static($this->properties[$name], $this->serviceDescription);
+            $this->properties[$name] = new static($this->properties[$name], $this->serviceDescription);
             $this->properties[$name]->setParent($this);
         }
 
@@ -758,6 +740,7 @@ class Parameter
      * Remove a property from the parameter
      *
      * @param string $name Name of the property to remove
+     *
      * @return self
      */
     public function removeProperty($name)
@@ -772,6 +755,7 @@ class Parameter
      * Add a property to the parameter
      *
      * @param Parameter $property Properties to set
+     *
      * @return self
      */
     public function addProperty(Parameter $property)
@@ -790,8 +774,7 @@ class Parameter
      */
     public function getAdditionalProperties()
     {
-        if (is_array($this->additionalProperties))
-        {
+        if (is_array($this->additionalProperties)) {
             $this->additionalProperties = new static($this->additionalProperties, $this->serviceDescription);
             $this->additionalProperties->setParent($this);
         }
@@ -802,8 +785,8 @@ class Parameter
     /**
      * Set the additionalProperties value of the parameter
      *
-     * @param bool|Parameter|null $additional Boolean to allow any, an Parameter to specify a schema, or false to
-     *                                        disallow
+     * @param bool|Parameter|null $additional Boolean to allow any, an Parameter to specify a schema, or false to disallow
+     *
      * @return self
      */
     public function setAdditionalProperties($additional)
@@ -817,12 +800,12 @@ class Parameter
      * Set the items data of the parameter
      *
      * @param Parameter|null $items Items to set
+     *
      * @return self
      */
     public function setItems(Parameter $items = null)
     {
-        if ($this->items = $items)
-        {
+        if ($this->items = $items) {
             $this->items->setParent($this);
         }
 
@@ -836,8 +819,7 @@ class Parameter
      */
     public function getItems()
     {
-        if (is_array($this->items))
-        {
+        if (is_array($this->items)) {
             $this->items = new static($this->items, $this->serviceDescription);
             $this->items->setParent($this);
         }
@@ -859,6 +841,7 @@ class Parameter
      * Set the class that the parameter must be an instance of
      *
      * @param string|null $instanceOf Class or interface name
+     *
      * @return self
      */
     public function setInstanceOf($instanceOf)
@@ -882,6 +865,7 @@ class Parameter
      * Set the enum of strings that are valid for the parameter
      *
      * @param array|null $enum Array of strings or null
+     *
      * @return self
      */
     public function setEnum(array $enum = null)
@@ -905,6 +889,7 @@ class Parameter
      * Set the regex pattern that must match a value when the value is a string
      *
      * @param string $pattern Regex pattern
+     *
      * @return self
      */
     public function setPattern($pattern)
@@ -928,6 +913,7 @@ class Parameter
      * Set the format attribute of the schema
      *
      * @param string $format Format to set (e.g. date, date-time, timestamp, time, date-time-http)
+     *
      * @return self
      */
     public function setFormat($format)

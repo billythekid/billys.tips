@@ -20,6 +20,7 @@ class BatchSizeDivisor implements BatchDivisorInterface
      * Set the size of each batch
      *
      * @param int $size Size of each batch
+     *
      * @return BatchSizeDivisor
      */
     public function setSize($size)

@@ -4,15 +4,19 @@
  * PEL: PHP Exif Library.
  * A library with support for reading and
  * writing all Exif headers in JPEG and TIFF images using PHP.
+ *
  * Copyright (C) 2004, 2005, 2006 Martin Geisler.
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program in the file COPYING; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
@@ -25,7 +29,7 @@ use \lsolesen\pel\Pel;
 /**
  * Classes for dealing with JPEG markers.
  *
- * @author  Martin Geisler <mgeisler@users.sourceforge.net>
+ * @author Martin Geisler <mgeisler@users.sourceforge.net>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public
  *          License (GPL)
  * @package PEL
@@ -33,12 +37,13 @@ use \lsolesen\pel\Pel;
 
 /**
  * Class with static methods for JPEG markers.
+ *
  * This class defines the constants to be used whenever one refers to
  * a JPEG marker. All the methods defined are static, and they all
  * operate on one argument which should be one of the class constants.
  * They will all be denoted by PelJpegMarker in the documentation.
  *
- * @author  Martin Geisler <mgeisler@users.sourceforge.net>
+ * @author Martin Geisler <mgeisler@users.sourceforge.net>
  * @package PEL
  */
 class PelJpegMarker
@@ -211,6 +216,7 @@ class PelJpegMarker
 
     /**
      * Application segment 1
+     *
      * When a JPEG image contains Exif data, the data will normally be
      * stored in this section and a call to {@link PelJpeg::getExif()}
      * will return a {@link PelExif} object representing it.
@@ -367,8 +373,9 @@ class PelJpegMarker
      *
      * @param
      *            PelJpegMarker the byte that will be checked.
+     *
      * @return boolean if the byte is recognized true is returned,
-     *            otherwise false will be returned.
+     *         otherwise false will be returned.
      */
     public static function isValid($m)
     {
@@ -380,9 +387,10 @@ class PelJpegMarker
      *
      * @param PelJpegMarker $m
      *            the marker.
+     *
      * @return string the marker as a string. This will be a string
-     *            with just a single byte since all JPEG markers are simply single
-     *            bytes.
+     *         with just a single byte since all JPEG markers are simply single
+     *         bytes.
      */
     public static function getBytes($m)
     {
@@ -394,13 +402,13 @@ class PelJpegMarker
      *
      * @param PelJpegMarker $m
      *            the marker.
+     *
      * @return string the name of the marker, e.g., 'SOI' for the Start
-     *            of Image marker.
+     *         of Image marker.
      */
     public static function getName($m)
     {
-        switch ($m)
-        {
+        switch ($m) {
             case self::SOF0:
                 return 'SOF0';
             case self::SOF1:
@@ -539,12 +547,12 @@ class PelJpegMarker
      *
      * @param PelJpegMarker $m
      *            the marker.
+     *
      * @return string the description of the marker.
      */
     public static function getDescription($m)
     {
-        switch ($m)
-        {
+        switch ($m) {
             case self::SOF0:
                 return Pel::tra('Encoding (baseline)');
             case self::SOF1:

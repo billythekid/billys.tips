@@ -2,8 +2,9 @@
 namespace Craft;
 
 /**
- * The EmailerType class is an abstract class that defines all of the email protocol options that are available in
- * Craft. This class is a poor man's version of an enum, since PHP does not have support for native enumerations.
+ * The EmailerType class is an abstract class that defines all of the email protocol options that are available in Craft.
+ *
+ * This class is a poor man's version of an enum, since PHP does not have support for native enumerations.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
  * @copyright Copyright (c) 2014, Pixel & Tonic, Inc.
@@ -14,12 +15,12 @@ namespace Craft;
  */
 abstract class EmailerType extends BaseEnum
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const Php      = 'php';
-    const Sendmail = 'sendmail';
-    const Smtp     = 'smtp';
-    const Pop      = 'pop';
-    const Gmail    = 'gmail';
+	const Php      = 'php';
+	const Sendmail = 'sendmail';
+	const Smtp     = 'smtp';
+	const Pop      = 'pop';
+	const Gmail    = 'gmail';
 }

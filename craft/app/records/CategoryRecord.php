@@ -13,27 +13,29 @@ namespace Craft;
  */
 class CategoryRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'categories';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'categories';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineRelations()
-     * @return array
-     */
-    public function defineRelations()
-    {
-        return array(
-            'element' => array(static::BELONGS_TO, 'ElementRecord', 'id', 'required' => true, 'onDelete' => static::CASCADE),
-            'group'   => array(static::BELONGS_TO, 'CategoryGroupRecord', 'required' => true, 'onDelete' => static::CASCADE),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineRelations()
+	 *
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'element' => array(static::BELONGS_TO, 'ElementRecord', 'id', 'required' => true, 'onDelete' => static::CASCADE),
+			'group'   => array(static::BELONGS_TO, 'CategoryGroupRecord', 'required' => true, 'onDelete' => static::CASCADE),
+		);
+	}
 }

@@ -12,15 +12,16 @@ use Guzzle\Http\Message\RequestInterface;
 interface CurlMultiInterface extends \Countable, HasDispatcherInterface
 {
     const POLLING_REQUEST = 'curl_multi.polling_request';
-    const ADD_REQUEST     = 'curl_multi.add_request';
-    const REMOVE_REQUEST  = 'curl_multi.remove_request';
+    const ADD_REQUEST = 'curl_multi.add_request';
+    const REMOVE_REQUEST = 'curl_multi.remove_request';
     const MULTI_EXCEPTION = 'curl_multi.exception';
-    const BLOCKING        = 'curl_multi.blocking';
+    const BLOCKING = 'curl_multi.blocking';
 
     /**
      * Add a request to the pool.
      *
      * @param RequestInterface $request Request to add
+     *
      * @return CurlMultiInterface
      */
     public function add(RequestInterface $request);
@@ -36,6 +37,7 @@ interface CurlMultiInterface extends \Countable, HasDispatcherInterface
      * Remove a request from the pool.
      *
      * @param RequestInterface $request Request to remove
+     *
      * @return bool Returns true on success or false on failure
      */
     public function remove(RequestInterface $request);

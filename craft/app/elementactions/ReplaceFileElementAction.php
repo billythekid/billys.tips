@@ -13,25 +13,27 @@ namespace Craft;
  */
 class ReplaceFileElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Replace file');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Replace file');
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $js = <<<EOT
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -60,6 +62,6 @@ class ReplaceFileElementAction extends BaseElementAction
 })();
 EOT;
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 }

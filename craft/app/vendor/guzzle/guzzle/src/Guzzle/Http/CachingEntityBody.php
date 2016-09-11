@@ -22,11 +22,12 @@ class CachingEntityBody extends AbstractEntityBodyDecorator
     public function __construct(EntityBodyInterface $body)
     {
         $this->remoteStream = $body;
-        $this->body         = new EntityBody(fopen('php://temp', 'r+'));
+        $this->body = new EntityBody(fopen('php://temp', 'r+'));
     }
 
     /**
      * Will give the contents of the buffer followed by the exhausted remote stream.
+     *
      * Warning: Loads the entire stream into memory
      *
      * @return string
@@ -37,8 +38,7 @@ class CachingEntityBody extends AbstractEntityBodyDecorator
         $this->rewind();
 
         $str = '';
-        while (!$this->isConsumed())
-        {
+        while (!$this->isConsumed()) {
             $str .= $this->read(16384);
         }
 
@@ -58,20 +58,16 @@ class CachingEntityBody extends AbstractEntityBodyDecorator
      */
     public function seek($offset, $whence = SEEK_SET)
     {
-        if ($whence == SEEK_SET)
-        {
+        if ($whence == SEEK_SET) {
             $byte = $offset;
-        } elseif ($whence == SEEK_CUR)
-        {
+        } elseif ($whence == SEEK_CUR) {
             $byte = $offset + $this->ftell();
-        } else
-        {
+        } else {
             throw new RuntimeException(__CLASS__ . ' supports only SEEK_SET and SEEK_CUR seek operations');
         }
 
         // You cannot skip ahead past where you've read from the remote stream
-        if ($byte > $this->body->getSize())
-        {
+        if ($byte > $this->body->getSize()) {
             throw new RuntimeException(
                 "Cannot seek to byte {$byte} when the buffered stream only contains {$this->body->getSize()} bytes"
             );
@@ -98,21 +94,19 @@ class CachingEntityBody extends AbstractEntityBodyDecorator
     public function read($length)
     {
         // Perform a regular read on any previously read data from the buffer
-        $data      = $this->body->read($length);
+        $data = $this->body->read($length);
         $remaining = $length - strlen($data);
 
         // More data was requested so read from the remote stream
-        if ($remaining)
-        {
+        if ($remaining) {
             // If data was written to the buffer in a position that would have been filled from the remote stream,
             // then we must skip bytes on the remote stream to emulate overwriting bytes from that position. This
             // mimics the behavior of other PHP stream wrappers.
             $remoteData = $this->remoteStream->read($remaining + $this->skipReadBytes);
 
-            if ($this->skipReadBytes)
-            {
-                $len                 = strlen($remoteData);
-                $remoteData          = substr($remoteData, $this->skipReadBytes);
+            if ($this->skipReadBytes) {
+                $len = strlen($remoteData);
+                $remoteData = substr($remoteData, $this->skipReadBytes);
                 $this->skipReadBytes = max(0, $this->skipReadBytes - $len);
             }
 
@@ -128,8 +122,7 @@ class CachingEntityBody extends AbstractEntityBodyDecorator
         // When appending to the end of the currently read stream, you'll want to skip bytes from being read from
         // the remote stream to emulate other stream wrappers. Basically replacing bytes of data of a fixed length.
         $overflow = (strlen($string) + $this->ftell()) - $this->remoteStream->ftell();
-        if ($overflow > 0)
-        {
+        if ($overflow > 0) {
             $this->skipReadBytes += $overflow;
         }
 
@@ -143,14 +136,12 @@ class CachingEntityBody extends AbstractEntityBodyDecorator
     public function readLine($maxLength = null)
     {
         $buffer = '';
-        $size   = 0;
-        while (!$this->isConsumed())
-        {
+        $size = 0;
+        while (!$this->isConsumed()) {
             $byte = $this->read(1);
             $buffer .= $byte;
             // Break when a new line is found or the max length - 1 is reached
-            if ($byte == PHP_EOL || ++$size == $maxLength - 1)
-            {
+            if ($byte == PHP_EOL || ++$size == $maxLength - 1) {
                 break;
             }
         }

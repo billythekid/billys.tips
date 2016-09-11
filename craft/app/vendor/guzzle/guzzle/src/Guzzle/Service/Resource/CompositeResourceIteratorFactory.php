@@ -21,8 +21,7 @@ class CompositeResourceIteratorFactory implements ResourceIteratorFactoryInterfa
 
     public function build(CommandInterface $command, array $options = array())
     {
-        if (!($factory = $this->getFactory($command)))
-        {
+        if (!($factory = $this->getFactory($command))) {
             throw new InvalidArgumentException('Iterator was not found for ' . $command->getName());
         }
 
@@ -38,6 +37,7 @@ class CompositeResourceIteratorFactory implements ResourceIteratorFactoryInterfa
      * Add a factory to the composite factory
      *
      * @param ResourceIteratorFactoryInterface $factory Factory to add
+     *
      * @return self
      */
     public function addFactory(ResourceIteratorFactoryInterface $factory)
@@ -51,14 +51,13 @@ class CompositeResourceIteratorFactory implements ResourceIteratorFactoryInterfa
      * Get the factory that matches the command object
      *
      * @param CommandInterface $command Command retrieving the iterator for
+     *
      * @return ResourceIteratorFactoryInterface|bool
      */
     protected function getFactory(CommandInterface $command)
     {
-        foreach ($this->factories as $factory)
-        {
-            if ($factory->canBuild($command))
-            {
+        foreach ($this->factories as $factory) {
+            if ($factory->canBuild($command)) {
                 return $factory;
             }
         }

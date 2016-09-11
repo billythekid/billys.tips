@@ -13,22 +13,23 @@ namespace Craft;
  */
 class PluginNewReleaseModel extends BaseModel
 {
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        $attributes['version']                = AttributeType::String;
-        $attributes['date']                   = AttributeType::DateTime;
-        $attributes['localizedDate']          = AttributeType::String;
-        $attributes['notes']                  = AttributeType::String;
-        $attributes['critical']               = AttributeType::Bool;
-        $attributes['manualDownloadEndpoint'] = AttributeType::String;
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		$attributes['version']                = AttributeType::String;
+		$attributes['date']                   = AttributeType::DateTime;
+		$attributes['localizedDate']          = AttributeType::String;
+		$attributes['notes']                  = AttributeType::String;
+		$attributes['critical']               = AttributeType::Bool;
+		$attributes['manualDownloadEndpoint'] = AttributeType::String;
 
-        return $attributes;
-    }
+		return $attributes;
+	}
 }

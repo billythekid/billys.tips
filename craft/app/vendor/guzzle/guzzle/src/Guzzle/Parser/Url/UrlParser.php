@@ -6,7 +6,6 @@ use Guzzle\Common\Version;
 
 /**
  * Parses URLs into parts using PHP's built-in parse_url() function
- *
  * @deprecated Just use parse_url. UTF-8 characters should be percent encoded anyways.
  * @codeCoverageIgnore
  */
@@ -30,19 +29,16 @@ class UrlParser implements UrlParserInterface
         Version::warn(__CLASS__ . ' is deprecated. Just use parse_url()');
 
         static $defaults = array('scheme' => null, 'host' => null, 'path' => null, 'port' => null, 'query' => null,
-                                 'user'   => null, 'pass' => null, 'fragment' => null);
+            'user' => null, 'pass' => null, 'fragment' => null);
 
         $parts = parse_url($url);
 
         // Need to handle query parsing specially for UTF-8 requirements
-        if ($this->utf8 && isset($parts['query']))
-        {
+        if ($this->utf8 && isset($parts['query'])) {
             $queryPos = strpos($url, '?');
-            if (isset($parts['fragment']))
-            {
+            if (isset($parts['fragment'])) {
                 $parts['query'] = substr($url, $queryPos + 1, strpos($url, '#') - $queryPos - 1);
-            } else
-            {
+            } else {
                 $parts['query'] = substr($url, $queryPos + 1);
             }
         }

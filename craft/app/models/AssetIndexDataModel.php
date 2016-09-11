@@ -13,36 +13,37 @@ namespace Craft;
  */
 class AssetIndexDataModel extends BaseComponentModel
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Use the translated source name as the string representation.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->uri;
-    }
+	/**
+	 * Use the translated source name as the string representation.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->uri;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'id'        => AttributeType::Number,
-            'sourceId'  => AttributeType::Number,
-            'sessionId' => AttributeType::String,
-            'offset'    => AttributeType::Number,
-            'uri'       => AttributeType::String,
-            'size'      => AttributeType::Number,
-            'recordId'  => AttributeType::Number,
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'id'		=> AttributeType::Number,
+			'sourceId'	=> AttributeType::Number,
+			'sessionId' => AttributeType::String,
+			'offset'	=> AttributeType::Number,
+			'uri'     	=> AttributeType::String,
+			'size' 		=> AttributeType::Number,
+			'recordId'	=> AttributeType::Number
+		);
+	}
 }

@@ -13,53 +13,57 @@ namespace Craft;
  */
 class AssetFolderRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'assetfolders';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'assetfolders';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineRelations()
-     * @return array
-     */
-    public function defineRelations()
-    {
-        return array(
-            'parent' => array(static::BELONGS_TO, 'AssetFolderRecord', 'onDelete' => static::CASCADE),
-            'source' => array(static::BELONGS_TO, 'AssetSourceRecord', 'required' => false, 'onDelete' => static::CASCADE),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineRelations()
+	 *
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'parent' => array(static::BELONGS_TO, 'AssetFolderRecord', 'onDelete' => static::CASCADE),
+			'source' => array(static::BELONGS_TO, 'AssetSourceRecord', 'required' => false, 'onDelete' => static::CASCADE),
+		);
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('name', 'parentId', 'sourceId'), 'unique' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('name', 'parentId', 'sourceId'), 'unique' => true),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'name' => array(AttributeType::String, 'required' => true),
-            'path' => array(AttributeType::String),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'name'     => array(AttributeType::String, 'required' => true),
+			'path'     => array(AttributeType::String),
+		);
+	}
 }

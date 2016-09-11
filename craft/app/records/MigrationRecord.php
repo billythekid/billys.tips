@@ -13,52 +13,56 @@ namespace Craft;
  */
 class MigrationRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'migrations';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'migrations';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineRelations()
-     * @return array
-     */
-    public function defineRelations()
-    {
-        return array(
-            'plugin' => array(static::BELONGS_TO, 'PluginRecord', 'onDelete' => static::CASCADE),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineRelations()
+	 *
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'plugin' => array(static::BELONGS_TO, 'PluginRecord', 'onDelete' => static::CASCADE),
+		);
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('version'), 'unique' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('version'), 'unique' => true),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'version'   => array(AttributeType::String, 'column' => ColumnType::Varchar, 'maxLength' => 255, 'required' => true),
-            'applyTime' => array(AttributeType::DateTime, 'required' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'version' => array(AttributeType::String, 'column' => ColumnType::Varchar, 'maxLength' => 255, 'required' => true),
+			'applyTime' => array(AttributeType::DateTime, 'required' => true),
+		);
+	}
 }

@@ -11,12 +11,18 @@
 
 /**
  * Defines a variable.
+ *
  * <pre>
  *  {% set foo = 'foo' %}
+ *
  *  {% set foo = [1, 2] %}
+ *
  *  {% set foo = {'foo': 'bar'} %}
+ *
  *  {% set foo = 'foo' ~ 'bar' %}
+ *
  *  {% set foo, bar = 'foo', 'bar' %}
+ *
  *  {% set foo %}Some content{% endset %}
  * </pre>
  */
@@ -26,25 +32,21 @@ class Twig_TokenParser_Set extends Twig_TokenParser
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
-        $names  = $this->parser->getExpressionParser()->parseAssignmentExpression();
+        $names = $this->parser->getExpressionParser()->parseAssignmentExpression();
 
         $capture = false;
-        if ($stream->nextIf(Twig_Token::OPERATOR_TYPE, '='))
-        {
+        if ($stream->nextIf(Twig_Token::OPERATOR_TYPE, '=')) {
             $values = $this->parser->getExpressionParser()->parseMultitargetExpression();
 
             $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-            if (count($names) !== count($values))
-            {
+            if (count($names) !== count($values)) {
                 throw new Twig_Error_Syntax('When using set, you must have the same number of variables and assignments.', $stream->getCurrent()->getLine(), $stream->getFilename());
             }
-        } else
-        {
+        } else {
             $capture = true;
 
-            if (count($names) > 1)
-            {
+            if (count($names) > 1) {
                 throw new Twig_Error_Syntax('When using set with a block, you cannot have a multi-target.', $stream->getCurrent()->getLine(), $stream->getFilename());
             }
 

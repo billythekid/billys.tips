@@ -29,11 +29,11 @@ class WrappedListener
 
     public function __construct($listener, $name, Stopwatch $stopwatch, EventDispatcherInterface $dispatcher = null)
     {
-        $this->listener           = $listener;
-        $this->name               = $name;
-        $this->stopwatch          = $stopwatch;
-        $this->dispatcher         = $dispatcher;
-        $this->called             = false;
+        $this->listener = $listener;
+        $this->name = $name;
+        $this->stopwatch = $stopwatch;
+        $this->dispatcher = $dispatcher;
+        $this->called = false;
         $this->stoppedPropagation = false;
     }
 
@@ -60,13 +60,11 @@ class WrappedListener
 
         call_user_func($this->listener, $event, $eventName, $this->dispatcher ?: $dispatcher);
 
-        if ($e->isStarted())
-        {
+        if ($e->isStarted()) {
             $e->stop();
         }
 
-        if ($event->isPropagationStopped())
-        {
+        if ($event->isPropagationStopped()) {
             $this->stoppedPropagation = true;
         }
     }

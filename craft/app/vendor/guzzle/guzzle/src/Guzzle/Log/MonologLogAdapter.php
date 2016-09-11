@@ -19,7 +19,7 @@ class MonologLogAdapter extends AbstractLogAdapter
         LOG_WARNING => Logger::WARNING,
         LOG_ERR     => Logger::ERROR,
         LOG_CRIT    => Logger::CRITICAL,
-        LOG_ALERT   => Logger::ALERT,
+        LOG_ALERT   => Logger::ALERT
     );
 
     public function __construct(Logger $logObject)

@@ -27,8 +27,8 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
      */
     public function __construct($directory, $options = 0)
     {
-        $this->directory = rtrim($directory, '\/') . '/';
-        $this->options   = $options;
+        $this->directory = rtrim($directory, '\/').'/';
+        $this->options = $options;
     }
 
     /**
@@ -38,7 +38,7 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
     {
         $hash = hash('sha256', $className);
 
-        return $this->directory . $hash[0] . $hash[1] . '/' . $hash . '.php';
+        return $this->directory.$hash[0].$hash[1].'/'.$hash.'.php';
     }
 
     /**
@@ -55,30 +55,23 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
     public function write($key, $content)
     {
         $dir = dirname($key);
-        if (!is_dir($dir))
-        {
-            if (false === @mkdir($dir, 0777, true) && !is_dir($dir))
-            {
+        if (!is_dir($dir)) {
+            if (false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
                 throw new RuntimeException(sprintf('Unable to create the cache directory (%s).', $dir));
             }
-        } elseif (!is_writable($dir))
-        {
+        } elseif (!is_writable($dir)) {
             throw new RuntimeException(sprintf('Unable to write in the cache directory (%s).', $dir));
         }
 
         $tmpFile = tempnam($dir, basename($key));
-        if (false !== @file_put_contents($tmpFile, $content) && @rename($tmpFile, $key))
-        {
+        if (false !== @file_put_contents($tmpFile, $content) && @rename($tmpFile, $key)) {
             @chmod($key, 0666 & ~umask());
 
-            if (self::FORCE_BYTECODE_INVALIDATION == ($this->options & self::FORCE_BYTECODE_INVALIDATION))
-            {
+            if (self::FORCE_BYTECODE_INVALIDATION == ($this->options & self::FORCE_BYTECODE_INVALIDATION)) {
                 // Compile cached file into bytecode cache
-                if (function_exists('opcache_invalidate'))
-                {
+                if (function_exists('opcache_invalidate')) {
                     opcache_invalidate($key, true);
-                } elseif (function_exists('apc_compile_file'))
-                {
+                } elseif (function_exists('apc_compile_file')) {
                     apc_compile_file($key);
                 }
             }
@@ -94,11 +87,10 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
      */
     public function getTimestamp($key)
     {
-        if (!file_exists($key))
-        {
+        if (!file_exists($key)) {
             return 0;
         }
 
-        return (int)@filemtime($key);
+        return (int) @filemtime($key);
     }
 }

@@ -25,6 +25,7 @@ interface EntityBodyInterface extends StreamInterface
      * then closed, and the compressed stream then becomes the wrapped stream.
      *
      * @param string $filter Compression filter
+     *
      * @return bool Returns TRUE on success or FALSE on failure
      */
     public function compress($filter = 'zlib.deflate');
@@ -33,6 +34,7 @@ interface EntityBodyInterface extends StreamInterface
      * Decompress a deflated string. Once uncompressed, the uncompressed string is then used as the wrapped stream.
      *
      * @param string $filter De-compression filter
+     *
      * @return bool Returns TRUE on success or FALSE on failure
      */
     public function uncompress($filter = 'zlib.inflate');
@@ -57,6 +59,7 @@ interface EntityBodyInterface extends StreamInterface
      *
      * @param bool $rawOutput    Whether or not to use raw output
      * @param bool $base64Encode Whether or not to base64 encode raw output (only if raw output is true)
+     *
      * @return bool|string Returns an MD5 string on success or FALSE on failure
      */
     public function getContentMd5($rawOutput = false, $base64Encode = false);

@@ -13,17 +13,18 @@ namespace Craft;
  */
 class PasswordModel extends BaseModel
 {
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'password' => array(AttributeType::String, 'label' => 'Password', 'minLength' => 6, 'maxLength' => 160, 'required' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'password' => array(AttributeType::String, 'label' => 'Password', 'minLength' => 6, 'maxLength' => 160, 'required' => true)
+		);
+	}
 }

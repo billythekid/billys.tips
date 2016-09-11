@@ -24,24 +24,23 @@ class Url
      * Factory method to create a new URL from a URL string
      *
      * @param string $url Full URL used to create a Url object
+     *
      * @return Url
      * @throws InvalidArgumentException
      */
     public static function factory($url)
     {
         static $defaults = array('scheme' => null, 'host' => null, 'path' => null, 'port' => null, 'query' => null,
-                                 'user'   => null, 'pass' => null, 'fragment' => null);
+            'user' => null, 'pass' => null, 'fragment' => null);
 
-        if (false === ($parts = parse_url($url)))
-        {
+        if (false === ($parts = parse_url($url))) {
             throw new InvalidArgumentException('Was unable to parse malformed url: ' . $url);
         }
 
         $parts += $defaults;
 
         // Convert the query string into a QueryString object
-        if ($parts['query'] || 0 !== strlen($parts['query']))
-        {
+        if ($parts['query'] || 0 !== strlen($parts['query'])) {
             $parts['query'] = QueryString::fromString($parts['query']);
         }
 
@@ -54,29 +53,26 @@ class Url
      * Build a URL from parse_url parts. The generated URL will be a relative URL if a scheme or host are not provided.
      *
      * @param array $parts Array of parse_url parts
+     *
      * @return string
      */
     public static function buildUrl(array $parts)
     {
         $url = $scheme = '';
 
-        if (isset($parts['scheme']))
-        {
+        if (isset($parts['scheme'])) {
             $scheme = $parts['scheme'];
             $url .= $scheme . ':';
         }
 
-        if (isset($parts['host']))
-        {
+        if (isset($parts['host'])) {
             $url .= '//';
-            if (isset($parts['user']))
-            {
+            if (isset($parts['user'])) {
                 $url .= $parts['user'];
-                if (isset($parts['pass']))
-                {
+                if (isset($parts['pass'])) {
                     $url .= ':' . $parts['pass'];
                 }
-                $url .= '@';
+                $url .=  '@';
             }
 
             $url .= $parts['host'];
@@ -84,32 +80,27 @@ class Url
             // Only include the port if it is not the default port of the scheme
             if (isset($parts['port'])
                 && !(($scheme == 'http' && $parts['port'] == 80) || ($scheme == 'https' && $parts['port'] == 443))
-            )
-            {
+            ) {
                 $url .= ':' . $parts['port'];
             }
         }
 
         // Add the path component if present
-        if (isset($parts['path']) && 0 !== strlen($parts['path']))
-        {
+        if (isset($parts['path']) && 0 !== strlen($parts['path'])) {
             // Always ensure that the path begins with '/' if set and something is before the path
-            if ($url && $parts['path'][0] != '/' && substr($url, -1) != '/')
-            {
+            if ($url && $parts['path'][0] != '/' && substr($url, -1)  != '/') {
                 $url .= '/';
             }
             $url .= $parts['path'];
         }
 
         // Add the query string if present
-        if (isset($parts['query']))
-        {
+        if (isset($parts['query'])) {
             $url .= '?' . $parts['query'];
         }
 
         // Ensure that # is only added to the url if fragment contains anything.
-        if (isset($parts['fragment']))
-        {
+        if (isset($parts['fragment'])) {
             $url .= '#' . $parts['fragment'];
         }
 
@@ -130,17 +121,15 @@ class Url
      */
     public function __construct($scheme, $host, $username = null, $password = null, $port = null, $path = null, QueryString $query = null, $fragment = null)
     {
-        $this->scheme   = $scheme;
-        $this->host     = $host;
-        $this->port     = $port;
+        $this->scheme = $scheme;
+        $this->host = $host;
+        $this->port = $port;
         $this->username = $username;
         $this->password = $password;
         $this->fragment = $fragment;
-        if (!$query)
-        {
+        if (!$query) {
             $this->query = new QueryString();
-        } else
-        {
+        } else {
             $this->setQuery($query);
         }
         $this->setPath($path);
@@ -171,16 +160,16 @@ class Url
      */
     public function getParts()
     {
-        $query = (string)$this->query;
+        $query = (string) $this->query;
 
         return array(
-            'scheme'   => $this->scheme,
-            'user'     => $this->username,
-            'pass'     => $this->password,
-            'host'     => $this->host,
-            'port'     => $this->port,
-            'path'     => $this->getPath(),
-            'query'    => $query !== '' ? $query : null,
+            'scheme' => $this->scheme,
+            'user' => $this->username,
+            'pass' => $this->password,
+            'host' => $this->host,
+            'port' => $this->port,
+            'path' => $this->getPath(),
+            'query' => $query !== '' ? $query : null,
             'fragment' => $this->fragment,
         );
     }
@@ -189,15 +178,14 @@ class Url
      * Set the host of the request.
      *
      * @param string $host Host to set (e.g. www.yahoo.com, yahoo.com)
+     *
      * @return Url
      */
     public function setHost($host)
     {
-        if (strpos($host, ':') === false)
-        {
+        if (strpos($host, ':') === false) {
             $this->host = $host;
-        } else
-        {
+        } else {
             list($host, $port) = explode(':', $host);
             $this->host = $host;
             $this->setPort($port);
@@ -220,15 +208,14 @@ class Url
      * Set the scheme part of the URL (http, https, ftp, etc)
      *
      * @param string $scheme Scheme to set
+     *
      * @return Url
      */
     public function setScheme($scheme)
     {
-        if ($this->scheme == 'http' && $this->port == 80)
-        {
+        if ($this->scheme == 'http' && $this->port == 80) {
             $this->port = null;
-        } elseif ($this->scheme == 'https' && $this->port == 443)
-        {
+        } elseif ($this->scheme == 'https' && $this->port == 443) {
             $this->port = null;
         }
 
@@ -251,6 +238,7 @@ class Url
      * Set the port part of the URL
      *
      * @param int $port Port to set
+     *
      * @return Url
      */
     public function setPort($port)
@@ -267,14 +255,11 @@ class Url
      */
     public function getPort()
     {
-        if ($this->port)
-        {
+        if ($this->port) {
             return $this->port;
-        } elseif ($this->scheme == 'http')
-        {
+        } elseif ($this->scheme == 'http') {
             return 80;
-        } elseif ($this->scheme == 'https')
-        {
+        } elseif ($this->scheme == 'https') {
             return 443;
         }
 
@@ -285,13 +270,13 @@ class Url
      * Set the path part of the URL
      *
      * @param array|string $path Path string or array of path segments
+     *
      * @return Url
      */
     public function setPath($path)
     {
         static $pathReplace = array(' ' => '%20', '?' => '%3F');
-        if (is_array($path))
-        {
+        if (is_array($path)) {
             $path = '/' . implode('/', $path);
         }
 
@@ -307,20 +292,16 @@ class Url
      */
     public function normalizePath()
     {
-        if (!$this->path || $this->path == '/' || $this->path == '*')
-        {
+        if (!$this->path || $this->path == '/' || $this->path == '*') {
             return $this;
         }
 
-        $results  = array();
+        $results = array();
         $segments = $this->getPathSegments();
-        foreach ($segments as $segment)
-        {
-            if ($segment == '..')
-            {
+        foreach ($segments as $segment) {
+            if ($segment == '..') {
                 array_pop($results);
-            } elseif ($segment != '.' && $segment != '')
-            {
+            } elseif ($segment != '.' && $segment != '') {
                 $results[] = $segment;
             }
         }
@@ -329,8 +310,7 @@ class Url
         $this->path = ($this->path[0] == '/' ? '/' : '') . implode('/', $results);
 
         // Add the trailing slash if necessary
-        if ($this->path != '/' && end($segments) == '')
-        {
+        if ($this->path != '/' && end($segments) == '') {
             $this->path .= '/';
         }
 
@@ -341,15 +321,14 @@ class Url
      * Add a relative path to the currently set path.
      *
      * @param string $relativePath Relative path to add
+     *
      * @return Url
      */
     public function addPath($relativePath)
     {
-        if ($relativePath != '/' && is_string($relativePath) && strlen($relativePath) > 0)
-        {
+        if ($relativePath != '/' && is_string($relativePath) && strlen($relativePath) > 0) {
             // Add a leading slash if needed
-            if ($relativePath[0] != '/')
-            {
+            if ($relativePath[0] != '/') {
                 $relativePath = '/' . $relativePath;
             }
             $this->setPath(str_replace('//', '/', $this->path . $relativePath));
@@ -382,6 +361,7 @@ class Url
      * Set the password part of the URL
      *
      * @param string $password Password to set
+     *
      * @return Url
      */
     public function setPassword($password)
@@ -405,6 +385,7 @@ class Url
      * Set the username part of the URL
      *
      * @param string $username Username to set
+     *
      * @return Url
      */
     public function setUsername($username)
@@ -438,20 +419,18 @@ class Url
      * Set the query part of the URL
      *
      * @param QueryString|string|array $query Query to set
+     *
      * @return Url
      */
     public function setQuery($query)
     {
-        if (is_string($query))
-        {
+        if (is_string($query)) {
             $output = null;
             parse_str($query, $output);
             $this->query = new QueryString($output);
-        } elseif (is_array($query))
-        {
+        } elseif (is_array($query)) {
             $this->query = new QueryString($query);
-        } elseif ($query instanceof QueryString)
-        {
+        } elseif ($query instanceof QueryString) {
             $this->query = $query;
         }
 
@@ -472,6 +451,7 @@ class Url
      * Set the fragment part of the URL
      *
      * @param string $fragment Fragment to set
+     *
      * @return Url
      */
     public function setFragment($fragment)
@@ -510,59 +490,48 @@ class Url
         $url = self::factory($url);
 
         // Use the more absolute URL as the base URL
-        if (!$this->isAbsolute() && $url->isAbsolute())
-        {
+        if (!$this->isAbsolute() && $url->isAbsolute()) {
             $url = $url->combine($this);
         }
 
         // Passing a URL with a scheme overrides everything
-        if ($buffer = $url->getScheme())
-        {
-            $this->scheme   = $buffer;
-            $this->host     = $url->getHost();
-            $this->port     = $url->getPort();
+        if ($buffer = $url->getScheme()) {
+            $this->scheme = $buffer;
+            $this->host = $url->getHost();
+            $this->port = $url->getPort();
             $this->username = $url->getUsername();
             $this->password = $url->getPassword();
-            $this->path     = $url->getPath();
-            $this->query    = $url->getQuery();
+            $this->path = $url->getPath();
+            $this->query = $url->getQuery();
             $this->fragment = $url->getFragment();
-
             return $this;
         }
 
         // Setting a host overrides the entire rest of the URL
-        if ($buffer = $url->getHost())
-        {
-            $this->host     = $buffer;
-            $this->port     = $url->getPort();
+        if ($buffer = $url->getHost()) {
+            $this->host = $buffer;
+            $this->port = $url->getPort();
             $this->username = $url->getUsername();
             $this->password = $url->getPassword();
-            $this->path     = $url->getPath();
-            $this->query    = $url->getQuery();
+            $this->path = $url->getPath();
+            $this->query = $url->getQuery();
             $this->fragment = $url->getFragment();
-
             return $this;
         }
 
-        $path  = $url->getPath();
+        $path = $url->getPath();
         $query = $url->getQuery();
 
-        if (!$path)
-        {
-            if (count($query))
-            {
+        if (!$path) {
+            if (count($query)) {
                 $this->addQuery($query, $strictRfc3986);
             }
-        } else
-        {
-            if ($path[0] == '/')
-            {
+        } else {
+            if ($path[0] == '/') {
                 $this->path = $path;
-            } elseif ($strictRfc3986)
-            {
+            } elseif ($strictRfc3986) {
                 $this->path .= '/../' . $path;
-            } else
-            {
+            } else {
                 $this->path .= '/' . $path;
             }
             $this->normalizePath();
@@ -576,8 +545,7 @@ class Url
 
     private function addQuery(QueryString $new, $strictRfc386)
     {
-        if (!$strictRfc386)
-        {
+        if (!$strictRfc386) {
             $new->merge($this->query);
         }
 

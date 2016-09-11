@@ -13,60 +13,62 @@ namespace Craft;
  */
 class DeprecatedTag_TokenParser extends \Twig_TokenParser
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var string
-     */
-    private $_tag;
+	/**
+	 * @var string
+	 */
+	private $_tag;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Constructor
-     *
-     * @param string $tag
-     * @return DeprecatedTag_TokenParser
-     */
-    public function __construct($tag)
-    {
-        $this->_tag = $tag;
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param string $tag
+	 *
+	 * @return DeprecatedTag_TokenParser
+	 */
+	public function __construct($tag)
+	{
+		$this->_tag = $tag;
+	}
 
-    /**
-     * Parses resource include tags.
-     *
-     * @param \Twig_Token $token
-     * @return \Twig_Node
-     */
-    public function parse(\Twig_Token $token)
-    {
-        $lineno = $token->getLine();
-        $stream = $this->parser->getStream();
+	/**
+	 * Parses resource include tags.
+	 *
+	 * @param \Twig_Token $token
+	 *
+	 * @return \Twig_Node
+	 */
+	public function parse(\Twig_Token $token)
+	{
+		$lineno = $token->getLine();
+		$stream = $this->parser->getStream();
 
-        // Parse until we reach the end of this tag
-        while (!$stream->test(\Twig_Token::BLOCK_END_TYPE))
-        {
-            $stream->next();
-        }
+		// Parse until we reach the end of this tag
+		while (!$stream->test(\Twig_Token::BLOCK_END_TYPE))
+		{
+			$stream->next();
+		}
 
-        $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+		$stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        $filename = $stream->getFilename();
-        craft()->deprecator->log("{% {$this->_tag} %}", "The {% {$this->_tag} %} tag is no longer necessary. You can remove it from your ‘{$filename}’ template on line {$lineno}.");
+		$filename = $stream->getFilename();
+		craft()->deprecator->log("{% {$this->_tag} %}", "The {% {$this->_tag} %} tag is no longer necessary. You can remove it from your ‘{$filename}’ template on line {$lineno}.");
 
-        return new \Twig_Node(array(), array(), $lineno, $this->_tag);
-    }
+		return new \Twig_Node(array(), array(), $lineno, $this->_tag);
+	}
 
-    /**
-     * Defines the tag name.
-     *
-     * @return string
-     */
-    public function getTag()
-    {
-        return $this->_tag;
-    }
+	/**
+	 * Defines the tag name.
+	 *
+	 * @return string
+	 */
+	public function getTag()
+	{
+		return $this->_tag;
+	}
 }

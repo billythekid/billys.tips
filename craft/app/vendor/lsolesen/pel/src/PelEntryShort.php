@@ -4,15 +4,19 @@
  * PEL: PHP Exif Library.
  * A library with support for reading and
  * writing all Exif headers in JPEG and TIFF images using PHP.
+ *
  * Copyright (C) 2004, 2005, 2006 Martin Geisler.
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program in the file COPYING; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
@@ -20,31 +24,34 @@
  */
 namespace lsolesen\pel;
 
-    /**
-     * Classes used to hold shorts, both signed and unsigned.
-     *
-     * @author  Martin Geisler <mgeisler@users.sourceforge.net>
-     * @license http://www.gnu.org/licenses/gpl.html GNU General Public
-     *          License (GPL)
-     * @package PEL
-     */
+/**
+ * Classes used to hold shorts, both signed and unsigned.
+ *
+ * @author Martin Geisler <mgeisler@users.sourceforge.net>
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public
+ *          License (GPL)
+ * @package PEL
+ */
 
 /**
  * Class for holding signed shorts.
+ *
  * This class can hold shorts, either just a single short or an array
  * of shorts. The class will be used to manipulate any of the Exif
  * tags which has format {@link PelFormat::SHORT} like in this
  * example:
+ *
  * <code>
  * $w = $ifd->getEntry(PelTag::EXIF_IMAGE_WIDTH);
  * $w->setValue($w->getValue() / 2);
  * $h = $ifd->getEntry(PelTag::EXIF_IMAGE_HEIGHT);
  * $h->setValue($h->getValue() / 2);
  * </code>
+ *
  * Here the width and height is updated to 50% of their original
  * values.
  *
- * @author  Martin Geisler <mgeisler@users.sourceforge.net>
+ * @author Martin Geisler <mgeisler@users.sourceforge.net>
  * @package PEL
  */
 class PelEntryShort extends PelEntryNumber
@@ -52,9 +59,11 @@ class PelEntryShort extends PelEntryNumber
 
     /**
      * Make a new entry that can hold an unsigned short.
+     *
      * The method accept several integer arguments. The {@link
      * getValue} method will always return an array except for when a
      * single integer argument is given here.
+     *
      * This means that one can conveniently use objects like this:
      * <code>
      * $a = new PelEntryShort(PelTag::EXIF_IMAGE_HEIGHT, 42);
@@ -65,23 +74,24 @@ class PelEntryShort extends PelEntryNumber
      * have to be extracted.
      *
      * @param PelTag $tag
-     *                      the tag which this entry represents. This should be
-     *                      one of the constants defined in {@link PelTag}, e.g., {@link
-     *                      PelTag::IMAGE_WIDTH}, {@link PelTag::ISO_SPEED_RATINGS},
-     *                      or any other tag with format {@link PelFormat::SHORT}.
-     * @param int    $value ...
-     *                      the short(s) that this entry will
-     *                      represent. The argument passed must obey the same rules as the
-     *                      argument to {@link setValue}, namely that it should be within
-     *                      range of an unsigned short, that is between 0 and 65535
-     *                      (inclusive). If not, then a {@link PelOverFlowException} will be
-     *                      thrown.
+     *            the tag which this entry represents. This should be
+     *            one of the constants defined in {@link PelTag}, e.g., {@link
+     *            PelTag::IMAGE_WIDTH}, {@link PelTag::ISO_SPEED_RATINGS},
+     *            or any other tag with format {@link PelFormat::SHORT}.
+     *
+     * @param int $value...
+     *            the short(s) that this entry will
+     *            represent. The argument passed must obey the same rules as the
+     *            argument to {@link setValue}, namely that it should be within
+     *            range of an unsigned short, that is between 0 and 65535
+     *            (inclusive). If not, then a {@link PelOverFlowException} will be
+     *            thrown.
      */
     public function __construct($tag, $value = null)
     {
-        $this->tag    = $tag;
-        $this->min    = 0;
-        $this->max    = 65535;
+        $this->tag = $tag;
+        $this->min = 0;
+        $this->max = 65535;
         $this->format = PelFormat::SHORT;
 
         $value = func_get_args();
@@ -92,11 +102,13 @@ class PelEntryShort extends PelEntryNumber
     /**
      * Convert a number into bytes.
      *
-     * @param int          $number
+     * @param int $number
      *            the number that should be converted.
+     *
      * @param PelByteOrder $order
      *            one of {@link PelConvert::LITTLE_ENDIAN} and
      *            {@link PelConvert::BIG_ENDIAN}, specifying the target byte order.
+     *
      * @return string bytes representing the number given.
      */
     public function numberToBytes($number, $order)
@@ -106,6 +118,7 @@ class PelEntryShort extends PelEntryNumber
 
     /**
      * Get the value of an entry as text.
+     *
      * The value will be returned in a format suitable for presentation,
      * e.g., instead of returning '2' for a {@link
      * PelTag::METERING_MODE} tag, 'Center-Weighted Average' is
@@ -114,17 +127,15 @@ class PelEntryShort extends PelEntryNumber
      * @param
      *            boolean some values can be returned in a long or more
      *            brief form, and this parameter controls that.
+     *
      * @return string the value as text.
      */
     public function getText($brief = false)
     {
-        switch ($this->tag)
-        {
+        switch ($this->tag) {
             case PelTag::METERING_MODE:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Unknown');
                     case 1:
@@ -146,10 +157,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::COMPRESSION:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 1:
                         return Pel::tra('Uncompressed');
                     case 6:
@@ -159,10 +168,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::PLANAR_CONFIGURATION:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 1:
                         return Pel::tra('chunky format');
                     case 2:
@@ -172,10 +179,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::SENSING_METHOD:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 1:
                         return Pel::tra('Not defined');
                     case 2:
@@ -195,10 +200,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::LIGHT_SOURCE:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Unknown');
                     case 1:
@@ -245,10 +248,8 @@ class PelEntryShort extends PelEntryNumber
                 break;
             case PelTag::FOCAL_PLANE_RESOLUTION_UNIT:
             case PelTag::RESOLUTION_UNIT:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 2:
                         return Pel::tra('Inch');
                     case 3:
@@ -258,10 +259,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::EXPOSURE_PROGRAM:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Not defined');
                     case 1:
@@ -285,10 +284,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::ORIENTATION:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 1:
                         return Pel::tra('top - left');
                     case 2:
@@ -310,10 +307,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::YCBCR_POSITIONING:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 1:
                         return Pel::tra('centered');
                     case 2:
@@ -323,24 +318,19 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::YCBCR_SUB_SAMPLING:
-
                 // CC (e->components, 2, v);
-                if ($this->value[0] == 2 && $this->value[1] == 1)
-                {
+                if ($this->value[0] == 2 && $this->value[1] == 1) {
                     return 'YCbCr4:2:2';
                 }
-                if ($this->value[0] == 2 && $this->value[1] == 2)
-                {
+                if ($this->value[0] == 2 && $this->value[1] == 2) {
                     return 'YCbCr4:2:0';
                 }
 
                 return $this->value[0] . ', ' . $this->value[1];
                 break;
             case PelTag::PHOTOMETRIC_INTERPRETATION:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 2:
                         return 'RGB';
                     case 6:
@@ -350,10 +340,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::COLOR_SPACE:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 1:
                         return 'sRGB';
                     case 2:
@@ -365,10 +353,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::FLASH:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0x0000:
                         return Pel::tra('Flash did not fire.');
                     case 0x0001:
@@ -420,10 +406,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::CUSTOM_RENDERED:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Normal process');
                     case 1:
@@ -433,10 +417,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::EXPOSURE_MODE:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Auto exposure');
                     case 1:
@@ -448,10 +430,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::WHITE_BALANCE:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Auto white balance');
                     case 1:
@@ -461,10 +441,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::SCENE_CAPTURE_TYPE:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Standard');
                     case 1:
@@ -478,10 +456,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::GAIN_CONTROL:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Normal');
                     case 1:
@@ -497,10 +473,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::SATURATION:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Normal');
                     case 1:
@@ -513,10 +487,8 @@ class PelEntryShort extends PelEntryNumber
                 break;
             case PelTag::CONTRAST:
             case PelTag::SHARPNESS:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Normal');
                     case 1:
@@ -528,10 +500,8 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::SUBJECT_DISTANCE_RANGE:
-
                 // CC (e->components, 1, v);
-                switch ($this->value[0])
-                {
+                switch ($this->value[0]) {
                     case 0:
                         return Pel::tra('Unknown');
                     case 1:
@@ -545,8 +515,7 @@ class PelEntryShort extends PelEntryNumber
                 }
                 break;
             case PelTag::SUBJECT_AREA:
-                switch ($this->components)
-                {
+                switch ($this->components) {
                     case 2:
                         return Pel::fmt('(x,y) = (%d,%d)', $this->value[0], $this->value[1]);
                     case 3:

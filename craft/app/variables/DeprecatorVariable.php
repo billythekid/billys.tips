@@ -13,16 +13,16 @@ namespace Craft;
  */
 class DeprecatorVariable
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns the total number of deprecation errors that have been logged.
-     *
-     * @return int
-     */
-    public function getTotalLogs()
-    {
-        return craft()->deprecator->getTotalLogs();
-    }
+	/**
+	 * Returns the total number of deprecation errors that have been logged.
+	 *
+	 * @return int
+	 */
+	public function getTotalLogs()
+	{
+		return craft()->deprecator->getTotalLogs();
+	}
 }

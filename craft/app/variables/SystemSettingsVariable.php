@@ -13,28 +13,30 @@ namespace Craft;
  */
 class SystemSettingsVariable
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns whether a setting category exists.
-     *
-     * @param string $category
-     * @return bool
-     */
-    public function __isset($category)
-    {
-        return true;
-    }
+	/**
+	 * Returns whether a setting category exists.
+	 *
+	 * @param string $category
+	 *
+	 * @return bool
+	 */
+	public function __isset($category)
+	{
+		return true;
+	}
 
-    /**
-     * Returns the system settings for a category.
-     *
-     * @param string $category
-     * @return array
-     */
-    public function __get($category)
-    {
-        return craft()->systemSettings->getSettings($category);
-    }
+	/**
+	 * Returns the system settings for a category.
+	 *
+	 * @param string $category
+	 *
+	 * @return array
+	 */
+	public function __get($category)
+	{
+		return craft()->systemSettings->getSettings($category);
+	}
 }

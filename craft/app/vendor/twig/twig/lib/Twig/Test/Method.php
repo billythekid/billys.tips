@@ -14,7 +14,8 @@
 /**
  * Represents a method template test.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @deprecated since 1.12 (to be removed in 2.0)
  */
 class Twig_Test_Method extends Twig_Test
@@ -29,7 +30,7 @@ class Twig_Test_Method extends Twig_Test
         parent::__construct($options);
 
         $this->extension = $extension;
-        $this->method    = $method;
+        $this->method = $method;
     }
 
     public function compile()

@@ -23,6 +23,7 @@ interface FillInterface
      * Gets color of the fill for the given position
      *
      * @param PointInterface $position
+     *
      * @return ColorInterface
      */
     public function getColor(PointInterface $position);

@@ -13,22 +13,23 @@ namespace Craft;
  */
 class LocaleValidator extends \CValidator
 {
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @param $object
-     * @param $attribute
-     * @return null
-     */
-    protected function validateAttribute($object, $attribute)
-    {
-        $locale = $object->$attribute;
+	/**
+	 * @param $object
+	 * @param $attribute
+	 *
+	 * @return null
+	 */
+	protected function validateAttribute($object, $attribute)
+	{
+		$locale = $object->$attribute;
 
-        if ($locale && !in_array($locale, craft()->i18n->getSiteLocaleIds()))
-        {
-            $message = Craft::t('Your site isn’t set up to save content for the locale “{locale}”.', array('locale' => $locale));
-            $this->addError($object, $attribute, $message);
-        }
-    }
+		if ($locale && !in_array($locale, craft()->i18n->getSiteLocaleIds()))
+		{
+			$message = Craft::t('Your site isn’t set up to save content for the locale “{locale}”.', array('locale' => $locale));
+			$this->addError($object, $attribute, $message);
+		}
+	}
 }

@@ -13,19 +13,20 @@ namespace Craft;
  */
 class RequireLogin_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles a RequireLogin_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $compiler
-            ->addDebugInfo($this)
-            ->write("\Craft\craft()->userSession->requireLogin();\n");
-    }
+	/**
+	 * Compiles a RequireLogin_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler
+		    ->addDebugInfo($this)
+		    ->write("\Craft\craft()->userSession->requireLogin();\n");
+	}
 }

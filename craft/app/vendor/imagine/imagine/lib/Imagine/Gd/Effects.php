@@ -33,8 +33,7 @@ class Effects implements EffectsInterface
      */
     public function gamma($correction)
     {
-        if (false === imagegammacorrect($this->resource, 1.0, $correction))
-        {
+        if (false === imagegammacorrect($this->resource, 1.0, $correction)) {
             throw new RuntimeException('Failed to apply gamma correction to the image');
         }
 
@@ -46,9 +45,8 @@ class Effects implements EffectsInterface
      */
     public function negative()
     {
-        if (false === imagefilter($this->resource, IMG_FILTER_NEGATE))
-        {
-            throw new RuntimeException('Failed to negate the image');
+        if (false === imagefilter($this->resource, IMG_FILTER_NEGATE)) {
+           throw new RuntimeException('Failed to negate the image');
         }
 
         return $this;
@@ -59,9 +57,8 @@ class Effects implements EffectsInterface
      */
     public function grayscale()
     {
-        if (false === imagefilter($this->resource, IMG_FILTER_GRAYSCALE))
-        {
-            throw new RuntimeException('Failed to grayscale the image');
+        if (false === imagefilter($this->resource, IMG_FILTER_GRAYSCALE)) {
+           throw new RuntimeException('Failed to grayscale the image');
         }
 
         return $this;
@@ -72,13 +69,11 @@ class Effects implements EffectsInterface
      */
     public function colorize(ColorInterface $color)
     {
-        if (!$color instanceof RGBColor)
-        {
+        if (!$color instanceof RGBColor) {
             throw new RuntimeException('Colorize effects only accepts RGB color in GD context');
         }
 
-        if (false === imagefilter($this->resource, IMG_FILTER_COLORIZE, $color->getRed(), $color->getGreen(), $color->getBlue()))
-        {
+        if (false === imagefilter($this->resource, IMG_FILTER_COLORIZE, $color->getRed(), $color->getGreen(), $color->getBlue())) {
             throw new RuntimeException('Failed to colorize the image');
         }
 
@@ -90,11 +85,10 @@ class Effects implements EffectsInterface
      */
     public function sharpen()
     {
-        $sharpenMatrix = array(array(-1, -1, -1), array(-1, 16, -1), array(-1, -1, -1));
-        $divisor       = array_sum(array_map('array_sum', $sharpenMatrix));
+        $sharpenMatrix = array(array(-1,-1,-1), array(-1,16,-1), array(-1,-1,-1));
+        $divisor = array_sum(array_map('array_sum', $sharpenMatrix));
 
-        if (false === imageconvolution($this->resource, $sharpenMatrix, $divisor, 0))
-        {
+        if (false === imageconvolution($this->resource, $sharpenMatrix, $divisor, 0)) {
             throw new RuntimeException('Failed to sharpen the image');
         }
 
@@ -106,8 +100,7 @@ class Effects implements EffectsInterface
      */
     public function blur($sigma = 1)
     {
-        if (false === imagefilter($this->resource, IMG_FILTER_GAUSSIAN_BLUR))
-        {
+        if (false === imagefilter($this->resource, IMG_FILTER_GAUSSIAN_BLUR)) {
             throw new RuntimeException('Failed to blur the image');
         }
 

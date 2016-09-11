@@ -13,12 +13,12 @@ namespace Craft;
  */
 class EmailTestException extends Exception
 {
-    /**
-     * Constructor
-     */
-    public function __construct($message = '', $code = 0, $previous = null)
-    {
-        $message = 'Email settings test failure' . ($message ? ': ' . $message : '');
-        parent::__construct($message, $code, $previous);
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct($message = '', $code = 0, $previous = null)
+	{
+		$message = 'Email settings test failure' . ($message ? ': '.$message : '');
+		parent::__construct($message, $code, $previous);
+	}
 }

@@ -32,7 +32,7 @@ class Twig_Tests_IntegrationTest extends Twig_Test_IntegrationTestCase
 
     public function getFixturesDir()
     {
-        return dirname(__FILE__) . '/Fixtures/';
+        return dirname(__FILE__).'/Fixtures/';
     }
 }
 
@@ -50,7 +50,7 @@ class TwigTestFoo implements Iterator
 
     public function bar($param1 = null, $param2 = null)
     {
-        return 'bar' . ($param1 ? '_' . $param1 : '') . ($param2 ? '-' . $param2 : '');
+        return 'bar'.($param1 ? '_'.$param1 : '').($param2 ? '-'.$param2 : '');
     }
 
     public function getFoo()
@@ -194,12 +194,12 @@ class TwigTestExtension extends Twig_Extension
 
     public function dynamic_path($element, $item)
     {
-        return $element . '/' . $item;
+        return $element.'/'.$item;
     }
 
     public function dynamic_foo($foo, $bar, $item)
     {
-        return $foo . '/' . $bar . '/' . $item;
+        return $foo.'/'.$bar.'/'.$item;
     }
 
     public function escape_something($value)

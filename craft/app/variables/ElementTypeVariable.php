@@ -13,79 +13,81 @@ namespace Craft;
  */
 class ElementTypeVariable extends BaseComponentTypeVariable
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns whether this element type stores data on a per-locale basis.
-     *
-     * @return bool
-     */
-    public function isLocalized()
-    {
-        return $this->component->isLocalized();
-    }
+	/**
+	 * Returns whether this element type stores data on a per-locale basis.
+	 *
+	 * @return bool
+	 */
+	public function isLocalized()
+	{
+		return $this->component->isLocalized();
+	}
 
-    /**
-     * Returns whether this element type can have statuses.
-     *
-     * @return bool
-     */
-    public function hasStatuses()
-    {
-        return $this->component->hasStatuses();
-    }
+	/**
+	 * Returns whether this element type can have statuses.
+	 *
+	 * @return bool
+	 */
+	public function hasStatuses()
+	{
+		return $this->component->hasStatuses();
+	}
 
-    /**
-     * Returns all of the possible statuses that elements of this type may have.
-     *
-     * @return array|null
-     */
-    public function getStatuses()
-    {
-        return $this->component->getStatuses();
-    }
+	/**
+	 * Returns all of the possible statuses that elements of this type may have.
+	 *
+	 * @return array|null
+	 */
+	public function getStatuses()
+	{
+		return $this->component->getStatuses();
+	}
 
-    /**
-     * Return a key/label list of the element type's sources.
-     *
-     * @param string|null $context
-     * @return array|false
-     */
-    public function getSources($context = null)
-    {
-        return $this->component->getSources($context);
-    }
+	/**
+	 * Return a key/label list of the element type's sources.
+	 *
+	 * @param string|null $context
+	 *
+	 * @return array|false
+	 */
+	public function getSources($context = null)
+	{
+		return $this->component->getSources($context);
+	}
 
-    /**
-     * Returns whether this element type can have titles.
-     *
-     * @return bool
-     */
-    public function hasTitles()
-    {
-        return $this->component->hasTitles();
-    }
+	/**
+	 * Returns whether this element type can have titles.
+	 *
+	 * @return bool
+	 */
+	public function hasTitles()
+	{
+		return $this->component->hasTitles();
+	}
 
-    /**
-     * Returns the attributes that elements can be sorted by.
-     *
-     * @return array
-     */
-    public function defineSortableAttributes()
-    {
-        return $this->component->defineSortableAttributes();
-    }
+	/**
+	 * Returns the attributes that elements can be sorted by.
+	 *
+	 * @return array
+	 */
+	public function defineSortableAttributes()
+	{
+		return $this->component->defineSortableAttributes();
+	}
 
-    /**
-     * Returns the table view HTML for a given attribute.
-     *
-     * @param BaseElementModel $element
-     * @param string           $attribute
-     * @return string
-     */
-    public function getTableAttributeHtml(BaseElementModel $element, $attribute)
-    {
-        return $this->component->getTableAttributeHtml($element, $attribute);
-    }
+	/**
+	 * Returns the table view HTML for a given attribute.
+	 *
+	 * @param BaseElementModel $element
+	 * @param string           $attribute
+	 *
+	 * @return string
+	 */
+	public function getTableAttributeHtml(BaseElementModel $element, $attribute)
+	{
+		return $this->component->getTableAttributeHtml($element, $attribute);
+	}
 }

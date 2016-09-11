@@ -11,9 +11,11 @@
 
 /**
  * Represents a callable template filter.
+ *
  * Use Twig_SimpleFilter instead.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @deprecated since 1.12 (to be removed in 2.0)
  */
 interface Twig_FilterCallableInterface

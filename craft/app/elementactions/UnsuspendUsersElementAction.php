@@ -13,36 +13,39 @@ namespace Craft;
  */
 class UnsuspendUsersElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Unsuspend');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Unsuspend');
+	}
 
-    /**
-     * @inheritDoc IElementAction::performAction()
-     * @param ElementCriteriaModel $criteria
-     * @return bool
-     */
-    public function performAction(ElementCriteriaModel $criteria)
-    {
-        // Get the users that are suspended
-        $criteria->status = UserStatus::Suspended;
-        $users            = $criteria->find();
+	/**
+	 * @inheritDoc IElementAction::performAction()
+	 *
+	 * @param ElementCriteriaModel $criteria
+	 *
+	 * @return bool
+	 */
+	public function performAction(ElementCriteriaModel $criteria)
+	{
+		// Get the users that are suspended
+		$criteria->status = UserStatus::Suspended;
+		$users = $criteria->find();
 
-        foreach ($users as $user)
-        {
-            craft()->users->unsuspendUser($user);
-        }
+		foreach ($users as $user)
+		{
+			craft()->users->unsuspendUser($user);
+		}
 
-        $this->setMessage(Craft::t('Users unsuspended.'));
+		$this->setMessage(Craft::t('Users unsuspended.'));
 
-        return true;
-    }
+		return true;
+	}
 }

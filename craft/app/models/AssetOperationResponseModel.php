@@ -13,173 +13,176 @@ namespace Craft;
  */
 class AssetOperationResponseModel extends BaseModel
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const StatusError    = 'error';
-    const StatusSuccess  = 'success';
-    const StatusConflict = 'conflict';
+	const StatusError = 'error';
+	const StatusSuccess = 'success';
+	const StatusConflict = 'conflict';
 
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var array
-     */
-    private $_data = array();
+	/**
+	 * @var array
+	 */
+	private $_data = array();
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Set an error message.
-     *
-     * @param $message
-     * @return AssetOperationResponseModel
-     */
-    public function setError($message)
-    {
-        $this->setAttribute('errorMessage', $message);
-        $this->setAttribute('status', static::StatusError);
+	/**
+	 * Set an error message.
+	 *
+	 * @param $message
+	 *
+	 * @return AssetOperationResponseModel
+	 */
+	public function setError($message)
+	{
+		$this->setAttribute('errorMessage', $message);
+		$this->setAttribute('status', static::StatusError);
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Set status to success.
-     *
-     * @return AssetOperationResponseModel
-     */
-    public function setSuccess()
-    {
-        $this->setAttribute('status', static::StatusSuccess);
+	/**
+	 * Set status to success.
+	 *
+	 * @return AssetOperationResponseModel
+	 */
+	public function setSuccess()
+	{
+		$this->setAttribute('status', static::StatusSuccess);
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set prompt data array.
+	 *
+	 * @param $promptData
+	 *
+	 * @return AssetOperationResponseModel
+	 */
+	public function setPrompt($promptData)
+	{
+		$this->setAttribute('status', static::StatusConflict);
+		$this->setDataItem('prompt', $promptData);
+		return $this;
+	}
 
-    /**
-     * Set prompt data array.
-     *
-     * @param $promptData
-     * @return AssetOperationResponseModel
-     */
-    public function setPrompt($promptData)
-    {
-        $this->setAttribute('status', static::StatusConflict);
-        $this->setDataItem('prompt', $promptData);
+	/**
+	 * Set a data item.
+	 *
+	 * @param $name
+	 * @param $value
+	 *
+	 * @return AssetOperationResponseModel
+	 */
+	public function setDataItem($name, $value)
+	{
+		$this->_data[$name] = $value;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * Get a data item.
+	 *
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	public function getDataItem($name)
+	{
+		if (isset($this->_data[$name]))
+		{
+			return $this->_data[$name];
+		}
 
-    /**
-     * Set a data item.
-     *
-     * @param $name
-     * @param $value
-     * @return AssetOperationResponseModel
-     */
-    public function setDataItem($name, $value)
-    {
-        $this->_data[$name] = $value;
+		return null;
+	}
 
-        return $this;
-    }
+	/**
+	 * Delete a data item.
+	 *
+	 * @param $name
+	 *
+	 * @return null
+	 */
+	public function deleteDataItem($name)
+	{
+		if (isset($this->_data[$name]))
+		{
+			unset($this->_data[$name]);
+		}
+	}
 
-    /**
-     * Get a data item.
-     *
-     * @param $name
-     * @return mixed
-     */
-    public function getDataItem($name)
-    {
-        if (isset($this->_data[$name]))
-        {
-            return $this->_data[$name];
-        }
+	/**
+	 * @return bool
+	 */
+	public function isConflict()
+	{
+		return $this->getAttribute('status') == static::StatusConflict;
+	}
 
-        return null;
-    }
+	/**
+	 * @return bool
+	 */
+	public function isSuccess()
+	{
+		return $this->getAttribute('status') == static::StatusSuccess;
+	}
 
-    /**
-     * Delete a data item.
-     *
-     * @param $name
-     * @return null
-     */
-    public function deleteDataItem($name)
-    {
-        if (isset($this->_data[$name]))
-        {
-            unset($this->_data[$name]);
-        }
-    }
+	/**
+	 * @return bool
+	 */
+	public function isError()
+	{
+		return $this->getAttribute('status') == static::StatusError;
+	}
 
-    /**
-     * @return bool
-     */
-    public function isConflict()
-    {
-        return $this->getAttribute('status') == static::StatusConflict;
-    }
+	/**
+	 * Return a response array ready to be transported.
+	 *
+	 * @return array
+	 */
+	public function getResponseData()
+	{
+		switch ($this->getAttribute('status'))
+		{
+			case static::StatusError:
+			{
+				return array_merge($this->_data, array(static::StatusError => $this->getAttribute('errorMessage')));
+			}
 
-    /**
-     * @return bool
-     */
-    public function isSuccess()
-    {
-        return $this->getAttribute('status') == static::StatusSuccess;
-    }
+			case static::StatusSuccess:
+			{
+				return array_merge($this->_data, array(static::StatusSuccess => true));
+			}
 
-    /**
-     * @return bool
-     */
-    public function isError()
-    {
-        return $this->getAttribute('status') == static::StatusError;
-    }
+			case static::StatusConflict:
+			{
+				return $this->_data;
+			}
 
-    /**
-     * Return a response array ready to be transported.
-     *
-     * @return array
-     */
-    public function getResponseData()
-    {
-        switch ($this->getAttribute('status'))
-        {
-            case static::StatusError:
-            {
-                return array_merge($this->_data, array(static::StatusError => $this->getAttribute('errorMessage')));
-            }
+		}
 
-            case static::StatusSuccess:
-            {
-                return array_merge($this->_data, array(static::StatusSuccess => true));
-            }
+		return array();
+	}
 
-            case static::StatusConflict:
-            {
-                return $this->_data;
-            }
+	// Protected Methods
+	// =========================================================================
 
-        }
-
-        return array();
-    }
-
-    // Protected Methods
-    // =========================================================================
-
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'status'       => array(AttributeType::Enum, 'values' => array(static::StatusError, static::StatusSuccess, static::StatusConflict)),
-            'errorMessage' => AttributeType::String,
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'status'		=> array(AttributeType::Enum, 'values' => array(static::StatusError, static::StatusSuccess, static::StatusConflict)),
+			'errorMessage'	=> AttributeType::String
+		);
+	}
 }

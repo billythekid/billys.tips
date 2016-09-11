@@ -24,7 +24,7 @@ class RequestMediator
     public function __construct(RequestInterface $request, $emitIo = false)
     {
         $this->request = $request;
-        $this->emitIo  = $emitIo;
+        $this->emitIo = $emitIo;
     }
 
     /**
@@ -32,6 +32,7 @@ class RequestMediator
      *
      * @param resource $curl   Curl handle
      * @param string   $header Received header
+     *
      * @return int
      */
     public function receiveResponseHeader($curl, $header)
@@ -40,21 +41,18 @@ class RequestMediator
         $length = strlen($header);
         $header = str_replace($normalize, '', $header);
 
-        if (strpos($header, 'HTTP/') === 0)
-        {
+        if (strpos($header, 'HTTP/') === 0) {
 
             $startLine = explode(' ', $header, 3);
             list($protocol, $version) = explode('/', trim($startLine[0]));
-            $code   = $startLine[1];
+            $code = $startLine[1];
             $status = isset($startLine[2]) ? $startLine[2] : '';
 
             // Only download the body of the response to the specified response
             // body when a successful response is received.
-            if ($code >= 200 && $code < 300)
-            {
+            if ($code >= 200 && $code < 300) {
                 $body = $this->request->getResponseBody();
-            } else
-            {
+            } else {
                 $body = EntityBody::factory();
             }
 
@@ -67,11 +65,10 @@ class RequestMediator
                 'request'       => $this,
                 'line'          => $header,
                 'status_code'   => $code,
-                'reason_phrase' => $status,
+                'reason_phrase' => $status
             ));
 
-        } elseif ($pos = strpos($header, ':'))
-        {
+        } elseif ($pos = strpos($header, ':')) {
             $this->request->getResponse()->addHeader(
                 trim(substr($header, 0, $pos)),
                 trim(substr($header, $pos + 1))
@@ -84,11 +81,11 @@ class RequestMediator
     /**
      * Received a progress notification
      *
-     * @param int      $downloadSize Total download size
-     * @param int      $downloaded   Amount of bytes downloaded
-     * @param int      $uploadSize   Total upload size
-     * @param int      $uploaded     Amount of bytes uploaded
-     * @param resource $handle       CurlHandle object
+     * @param int        $downloadSize Total download size
+     * @param int        $downloaded   Amount of bytes downloaded
+     * @param int        $uploadSize   Total upload size
+     * @param int        $uploaded     Amount of bytes uploaded
+     * @param resource   $handle       CurlHandle object
      */
     public function progress($downloadSize, $downloaded, $uploadSize, $uploaded, $handle = null)
     {
@@ -98,7 +95,7 @@ class RequestMediator
             'download_size' => $downloadSize,
             'downloaded'    => $downloaded,
             'upload_size'   => $uploadSize,
-            'uploaded'      => $uploaded,
+            'uploaded'      => $uploaded
         ));
     }
 
@@ -107,23 +104,21 @@ class RequestMediator
      *
      * @param resource $curl  Curl handle
      * @param string   $write Data that was received
+     *
      * @return int
      */
     public function writeResponseBody($curl, $write)
     {
-        if ($this->emitIo)
-        {
+        if ($this->emitIo) {
             $this->request->dispatch('curl.callback.write', array(
                 'request' => $this->request,
-                'write'   => $write,
+                'write'   => $write
             ));
         }
 
-        if ($response = $this->request->getResponse())
-        {
+        if ($response = $this->request->getResponse()) {
             return $response->getBody()->write($write);
-        } else
-        {
+        } else {
             // Unexpected data received before response headers - abort transfer
             return 0;
         }
@@ -135,18 +130,17 @@ class RequestMediator
      * @param resource $ch     Curl handle
      * @param resource $fd     File descriptor
      * @param int      $length Amount of data to read
+     *
      * @return string
      */
     public function readRequestBody($ch, $fd, $length)
     {
-        if (!($body = $this->request->getBody()))
-        {
+        if (!($body = $this->request->getBody())) {
             return '';
         }
 
-        $read = (string)$body->read($length);
-        if ($this->emitIo)
-        {
+        $read = (string) $body->read($length);
+        if ($this->emitIo) {
             $this->request->dispatch('curl.callback.read', array('request' => $this->request, 'read' => $read));
         }
 

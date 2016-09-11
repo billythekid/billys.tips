@@ -23,26 +23,24 @@ class EntityBody extends Stream implements EntityBodyInterface
      *
      * @param resource|string|EntityBody $resource Entity body data
      * @param int                        $size     Size of the data contained in the resource
+     *
      * @return EntityBody
      * @throws InvalidArgumentException if the $resource arg is not a resource or string
      */
     public static function factory($resource = '', $size = null)
     {
-        if ($resource instanceof EntityBodyInterface)
-        {
+        if ($resource instanceof EntityBodyInterface) {
             return $resource;
         }
 
-        switch (gettype($resource))
-        {
+        switch (gettype($resource)) {
             case 'string':
                 return self::fromString($resource);
             case 'resource':
                 return new static($resource, $size);
             case 'object':
-                if (method_exists($resource, '__toString'))
-                {
-                    return self::fromString((string)$resource);
+                if (method_exists($resource, '__toString')) {
+                    return self::fromString((string) $resource);
                 }
                 break;
             case 'array':
@@ -54,8 +52,7 @@ class EntityBody extends Stream implements EntityBodyInterface
 
     public function setRewindFunction($callable)
     {
-        if (!is_callable($callable))
-        {
+        if (!is_callable($callable)) {
             throw new InvalidArgumentException('Must specify a callable');
         }
 
@@ -73,13 +70,13 @@ class EntityBody extends Stream implements EntityBodyInterface
      * Create a new EntityBody from a string
      *
      * @param string $string String of data
+     *
      * @return EntityBody
      */
     public static function fromString($string)
     {
         $stream = fopen('php://temp', 'r+');
-        if ($string !== '')
-        {
+        if ($string !== '') {
             fwrite($stream, $string);
             rewind($stream);
         }
@@ -89,7 +86,7 @@ class EntityBody extends Stream implements EntityBodyInterface
 
     public function compress($filter = 'zlib.deflate')
     {
-        $result                = $this->handleCompression($filter);
+        $result = $this->handleCompression($filter);
         $this->contentEncoding = $result ? $filter : false;
 
         return $result;
@@ -101,16 +98,13 @@ class EntityBody extends Stream implements EntityBodyInterface
 
         // When inflating gzipped data, the first 10 bytes must be stripped
         // if a gzip header is present
-        if ($filter == 'zlib.inflate')
-        {
+        if ($filter == 'zlib.inflate') {
             // @codeCoverageIgnoreStart
-            if (!$this->isReadable() || ($this->isConsumed() && !$this->isSeekable()))
-            {
+            if (!$this->isReadable() || ($this->isConsumed() && !$this->isSeekable())) {
                 return false;
             }
             // @codeCoverageIgnoreEnd
-            if (stream_get_contents($this->stream, 3, 0) === "\x1f\x8b\x08")
-            {
+            if (stream_get_contents($this->stream, 3, 0) === "\x1f\x8b\x08") {
                 $offsetStart = 10;
             }
         }
@@ -132,11 +126,9 @@ class EntityBody extends Stream implements EntityBodyInterface
 
     public function getContentMd5($rawOutput = false, $base64Encode = false)
     {
-        if ($hash = self::getHash($this, 'md5', $rawOutput))
-        {
+        if ($hash = self::getHash($this, 'md5', $rawOutput)) {
             return $hash && $base64Encode ? base64_encode($hash) : $hash;
-        } else
-        {
+        } else {
             return false;
         }
     }
@@ -147,6 +139,7 @@ class EntityBody extends Stream implements EntityBodyInterface
      * @param EntityBodyInterface $body         Entity body to calculate the hash for
      * @param bool                $rawOutput    Whether or not to use raw output
      * @param bool                $base64Encode Whether or not to base64 encode raw output (only if raw output is true)
+     *
      * @return bool|string Returns an MD5 string on success or FALSE on failure
      * @deprecated This will be deprecated soon
      * @codeCoverageIgnore
@@ -154,7 +147,6 @@ class EntityBody extends Stream implements EntityBodyInterface
     public static function calculateMd5(EntityBodyInterface $body, $rawOutput = false, $base64Encode = false)
     {
         Version::warn(__CLASS__ . ' is deprecated. Use getContentMd5()');
-
         return $body->getContentMd5($rawOutput, $base64Encode);
     }
 
@@ -168,38 +160,35 @@ class EntityBody extends Stream implements EntityBodyInterface
     public function getContentEncoding()
     {
         return strtr($this->contentEncoding, array(
-            'zlib.deflate'   => 'gzip',
-            'bzip2.compress' => 'compress',
+            'zlib.deflate' => 'gzip',
+            'bzip2.compress' => 'compress'
         )) ?: false;
     }
 
     protected function handleCompression($filter, $offsetStart = 0)
     {
         // @codeCoverageIgnoreStart
-        if (!$this->isReadable() || ($this->isConsumed() && !$this->isSeekable()))
-        {
+        if (!$this->isReadable() || ($this->isConsumed() && !$this->isSeekable())) {
             return false;
         }
         // @codeCoverageIgnoreEnd
 
         $handle = fopen('php://temp', 'r+');
         $filter = @stream_filter_append($handle, $filter, STREAM_FILTER_WRITE);
-        if (!$filter)
-        {
+        if (!$filter) {
             return false;
         }
 
         // Seek to the offset start if possible
         $this->seek($offsetStart);
-        while ($data = fread($this->stream, 8096))
-        {
+        while ($data = fread($this->stream, 8096)) {
             fwrite($handle, $data);
         }
 
         fclose($this->stream);
         $this->stream = $handle;
         stream_filter_remove($filter);
-        $stat       = fstat($this->stream);
+        $stat = fstat($this->stream);
         $this->size = $stat['size'];
         $this->rebuildCache();
         $this->seek(0);

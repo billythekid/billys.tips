@@ -11,6 +11,7 @@
 
 /**
  * Interface implemented by cache classes.
+ *
  * It is highly recommended to always store templates on the filesystem to
  * benefit from the PHP opcode cache. This interface is mostly useful if you
  * need to implement a custom strategy for storing templates on the filesystem.
@@ -24,6 +25,7 @@ interface Twig_CacheInterface
      *
      * @param string $name      The template name
      * @param string $className The template class name
+     *
      * @return string
      */
     public function generateKey($name, $className);
@@ -47,6 +49,7 @@ interface Twig_CacheInterface
      * Returns the modification timestamp of a key.
      *
      * @param string $key The cache key
+     *
      * @return int
      */
     public function getTimestamp($key);

@@ -14,73 +14,81 @@ namespace Craft;
  */
 class GlobalSetElementType extends BaseElementType
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Global Sets');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Global Sets');
+	}
 
-    /**
-     * @inheritDoc IElementType::hasContent()
-     * @return bool
-     */
-    public function hasContent()
-    {
-        return true;
-    }
+	/**
+	 * @inheritDoc IElementType::hasContent()
+	 *
+	 * @return bool
+	 */
+	public function hasContent()
+	{
+		return true;
+	}
 
-    /**
-     * @inheritDoc IElementType::isLocalized()
-     * @return bool
-     */
-    public function isLocalized()
-    {
-        return true;
-    }
+	/**
+	 * @inheritDoc IElementType::isLocalized()
+	 *
+	 * @return bool
+	 */
+	public function isLocalized()
+	{
+		return true;
+	}
 
-    /**
-     * @inheritDoc IElementType::defineCriteriaAttributes()
-     * @return array
-     */
-    public function defineCriteriaAttributes()
-    {
-        return array(
-            'handle' => AttributeType::Mixed,
-            'order'  => array(AttributeType::String, 'default' => 'name'),
-        );
-    }
+	/**
+	 * @inheritDoc IElementType::defineCriteriaAttributes()
+	 *
+	 * @return array
+	 */
+	public function defineCriteriaAttributes()
+	{
+		return array(
+			'handle' => AttributeType::Mixed,
+			'order' => array(AttributeType::String, 'default' => 'name'),
+		);
+	}
 
-    /**
-     * @inheritDoc IElementType::modifyElementsQuery()
-     * @param DbCommand            $query
-     * @param ElementCriteriaModel $criteria
-     * @return mixed
-     */
-    public function modifyElementsQuery(DbCommand $query, ElementCriteriaModel $criteria)
-    {
-        $query
-            ->addSelect('globalsets.name, globalsets.handle, globalsets.fieldLayoutId')
-            ->join('globalsets globalsets', 'globalsets.id = elements.id');
+	/**
+	 * @inheritDoc IElementType::modifyElementsQuery()
+	 *
+	 * @param DbCommand $query
+	 * @param ElementCriteriaModel $criteria
+	 *
+	 * @return mixed
+	 */
+	public function modifyElementsQuery(DbCommand $query, ElementCriteriaModel $criteria)
+	{
+		$query
+			->addSelect('globalsets.name, globalsets.handle, globalsets.fieldLayoutId')
+			->join('globalsets globalsets', 'globalsets.id = elements.id');
 
-        if ($criteria->handle)
-        {
-            $query->andWhere(DbHelper::parseParam('globalsets.handle', $criteria->handle, $query->params));
-        }
-    }
+		if ($criteria->handle)
+		{
+			$query->andWhere(DbHelper::parseParam('globalsets.handle', $criteria->handle, $query->params));
+		}
+	}
 
-    /**
-     * @inheritDoc IElementType::populateElementModel()
-     * @param array $row
-     * @return array
-     */
-    public function populateElementModel($row)
-    {
-        return GlobalSetModel::populateModel($row);
-    }
+	/**
+	 * @inheritDoc IElementType::populateElementModel()
+	 *
+	 * @param array $row
+	 *
+	 * @return array
+	 */
+	public function populateElementModel($row)
+	{
+		return GlobalSetModel::populateModel($row);
+	}
 }

@@ -31,10 +31,9 @@ class HistoryPlugin implements EventSubscriberInterface, \IteratorAggregate, \Co
     public function __toString()
     {
         $lines = array();
-        foreach ($this->transactions as $entry)
-        {
+        foreach ($this->transactions as $entry) {
             $response = isset($entry['response']) ? $entry['response'] : '';
-            $lines[]  = '> ' . trim($entry['request']) . "\n\n< " . trim($response) . "\n";
+            $lines[] = '> ' . trim($entry['request']) . "\n\n< " . trim($response) . "\n";
         }
 
         return implode("\n", $lines);
@@ -45,18 +44,17 @@ class HistoryPlugin implements EventSubscriberInterface, \IteratorAggregate, \Co
      *
      * @param RequestInterface $request  Request to add
      * @param Response         $response Response of the request
+     *
      * @return HistoryPlugin
      */
     public function add(RequestInterface $request, Response $response = null)
     {
-        if (!$response && $request->getResponse())
-        {
+        if (!$response && $request->getResponse()) {
             $response = $request->getResponse();
         }
 
         $this->transactions[] = array('request' => $request, 'response' => $response);
-        if (count($this->transactions) > $this->getlimit())
-        {
+        if (count($this->transactions) > $this->getlimit()) {
             array_shift($this->transactions);
         }
 
@@ -67,11 +65,12 @@ class HistoryPlugin implements EventSubscriberInterface, \IteratorAggregate, \Co
      * Set the max number of requests to store
      *
      * @param int $limit Limit
+     *
      * @return HistoryPlugin
      */
     public function setLimit($limit)
     {
-        $this->limit = (int)$limit;
+        $this->limit = (int) $limit;
 
         return $this;
     }
@@ -105,10 +104,8 @@ class HistoryPlugin implements EventSubscriberInterface, \IteratorAggregate, \Co
     public function getIterator()
     {
         // Return an iterator just like the old iteration of the HistoryPlugin for BC compatibility (use getAll())
-        return new \ArrayIterator(array_map(function ($entry)
-        {
+        return new \ArrayIterator(array_map(function ($entry) {
             $entry['request']->getParams()->set('actual_response', $entry['response']);
-
             return $entry['request'];
         }, $this->transactions));
     }

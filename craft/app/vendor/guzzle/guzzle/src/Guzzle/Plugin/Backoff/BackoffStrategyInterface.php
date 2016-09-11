@@ -18,6 +18,7 @@ interface BackoffStrategyInterface
      * @param RequestInterface $request  Request that was sent
      * @param Response         $response Response that was received. Note that there may not be a response
      * @param HttpException    $e        Exception that was encountered if any
+     *
      * @return bool|int Returns false to not retry or the number of seconds to delay between retries
      */
     public function getBackoffPeriod(

@@ -22,6 +22,7 @@ interface ClientInterface extends HttpClientInterface, FromConfigInterface
      *
      * @param string $name Name of the command to retrieve
      * @param array  $args Arguments to pass to the command
+     *
      * @return CommandInterface
      * @throws InvalidArgumentException if no command can be found by name
      */
@@ -30,8 +31,8 @@ interface ClientInterface extends HttpClientInterface, FromConfigInterface
     /**
      * Execute one or more commands
      *
-     * @param CommandInterface|array|Traversable $command Command, array of commands or Traversable object containing
-     *                                                    commands to execute
+     * @param CommandInterface|array|Traversable $command Command, array of commands or Traversable object containing commands to execute
+     *
      * @return mixed Returns the result of the executed command or an array of commands if executing multiple commands
      * @throws InvalidArgumentException if an invalid command is passed
      * @throws CommandTransferException if an exception is encountered when transferring multiple commands
@@ -42,6 +43,7 @@ interface ClientInterface extends HttpClientInterface, FromConfigInterface
      * Set the service description of the client
      *
      * @param ServiceDescriptionInterface $service Service description
+     *
      * @return ClientInterface
      */
     public function setDescription(ServiceDescriptionInterface $service);
@@ -59,6 +61,7 @@ interface ClientInterface extends HttpClientInterface, FromConfigInterface
      * @param string|CommandInterface $command         Command class or command name.
      * @param array                   $commandOptions  Command options used when creating commands.
      * @param array                   $iteratorOptions Iterator options passed to the iterator when it is instantiated.
+     *
      * @return ResourceIteratorInterface
      */
     public function getIterator($command, array $commandOptions = null, array $iteratorOptions = array());

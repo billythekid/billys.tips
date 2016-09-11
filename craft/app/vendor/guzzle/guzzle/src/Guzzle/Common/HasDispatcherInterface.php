@@ -21,6 +21,7 @@ interface HasDispatcherInterface
      * Set the EventDispatcher of the request
      *
      * @param EventDispatcherInterface $eventDispatcher
+     *
      * @return self
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher);
@@ -37,6 +38,7 @@ interface HasDispatcherInterface
      *
      * @param string $eventName Name of the event to dispatch
      * @param array  $context   Context of the event
+     *
      * @return Event Returns the created event object
      */
     public function dispatch($eventName, array $context = array());
@@ -45,6 +47,7 @@ interface HasDispatcherInterface
      * Add an event subscriber to the dispatcher
      *
      * @param EventSubscriberInterface $subscriber Event subscriber
+     *
      * @return self
      */
     public function addSubscriber(EventSubscriberInterface $subscriber);

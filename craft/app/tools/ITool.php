@@ -13,34 +13,36 @@ namespace Craft;
  */
 interface ITool extends IComponentType
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc ITool::getIconValue()
-     * @return string
-     */
-    public function getIconValue();
+	/**
+	 * @inheritDoc ITool::getIconValue()
+	 *
+	 * @return string
+	 */
+	public function getIconValue();
 
-    /**
-     * Returns the tool's options HTML.
-     *
-     * @return string
-     */
-    public function getOptionsHtml();
+	/**
+	 * Returns the tool's options HTML.
+	 *
+	 * @return string
+	 */
+	public function getOptionsHtml();
 
-    /**
-     * Returns the tool's button label.
-     *
-     * @return string
-     */
-    public function getButtonLabel();
+	/**
+	 * Returns the tool's button label.
+	 *
+	 * @return string
+	 */
+	public function getButtonLabel();
 
-    /**
-     * Performs the tool's action.
-     *
-     * @param array $params
-     * @return array
-     */
-    public function performAction($params = array());
+	/**
+	 * Performs the tool's action.
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 */
+	public function performAction($params = array());
 }

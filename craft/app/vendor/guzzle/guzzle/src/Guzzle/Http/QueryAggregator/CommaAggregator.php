@@ -11,11 +11,9 @@ class CommaAggregator implements QueryAggregatorInterface
 {
     public function aggregate($key, $value, QueryString $query)
     {
-        if ($query->isUrlEncoding())
-        {
+        if ($query->isUrlEncoding()) {
             return array($query->encodeValue($key) => implode(',', array_map(array($query, 'encodeValue'), $value)));
-        } else
-        {
+        } else {
             return array($key => implode(',', $value));
         }
     }

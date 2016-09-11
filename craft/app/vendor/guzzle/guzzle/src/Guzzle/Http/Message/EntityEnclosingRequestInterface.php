@@ -12,7 +12,7 @@ use Guzzle\Http\QueryString;
 interface EntityEnclosingRequestInterface extends RequestInterface
 {
     const URL_ENCODED = 'application/x-www-form-urlencoded; charset=utf-8';
-    const MULTIPART   = 'multipart/form-data';
+    const MULTIPART = 'multipart/form-data';
 
     /**
      * Set the body of the request
@@ -36,6 +36,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      * Get a POST field from the request
      *
      * @param string $field Field to retrieve
+     *
      * @return mixed|null
      */
     public function getPostField($field);
@@ -52,6 +53,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      *
      * @param string $key   Key to set
      * @param string $value Value to set
+     *
      * @return self
      */
     public function setPostField($key, $value);
@@ -60,6 +62,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      * Add POST fields to use in the request
      *
      * @param QueryString|array $fields POST fields
+     *
      * @return self
      */
     public function addPostFields($fields);
@@ -68,6 +71,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      * Remove a POST field or file by name
      *
      * @param string $field Name of the POST field or file to remove
+     *
      * @return self
      */
     public function removePostField($field);
@@ -83,6 +87,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      * Get a POST file from the request
      *
      * @param string $fieldName POST fields to retrieve
+     *
      * @return array|null Returns an array wrapping an array of PostFileInterface objects
      */
     public function getPostFile($fieldName);
@@ -91,6 +96,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      * Remove a POST file from the request
      *
      * @param string $fieldName POST file field name to remove
+     *
      * @return self
      */
     public function removePostFile($fieldName);
@@ -111,6 +117,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      * Add POST files to use in the upload
      *
      * @param array $files An array of POST fields => filenames where filename can be a string or PostFileInterface
+     *
      * @return self
      */
     public function addPostFiles(array $files);
@@ -123,6 +130,7 @@ interface EntityEnclosingRequestInterface extends RequestInterface
      *                           the default behavior of Guzzle. Enable strict redirects to redirect these responses
      *                           with a POST rather than a GET request.
      * @param int  $maxRedirects Specify the maximum number of allowed redirects. Set to 0 to disable redirects.
+     *
      * @return self
      */
     public function configureRedirects($strict = false, $maxRedirects = 5);

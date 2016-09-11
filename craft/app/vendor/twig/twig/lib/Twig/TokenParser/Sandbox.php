@@ -11,6 +11,7 @@
 
 /**
  * Marks a section of a template as untrusted code that must be evaluated in the sandbox mode.
+ *
  * <pre>
  * {% sandbox %}
  *     {% include 'user.html' %}
@@ -28,17 +29,13 @@ class Twig_TokenParser_Sandbox extends Twig_TokenParser
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
         // in a sandbox tag, only include tags are allowed
-        if (!$body instanceof Twig_Node_Include)
-        {
-            foreach ($body as $node)
-            {
-                if ($node instanceof Twig_Node_Text && ctype_space($node->getAttribute('data')))
-                {
+        if (!$body instanceof Twig_Node_Include) {
+            foreach ($body as $node) {
+                if ($node instanceof Twig_Node_Text && ctype_space($node->getAttribute('data'))) {
                     continue;
                 }
 
-                if (!$node instanceof Twig_Node_Include)
-                {
+                if (!$node instanceof Twig_Node_Include) {
                     throw new Twig_Error_Syntax('Only "include" tags are allowed within a "sandbox" section.', $node->getLine(), $this->parser->getFilename());
                 }
             }

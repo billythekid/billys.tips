@@ -2,7 +2,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 /**
  * XML renderer.
+ *
  * Based on the HTML renderer by Andrey Demenev.
+ *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
  * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
@@ -22,8 +24,8 @@
  * @ignore
  */
 
-require_once dirname(__FILE__) . '/../Renderer.php';
-require_once dirname(__FILE__) . '/../Renderer/Array.php';
+require_once dirname(__FILE__).'/../Renderer.php';
+require_once dirname(__FILE__).'/../Renderer/Array.php';
 
 /**
  * XML renderer, based on Andrey Demenev's HTML renderer.
@@ -36,6 +38,7 @@ require_once dirname(__FILE__) . '/../Renderer/Array.php';
  * @version    Release: 0.5.0
  * @link       http://pear.php.net/package/Text_Highlighter
  */
+
 class Text_Highlighter_Renderer_XML extends Text_Highlighter_Renderer_Array
 {
 
@@ -51,6 +54,7 @@ class Text_Highlighter_Renderer_XML extends Text_Highlighter_Renderer_Array
 
     /**
      * Resets renderer state
+     *
      * Descendents of Text_Highlighter call this method from the constructor,
      * passing $options they get as parameter.
      *
@@ -59,8 +63,7 @@ class Text_Highlighter_Renderer_XML extends Text_Highlighter_Renderer_Array
     function reset()
     {
         parent::reset();
-        if (isset($this->_options['xml_serializer']))
-        {
+        if (isset($this->_options['xml_serializer'])) {
             $this->_serializer_options = $this->_options['xml_serializer'];
         }
     }
@@ -80,9 +83,8 @@ class Text_Highlighter_Renderer_XML extends Text_Highlighter_Renderer_Array
         $output = parent::getOutput();
 
         $serializer = new XML_Serializer($this->_serializer_options);
-        $result     = $serializer->serialize($output);
-        if ($result === true)
-        {
+        $result = $serializer->serialize($output);
+        if ($result === true) {
             $this->_output = $serializer->getSerializedData();
         }
     }

@@ -23,21 +23,20 @@ abstract class AbstractImage implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
      * @return ImageInterface
      */
     public function thumbnail(BoxInterface $size, $mode = ImageInterface::THUMBNAIL_INSET, $filter = ImageInterface::FILTER_UNDEFINED)
     {
         if ($mode !== ImageInterface::THUMBNAIL_INSET &&
-            $mode !== ImageInterface::THUMBNAIL_OUTBOUND
-        )
-        {
+            $mode !== ImageInterface::THUMBNAIL_OUTBOUND) {
             throw new InvalidArgumentException('Invalid mode specified');
         }
 
         $imageSize = $this->getSize();
-        $ratios    = array(
+        $ratios = array(
             $size->getWidth() / $imageSize->getWidth(),
-            $size->getHeight() / $imageSize->getHeight(),
+            $size->getHeight() / $imageSize->getHeight()
         );
 
         $thumbnail = $this->copy();
@@ -46,29 +45,23 @@ abstract class AbstractImage implements ImageInterface
         $thumbnail->strip();
         // if target width is larger than image width
         // AND target height is longer than image height
-        if ($size->contains($imageSize))
-        {
+        if ($size->contains($imageSize)) {
             return $thumbnail;
         }
 
-        if ($mode === ImageInterface::THUMBNAIL_INSET)
-        {
+        if ($mode === ImageInterface::THUMBNAIL_INSET) {
             $ratio = min($ratios);
-        } else
-        {
+        } else {
             $ratio = max($ratios);
         }
 
-        if ($mode === ImageInterface::THUMBNAIL_OUTBOUND)
-        {
-            if (!$imageSize->contains($size))
-            {
+        if ($mode === ImageInterface::THUMBNAIL_OUTBOUND) {
+            if (!$imageSize->contains($size)) {
                 $size = new Box(
                     min($imageSize->getWidth(), $size->getWidth()),
                     min($imageSize->getHeight(), $size->getHeight())
                 );
-            } else
-            {
+            } else {
                 $imageSize = $thumbnail->getSize()->scale($ratio);
                 $thumbnail->resize($imageSize, $filter);
             }
@@ -76,14 +69,11 @@ abstract class AbstractImage implements ImageInterface
                 max(0, round(($imageSize->getWidth() - $size->getWidth()) / 2)),
                 max(0, round(($imageSize->getHeight() - $size->getHeight()) / 2))
             ), $size);
-        } else
-        {
-            if (!$imageSize->contains($size))
-            {
+        } else {
+            if (!$imageSize->contains($size)) {
                 $imageSize = $imageSize->scale($ratio);
                 $thumbnail->resize($imageSize, $filter);
-            } else
-            {
+            } else {
                 $imageSize = $thumbnail->getSize()->scale($ratio);
                 $thumbnail->resize($imageSize, $filter);
             }
@@ -96,13 +86,13 @@ abstract class AbstractImage implements ImageInterface
      * Updates a given array of save options for backward compatibility with legacy names
      *
      * @param array $options
+     *
      * @return array
      */
     protected function updateSaveOptions(array $options)
     {
         // Preserve BC until version 1.0
-        if (isset($options['quality']) && !isset($options['jpeg_quality']))
-        {
+        if (isset($options['quality']) && !isset($options['jpeg_quality'])) {
             $options['jpeg_quality'] = $options['quality'];
         }
 
@@ -122,8 +112,7 @@ abstract class AbstractImage implements ImageInterface
      */
     public function __clone()
     {
-        if ($this->metadata !== null)
-        {
+        if ($this->metadata !== null) {
             $this->metadata = clone $this->metadata;
         }
     }

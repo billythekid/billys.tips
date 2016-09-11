@@ -13,44 +13,47 @@ namespace Craft;
  */
 class WidgetRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'widgets';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'widgets';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineRelations()
-     * @return array
-     */
-    public function defineRelations()
-    {
-        return array(
-            'user' => array(static::BELONGS_TO, 'UserRecord', 'userId', 'required' => true, 'onDelete' => static::CASCADE),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineRelations()
+	 *
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'user' => array(static::BELONGS_TO, 'UserRecord', 'userId', 'required' => true, 'onDelete' => static::CASCADE),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'type'      => array(AttributeType::ClassName, 'required' => true),
-            'sortOrder' => AttributeType::SortOrder,
-            'colspan'   => array(AttributeType::Number, 'column' => ColumnType::TinyInt, 'unsigned' => true),
-            'settings'  => AttributeType::Mixed,
-            'enabled'   => array(AttributeType::Bool, 'default' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'type'      => array(AttributeType::ClassName, 'required' => true),
+			'sortOrder' => AttributeType::SortOrder,
+			'colspan' 	=> array(AttributeType::Number, 'column' => ColumnType::TinyInt, 'unsigned' => true),
+			'settings'  => AttributeType::Mixed,
+			'enabled'   => array(AttributeType::Bool, 'default' => true),
+		);
+	}
 }

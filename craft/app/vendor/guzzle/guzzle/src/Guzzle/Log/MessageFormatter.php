@@ -9,7 +9,9 @@ use Guzzle\Http\Message\Response;
 
 /**
  * Message formatter used in various places in the framework
+ *
  * Format messages using a template that can contain the the following variables:
+ *
  * - {request}:       Full HTTP request message
  * - {response}:      Full HTTP response message
  * - {ts}:            Timestamp
@@ -37,8 +39,8 @@ use Guzzle\Http\Message\Response;
 class MessageFormatter
 {
     const DEFAULT_FORMAT = "{hostname} {req_header_User-Agent} - [{ts}] \"{method} {resource} {protocol}/{version}\" {code} {res_header_Content-Length}";
-    const DEBUG_FORMAT   = ">>>>>>>>\n{request}\n<<<<<<<<\n{response}\n--------\n{curl_stderr}";
-    const SHORT_FORMAT   = '[{ts}] "{method} {resource} {protocol}/{version}" {code}';
+    const DEBUG_FORMAT = ">>>>>>>>\n{request}\n<<<<<<<<\n{response}\n--------\n{curl_stderr}";
+    const SHORT_FORMAT = '[{ts}] "{method} {resource} {protocol}/{version}" {code}';
 
     /**
      * @var string Template used to format log messages
@@ -57,6 +59,7 @@ class MessageFormatter
      * Set the template to use for logging
      *
      * @param string $template Log message template
+     *
      * @return self
      */
     public function setTemplate($template)
@@ -73,6 +76,7 @@ class MessageFormatter
      * @param Response         $response   Response that was received
      * @param CurlHandle       $handle     Curl handle associated with the message
      * @param array            $customData Associative array of custom template data
+     *
      * @return string
      */
     public function format(
@@ -80,32 +84,28 @@ class MessageFormatter
         Response $response = null,
         CurlHandle $handle = null,
         array $customData = array()
-    )
-    {
+    ) {
         $cache = $customData;
 
         return preg_replace_callback(
             '/{\s*([A-Za-z_\-\.0-9]+)\s*}/',
-            function (array $matches) use ($request, $response, $handle, &$cache)
-            {
+            function (array $matches) use ($request, $response, $handle, &$cache) {
 
-                if (array_key_exists($matches[1], $cache))
-                {
+                if (array_key_exists($matches[1], $cache)) {
                     return $cache[$matches[1]];
                 }
 
                 $result = '';
-                switch ($matches[1])
-                {
+                switch ($matches[1]) {
                     case 'request':
-                        $result = (string)$request;
+                        $result = (string) $request;
                         break;
                     case 'response':
-                        $result = (string)$response;
+                        $result = (string) $response;
                         break;
                     case 'req_body':
                         $result = $request instanceof EntityEnclosingRequestInterface
-                            ? (string)$request->getBody() : '';
+                            ? (string) $request->getBody() : '';
                         break;
                     case 'res_body':
                         $result = $response ? $response->getBody(true) : '';
@@ -117,7 +117,7 @@ class MessageFormatter
                         $result = $request->getMethod();
                         break;
                     case 'url':
-                        $result = (string)$request->getUrl();
+                        $result = (string) $request->getUrl();
                         break;
                     case 'resource':
                         $result = $request->getResource();
@@ -160,20 +160,17 @@ class MessageFormatter
                         $result = $handle ? $handle->getErrorNo() : '';
                         break;
                     case 'curl_stderr':
-                        $result = $handle ? $handle->getStderr() : '';
+                        $result =  $handle ? $handle->getStderr() : '';
                         break;
                     default:
-                        if (strpos($matches[1], 'req_header_') === 0)
-                        {
+                        if (strpos($matches[1], 'req_header_') === 0) {
                             $result = $request->getHeader(substr($matches[1], 11));
-                        } elseif ($response && strpos($matches[1], 'res_header_') === 0)
-                        {
+                        } elseif ($response && strpos($matches[1], 'res_header_') === 0) {
                             $result = $response->getHeader(substr($matches[1], 11));
                         }
                 }
 
                 $cache[$matches[1]] = $result;
-
                 return $result;
             },
             $this->template

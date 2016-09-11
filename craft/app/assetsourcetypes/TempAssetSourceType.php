@@ -14,80 +14,89 @@ namespace Craft;
  */
 class TempAssetSourceType extends LocalAssetSourceType
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const sourceName = "Temporary source";
-    const sourceType = "Temp";
+	const sourceName = "Temporary source";
+	const sourceType = "Temp";
 
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var bool
-     */
-    protected $isSourceLocal = true;
+	/**
+	 * @var bool
+	 */
+	protected $isSourceLocal = true;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t(static::sourceName);
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t(static::sourceName);
+	}
 
-    /**
-     * @inheritDoc ISavableComponentType::getSettingsHtml()
-     * @return string|null
-     */
-    public function getSettingsHtml()
-    {
-        return null;
-    }
+	/**
+	 * @inheritDoc ISavableComponentType::getSettingsHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getSettingsHtml()
+	{
+		return null;
+	}
 
-    /**
-     * @inheritDoc ISavableComponentType::prepSettings()
-     * @param array $settings
-     * @return array
-     */
-    public function prepSettings($settings)
-    {
-        return $settings;
-    }
+	/**
+	 * @inheritDoc ISavableComponentType::prepSettings()
+	 *
+	 * @param array $settings
+	 *
+	 * @return array
+	 */
+	public function prepSettings($settings)
+	{
+		return $settings;
+	}
 
-    /**
-     * @inheritDoc BaseAssetSourceType::startIndex()
-     * @param $sessionId
-     * @throws Exception
-     * @return array
-     */
-    public function startIndex($sessionId)
-    {
-        throw new Exception(Craft::t("This Source Type does not support indexing."));
-    }
+	/**
+	 * @inheritDoc BaseAssetSourceType::startIndex()
+	 *
+	 * @param $sessionId
+	 *
+	 * @throws Exception
+	 * @return array
+	 */
+	public function startIndex($sessionId)
+	{
+		throw new Exception(Craft::t("This Source Type does not support indexing."));
+	}
 
-    /**
-     * @inheritDoc BaseAssetSourceType::processIndex()
-     * @param $sessionId
-     * @param $offset
-     * @throws Exception
-     * @return mixed
-     */
-    public function processIndex($sessionId, $offset)
-    {
-        throw new Exception(Craft::t("This Source Type does not support indexing."));
-    }
+	/**
+	 * @inheritDoc BaseAssetSourceType::processIndex()
+	 *
+	 * @param $sessionId
+	 * @param $offset
+	 *
+	 * @throws Exception
+	 * @return mixed
+	 */
+	public function processIndex($sessionId, $offset)
+	{
+		throw new Exception(Craft::t("This Source Type does not support indexing."));
+	}
 
-    /**
-     * @inheritDoc IComponentType::isSelectable()
-     * @return bool
-     */
-    public function isSelectable()
-    {
-        return false;
-    }
+	/**
+	 * @inheritDoc IComponentType::isSelectable()
+	 *
+	 * @return bool
+	 */
+	public function isSelectable()
+	{
+		return false;
+	}
 }

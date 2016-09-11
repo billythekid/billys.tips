@@ -13,160 +13,160 @@ namespace Craft;
  */
 class ZipArchive implements IZip
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IZip::zip()
-     * @param $sourceFolder
-     * @param $destZip
-     * @return bool
-     */
-    public function zip($sourceFolder, $destZip)
-    {
-        $zip = new \ZipArchive();
+	/**
+	 * @inheritDoc IZip::zip()
+	 *
+	 * @param $sourceFolder
+	 * @param $destZip
+	 *
+	 * @return bool
+	 */
+	public function zip($sourceFolder, $destZip)
+	{
+		$zip = new \ZipArchive();
 
-        $zipContents = $zip->open($destZip, \ZipArchive::CREATE);
+		$zipContents = $zip->open($destZip, \ZipArchive::CREATE);
 
-        if ($zipContents !== true)
-        {
-            Craft::log('Unable to create zip file: ' . $destZip, LogLevel::Error);
+		if ($zipContents !== true)
+		{
+			Craft::log('Unable to create zip file: '.$destZip, LogLevel::Error);
+			return false;
+		}
 
-            return false;
-        }
+		return $this->add($destZip, $sourceFolder, $sourceFolder);
+	}
 
-        return $this->add($destZip, $sourceFolder, $sourceFolder);
-    }
+	/**
+	 * @inheritDoc IZip::unzip()
+	 *
+	 * @param $srcZip
+	 * @param $destFolder
+	 *
+	 * @return bool
+	 */
+	public function unzip($srcZip, $destFolder)
+	{
+		@ini_set('memory_limit', craft()->config->get('phpMaxMemoryLimit'));
 
-    /**
-     * @inheritDoc IZip::unzip()
-     * @param $srcZip
-     * @param $destFolder
-     * @return bool
-     */
-    public function unzip($srcZip, $destFolder)
-    {
-        @ini_set('memory_limit', craft()->config->get('phpMaxMemoryLimit'));
+		$zip = new \ZipArchive();
+		$zipContents = $zip->open($srcZip, \ZipArchive::CHECKCONS);
 
-        $zip         = new \ZipArchive();
-        $zipContents = $zip->open($srcZip, \ZipArchive::CHECKCONS);
+		if ($zipContents !== true)
+		{
+			Craft::log('Could not open the zip file: '.$srcZip, LogLevel::Error);
+			return false;
+		}
 
-        if ($zipContents !== true)
-        {
-            Craft::log('Could not open the zip file: ' . $srcZip, LogLevel::Error);
+		for ($i = 0; $i < $zip->numFiles; $i++)
+		{
+			if (!$info = $zip->statIndex($i))
+			{
+				Craft::log('Could not retrieve a file from the zip archive '.$srcZip, LogLevel::Error);
+				return false;
+			}
 
-            return false;
-        }
+			// normalize directory separators
+			$info = IOHelper::normalizePathSeparators($info['name']);
 
-        for ($i = 0; $i < $zip->numFiles; $i++)
-        {
-            if (!$info = $zip->statIndex($i))
-            {
-                Craft::log('Could not retrieve a file from the zip archive ' . $srcZip, LogLevel::Error);
+			// found a directory
+			if (mb_substr($info, -1) === '/')
+			{
+				IOHelper::createFolder($destFolder.'/'.$info);
+				continue;
+			}
 
-                return false;
-            }
+			 // Don't extract the OSX __MACOSX directory
+			if (mb_substr($info, 0, 9) === '__MACOSX/')
+			{
+				continue;
+			}
 
-            // normalize directory separators
-            $info = IOHelper::normalizePathSeparators($info['name']);
+			$contents = $zip->getFromIndex($i);
 
-            // found a directory
-            if (mb_substr($info, -1) === '/')
-            {
-                IOHelper::createFolder($destFolder . '/' . $info);
-                continue;
-            }
+			if ($contents === false)
+			{
+				Craft::log('Could not extract file from zip archive '.$srcZip, LogLevel::Error);
+				return false;
+			}
 
-            // Don't extract the OSX __MACOSX directory
-            if (mb_substr($info, 0, 9) === '__MACOSX/')
-            {
-                continue;
-            }
+			if (!IOHelper::writeToFile($destFolder.'/'.$info, $contents, true, true))
+			{
+				Craft::log('Could not copy file to '.$destFolder.'/'.$info.' while unzipping from '.$srcZip, LogLevel::Error);
+				return false;
+			}
+		}
 
-            $contents = $zip->getFromIndex($i);
+		$zip->close();
+		return true;
+	}
 
-            if ($contents === false)
-            {
-                Craft::log('Could not extract file from zip archive ' . $srcZip, LogLevel::Error);
+	/**
+	 * @inheritDoc IZip::add()
+	 *
+	 * @param string $sourceZip
+	 * @param string $pathToAdd
+	 * @param string $basePath
+	 * @param null   $pathPrefix
+	 *
+	 * @return bool
+	 */
+	public function add($sourceZip, $pathToAdd, $basePath, $pathPrefix = null)
+	{
+		$zip = new \ZipArchive();
+		$zipContents = $zip->open($sourceZip);
 
-                return false;
-            }
+		if ($zipContents !== true)
+		{
+			Craft::log('Unable to open zip file: '.$sourceZip, LogLevel::Error);
+			return false;
+		}
 
-            if (!IOHelper::writeToFile($destFolder . '/' . $info, $contents, true, true))
-            {
-                Craft::log('Could not copy file to ' . $destFolder . '/' . $info . ' while unzipping from ' . $srcZip, LogLevel::Error);
+		if (IOHelper::fileExists($pathToAdd))
+		{
+			$folderContents = array($pathToAdd);
+		}
+		else
+		{
+			$folderContents = IOHelper::getFolderContents($pathToAdd, true);
+		}
 
-                return false;
-            }
-        }
+		foreach ($folderContents as $itemToZip)
+		{
+			if (IOHelper::isReadable($itemToZip))
+			{
+				// Figure out the relative path we'll be adding to the zip.
+				$relFilePath = mb_substr($itemToZip, mb_strlen($basePath));
 
-        $zip->close();
+				if ($pathPrefix)
+				{
+					$pathPrefix = IOHelper::normalizePathSeparators($pathPrefix);
+					$relFilePath = $pathPrefix.$relFilePath;
+				}
 
-        return true;
-    }
+				if (IOHelper::folderExists($itemToZip))
+				{
+					if (IOHelper::isFolderEmpty($itemToZip))
+					{
+						$zip->addEmptyDir($relFilePath);
+					}
+				}
+				elseif (IOHelper::fileExists($itemToZip))
+				{
+					// We can't use $zip->addFile() here but it's a terrible, horrible, POS method that's buggy on Windows.
+					$fileContents = IOHelper::getFileContents($itemToZip);
 
-    /**
-     * @inheritDoc IZip::add()
-     * @param string $sourceZip
-     * @param string $pathToAdd
-     * @param string $basePath
-     * @param null   $pathPrefix
-     * @return bool
-     */
-    public function add($sourceZip, $pathToAdd, $basePath, $pathPrefix = null)
-    {
-        $zip         = new \ZipArchive();
-        $zipContents = $zip->open($sourceZip);
+					if (!$zip->addFromString($relFilePath, $fileContents))
+					{
+						Craft::log('There was an error adding the file '.$itemToZip.' to the zip: '.$itemToZip, LogLevel::Error);
+					}
+				}
+			}
+		}
 
-        if ($zipContents !== true)
-        {
-            Craft::log('Unable to open zip file: ' . $sourceZip, LogLevel::Error);
-
-            return false;
-        }
-
-        if (IOHelper::fileExists($pathToAdd))
-        {
-            $folderContents = array($pathToAdd);
-        } else
-        {
-            $folderContents = IOHelper::getFolderContents($pathToAdd, true);
-        }
-
-        foreach ($folderContents as $itemToZip)
-        {
-            if (IOHelper::isReadable($itemToZip))
-            {
-                // Figure out the relative path we'll be adding to the zip.
-                $relFilePath = mb_substr($itemToZip, mb_strlen($basePath));
-
-                if ($pathPrefix)
-                {
-                    $pathPrefix  = IOHelper::normalizePathSeparators($pathPrefix);
-                    $relFilePath = $pathPrefix . $relFilePath;
-                }
-
-                if (IOHelper::folderExists($itemToZip))
-                {
-                    if (IOHelper::isFolderEmpty($itemToZip))
-                    {
-                        $zip->addEmptyDir($relFilePath);
-                    }
-                } elseif (IOHelper::fileExists($itemToZip))
-                {
-                    // We can't use $zip->addFile() here but it's a terrible, horrible, POS method that's buggy on Windows.
-                    $fileContents = IOHelper::getFileContents($itemToZip);
-
-                    if (!$zip->addFromString($relFilePath, $fileContents))
-                    {
-                        Craft::log('There was an error adding the file ' . $itemToZip . ' to the zip: ' . $itemToZip, LogLevel::Error);
-                    }
-                }
-            }
-        }
-
-        $zip->close();
-
-        return true;
-    }
+		$zip->close();
+		return true;
+	}
 }

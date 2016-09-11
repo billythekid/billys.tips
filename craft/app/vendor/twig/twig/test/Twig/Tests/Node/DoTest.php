@@ -23,8 +23,8 @@ class Twig_Tests_Node_DoTest extends Twig_Test_NodeTestCase
     {
         $tests = array();
 
-        $expr    = new Twig_Node_Expression_Constant('foo', 1);
-        $node    = new Twig_Node_Do($expr, 1);
+        $expr = new Twig_Node_Expression_Constant('foo', 1);
+        $node = new Twig_Node_Do($expr, 1);
         $tests[] = array($node, "// line 1\n\"foo\";");
 
         return $tests;

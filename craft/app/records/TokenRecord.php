@@ -13,45 +13,48 @@ namespace Craft;
  */
 class TokenRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'tokens';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'tokens';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('token'), 'unique' => true),
-            array('columns' => array('expiryDate')),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('token'), 'unique' => true),
+			array('columns' => array('expiryDate')),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'token'      => array(AttributeType::String, 'column' => ColumnType::Char, 'length' => 32, 'required' => true),
-            'route'      => array(AttributeType::Mixed),
-            'usageLimit' => array(AttributeType::Number, 'min' => 0, 'max' => 255),
-            'usageCount' => array(AttributeType::Number, 'min' => 0, 'max' => 255),
-            'expiryDate' => array(AttributeType::DateTime, 'required' => true),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'token'      => array(AttributeType::String, 'column' => ColumnType::Char, 'length' => 32, 'required' => true),
+			'route'      => array(AttributeType::Mixed),
+			'usageLimit' => array(AttributeType::Number, 'min' => 0, 'max' => 255),
+			'usageCount' => array(AttributeType::Number, 'min' => 0, 'max' => 255),
+			'expiryDate' => array(AttributeType::DateTime, 'required' => true),
+		);
+	}
 }

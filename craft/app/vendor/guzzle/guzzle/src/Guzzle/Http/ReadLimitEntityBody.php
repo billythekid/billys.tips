@@ -34,27 +34,25 @@ class ReadLimitEntityBody extends AbstractEntityBodyDecorator
     {
         if (!$this->body->isReadable() ||
             (!$this->body->isSeekable() && $this->body->isConsumed())
-        )
-        {
+        ) {
             return '';
         }
 
         $originalPos = $this->body->ftell();
         $this->body->seek($this->offset);
         $data = '';
-        while (!$this->feof())
-        {
+        while (!$this->feof()) {
             $data .= $this->read(1048576);
         }
         $this->body->seek($originalPos);
 
-        return (string)$data ?: '';
+        return (string) $data ?: '';
     }
 
     public function isConsumed()
     {
         return $this->body->isConsumed() ||
-        ($this->body->ftell() >= $this->offset + $this->limit);
+            ($this->body->ftell() >= $this->offset + $this->limit);
     }
 
     /**
@@ -85,6 +83,7 @@ class ReadLimitEntityBody extends AbstractEntityBodyDecorator
      * Set the offset to start limiting from
      *
      * @param int $offset Offset to seek to and begin byte limiting from
+     *
      * @return self
      */
     public function setOffset($offset)
@@ -99,6 +98,7 @@ class ReadLimitEntityBody extends AbstractEntityBodyDecorator
      * Set the limit of bytes that the decorator allows to be read from the stream
      *
      * @param int $limit Total number of bytes to allow to be read from the stream
+     *
      * @return self
      */
     public function setLimit($limit)
@@ -112,12 +112,10 @@ class ReadLimitEntityBody extends AbstractEntityBodyDecorator
     {
         // Check if the current position is less than the total allowed bytes + original offset
         $remaining = ($this->offset + $this->limit) - $this->body->ftell();
-        if ($remaining > 0)
-        {
+        if ($remaining > 0) {
             // Only return the amount of requested data, ensuring that the byte limit is not exceeded
             return $this->body->read(min($remaining, $length));
-        } else
-        {
+        } else {
             return false;
         }
     }

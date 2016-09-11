@@ -29,8 +29,7 @@ class Twig_Extension_Profiler extends Twig_Extension
         $profile->leave();
         array_shift($this->actives);
 
-        if (1 === count($this->actives))
-        {
+        if (1 === count($this->actives)) {
             $this->actives[0]->leave();
         }
     }

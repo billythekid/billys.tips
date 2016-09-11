@@ -28,8 +28,7 @@ class AbstractHasDispatcher implements HasDispatcherInterface
 
     public function getEventDispatcher()
     {
-        if (!$this->eventDispatcher)
-        {
+        if (!$this->eventDispatcher) {
             $this->eventDispatcher = new EventDispatcher();
         }
 

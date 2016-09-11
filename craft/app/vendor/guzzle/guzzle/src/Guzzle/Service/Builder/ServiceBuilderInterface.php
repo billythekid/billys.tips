@@ -21,6 +21,7 @@ interface ServiceBuilderInterface
      *                              If an array is specified, that data will overwrite the configured params of the
      *                              client if the client implements {@see \Guzzle\Common\FromConfigInterface} and will
      *                              not store the client for later retrieval.
+     *
      * @return \Guzzle\Service\ClientInterface|mixed
      * @throws ServiceNotFoundException when a client or data cannot be found by the given name
      */
@@ -32,6 +33,7 @@ interface ServiceBuilderInterface
      * @param string $key     Name of the client or data to register
      * @param mixed  $service Client configuration array or arbitrary data to register. The client configuration array
      *                        must include a 'class' (string) and 'params' (array) key.
+     *
      * @return ServiceBuilderInterface
      */
     public function set($key, $service);

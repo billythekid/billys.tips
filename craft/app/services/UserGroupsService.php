@@ -15,294 +15,308 @@ craft()->requireEdition(Craft::Pro);
  */
 class UserGroupsService extends BaseApplicationComponent
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns all user groups.
-     *
-     * @param string|null $indexBy
-     * @return array
-     */
-    public function getAllGroups($indexBy = null)
-    {
-        $groupRecords = UserGroupRecord::model()->ordered()->findAll();
+	/**
+	 * Returns all user groups.
+	 *
+	 * @param string|null $indexBy
+	 *
+	 * @return array
+	 */
+	public function getAllGroups($indexBy = null)
+	{
+		$groupRecords = UserGroupRecord::model()->ordered()->findAll();
+		return UserGroupModel::populateModels($groupRecords, $indexBy);
+	}
 
-        return UserGroupModel::populateModels($groupRecords, $indexBy);
-    }
+	/**
+	 * Gets a user group by its ID.
+	 *
+	 * @param int $groupId
+	 *
+	 * @return UserGroupModel
+	 */
+	public function getGroupById($groupId)
+	{
+		$groupRecord = UserGroupRecord::model()->findById($groupId);
 
-    /**
-     * Gets a user group by its ID.
-     *
-     * @param int $groupId
-     * @return UserGroupModel
-     */
-    public function getGroupById($groupId)
-    {
-        $groupRecord = UserGroupRecord::model()->findById($groupId);
+		if ($groupRecord)
+		{
+			return UserGroupModel::populateModel($groupRecord);
+		}
+	}
 
-        if ($groupRecord)
-        {
-            return UserGroupModel::populateModel($groupRecord);
-        }
-    }
+	/**
+	 * Gets a user group by its handle.
+	 *
+	 * @param int $groupHandle
+	 *
+	 * @return UserGroupModel
+	 */
+	public function getGroupByHandle($groupHandle)
+	{
+		$groupRecord = UserGroupRecord::model()->findByAttributes(array(
+			'handle' => $groupHandle
+		));
 
-    /**
-     * Gets a user group by its handle.
-     *
-     * @param int $groupHandle
-     * @return UserGroupModel
-     */
-    public function getGroupByHandle($groupHandle)
-    {
-        $groupRecord = UserGroupRecord::model()->findByAttributes(array(
-            'handle' => $groupHandle,
-        ));
+		if ($groupRecord)
+		{
+			return UserGroupModel::populateModel($groupRecord);
+		}
+	}
 
-        if ($groupRecord)
-        {
-            return UserGroupModel::populateModel($groupRecord);
-        }
-    }
+	/**
+	 * Gets user groups by a user ID.
+	 *
+	 * @param int         $userId
+	 * @param string|null $indexBy
+	 *
+	 * @return array
+	 */
+	public function getGroupsByUserId($userId, $indexBy = null)
+	{
+		$query = craft()->db->createCommand()
+			->select('g.*')
+			->from('usergroups g')
+			->join('usergroups_users gu', 'gu.groupId = g.id')
+			->where(array('gu.userId' => $userId))
+			->queryAll();
 
-    /**
-     * Gets user groups by a user ID.
-     *
-     * @param int         $userId
-     * @param string|null $indexBy
-     * @return array
-     */
-    public function getGroupsByUserId($userId, $indexBy = null)
-    {
-        $query = craft()->db->createCommand()
-            ->select('g.*')
-            ->from('usergroups g')
-            ->join('usergroups_users gu', 'gu.groupId = g.id')
-            ->where(array('gu.userId' => $userId))
-            ->queryAll();
+		return UserGroupModel::populateModels($query, $indexBy);
+	}
 
-        return UserGroupModel::populateModels($query, $indexBy);
-    }
+	/**
+	 * Saves a user group.
+	 *
+	 * @param UserGroupModel $group
+	 *
+	 * @return bool
+	 */
+	public function saveGroup(UserGroupModel $group)
+	{
+		$groupRecord = $this->_getGroupRecordById($group->id);
 
-    /**
-     * Saves a user group.
-     *
-     * @param UserGroupModel $group
-     * @return bool
-     */
-    public function saveGroup(UserGroupModel $group)
-    {
-        $groupRecord = $this->_getGroupRecordById($group->id);
+		$groupRecord->name = $group->name;
+		$groupRecord->handle = $group->handle;
 
-        $groupRecord->name   = $group->name;
-        $groupRecord->handle = $group->handle;
+		if ($groupRecord->save())
+		{
+			// Now that we have a group ID, save it on the model
+			if (!$group->id)
+			{
+				$group->id = $groupRecord->id;
+			}
 
-        if ($groupRecord->save())
-        {
-            // Now that we have a group ID, save it on the model
-            if (!$group->id)
-            {
-                $group->id = $groupRecord->id;
-            }
+			return true;
+		}
+		else
+		{
+			$group->addErrors($groupRecord->getErrors());
+			return false;
+		}
+	}
 
-            return true;
-        } else
-        {
-            $group->addErrors($groupRecord->getErrors());
+	/**
+	 * Assigns a user to a given list of user groups.
+	 *
+	 * @param int       $userId   The user’s ID.
+	 * @param int|array $groupIds The groups’ IDs.
+	 *
+	 * @return bool Whether the users were successfully assigned to the groups.
+	 */
+	public function assignUserToGroups($userId, $groupIds = null)
+	{
+		// Make sure $groupIds is an array
+		if (!is_array($groupIds))
+		{
+			$groupIds = $groupIds ? array($groupIds) : array();
+		}
 
-            return false;
-        }
-    }
+		// Fire an 'onBeforeAssignUserToGroups' event
+		$event = new Event($this, array(
+			'userId'   => $userId,
+			'groupIds' => $groupIds
+		));
 
-    /**
-     * Assigns a user to a given list of user groups.
-     *
-     * @param int       $userId   The user’s ID.
-     * @param int|array $groupIds The groups’ IDs.
-     * @return bool Whether the users were successfully assigned to the groups.
-     */
-    public function assignUserToGroups($userId, $groupIds = null)
-    {
-        // Make sure $groupIds is an array
-        if (!is_array($groupIds))
-        {
-            $groupIds = $groupIds ? array($groupIds) : array();
-        }
+		$this->onBeforeAssignUserToGroups($event);
 
-        // Fire an 'onBeforeAssignUserToGroups' event
-        $event = new Event($this, array(
-            'userId'   => $userId,
-            'groupIds' => $groupIds,
-        ));
+		if ($event->performAction)
+		{
+			// Delete their existing groups
+			craft()->db->createCommand()->delete('usergroups_users', array('userId' => $userId));
 
-        $this->onBeforeAssignUserToGroups($event);
+			if ($groupIds)
+			{
+				// Add the new ones
+				foreach ($groupIds as $groupId)
+				{
+					$values[] = array($groupId, $userId);
+				}
 
-        if ($event->performAction)
-        {
-            // Delete their existing groups
-            craft()->db->createCommand()->delete('usergroups_users', array('userId' => $userId));
+				craft()->db->createCommand()->insertAll('usergroups_users', array('groupId', 'userId'), $values);
+			}
 
-            if ($groupIds)
-            {
-                // Add the new ones
-                foreach ($groupIds as $groupId)
-                {
-                    $values[] = array($groupId, $userId);
-                }
+			// Fire an 'onAssignUserToGroups' event
+			$this->onAssignUserToGroups(new Event($this, array(
+				'userId'   => $userId,
+				'groupIds' => $groupIds
+			)));
 
-                craft()->db->createCommand()->insertAll('usergroups_users', array('groupId', 'userId'), $values);
-            }
+			return true;
+		}
 
-            // Fire an 'onAssignUserToGroups' event
-            $this->onAssignUserToGroups(new Event($this, array(
-                'userId'   => $userId,
-                'groupIds' => $groupIds,
-            )));
+		return false;
+	}
 
-            return true;
-        }
+	/**
+	 * Assigns a user to the default user group.
+	 *
+	 * This method is called toward the end of a public registration request.
+	 *
+	 * @param UserModel $user The user that was just registered.
+	 *
+	 * @return bool Whether the user was assigned to the default group.
+	 */
+	public function assignUserToDefaultGroup(UserModel $user)
+	{
+		$defaultGroupId = craft()->systemSettings->getSetting('users', 'defaultGroup');
 
-        return false;
-    }
+		if ($defaultGroupId)
+		{
+			// Fire an 'onBeforeAssignUserToDefaultGroup' event
+			$event = new Event($this, array(
+				'user'           => $user,
+				'defaultGroupId' => $defaultGroupId
+			));
 
-    /**
-     * Assigns a user to the default user group.
-     * This method is called toward the end of a public registration request.
-     *
-     * @param UserModel $user The user that was just registered.
-     * @return bool Whether the user was assigned to the default group.
-     */
-    public function assignUserToDefaultGroup(UserModel $user)
-    {
-        $defaultGroupId = craft()->systemSettings->getSetting('users', 'defaultGroup');
+			$this->onBeforeAssignUserToDefaultGroup($event);
 
-        if ($defaultGroupId)
-        {
-            // Fire an 'onBeforeAssignUserToDefaultGroup' event
-            $event = new Event($this, array(
-                'user'           => $user,
-                'defaultGroupId' => $defaultGroupId,
-            ));
+			// Is the event is giving us the go-ahead?
+			if ($event->performAction)
+			{
+				$success = $this->assignUserToGroups($user->id, array($defaultGroupId));
 
-            $this->onBeforeAssignUserToDefaultGroup($event);
+				if ($success)
+				{
+					// Fire an 'onAssignUserToDefaultGroup' event
+					$this->onAssignUserToDefaultGroup(new Event($this, array(
+						'user'           => $user,
+						'defaultGroupId' => $defaultGroupId
+					)));
 
-            // Is the event is giving us the go-ahead?
-            if ($event->performAction)
-            {
-                $success = $this->assignUserToGroups($user->id, array($defaultGroupId));
+					return true;
+				}
+			}
+		}
 
-                if ($success)
-                {
-                    // Fire an 'onAssignUserToDefaultGroup' event
-                    $this->onAssignUserToDefaultGroup(new Event($this, array(
-                        'user'           => $user,
-                        'defaultGroupId' => $defaultGroupId,
-                    )));
+		return false;
+	}
 
-                    return true;
-                }
-            }
-        }
+	/**
+	 * Deletes a user group by its ID.
+	 *
+	 * @param int $groupId
+	 *
+	 * @return bool
+	 */
+	public function deleteGroupById($groupId)
+	{
+		craft()->db->createCommand()->delete('usergroups', array('id' => $groupId));
+		return true;
+	}
 
-        return false;
-    }
+	// Events
+	// -------------------------------------------------------------------------
 
-    /**
-     * Deletes a user group by its ID.
-     *
-     * @param int $groupId
-     * @return bool
-     */
-    public function deleteGroupById($groupId)
-    {
-        craft()->db->createCommand()->delete('usergroups', array('id' => $groupId));
+	/**
+	 * Fires an 'onBeforeAssignUserToGroups' event.
+	 *
+	 * @param Event $event
+	 *
+	 * @return null
+	 */
+	public function onBeforeAssignUserToGroups(Event $event)
+	{
+		$this->raiseEvent('onBeforeAssignUserToGroups', $event);
+	}
 
-        return true;
-    }
+	/**
+	 * Fires an 'onAssignUserToGroups' event.
+	 *
+	 * @param Event $event
+	 *
+	 * @return null
+	 */
+	public function onAssignUserToGroups(Event $event)
+	{
+		$this->raiseEvent('onAssignUserToGroups', $event);
+	}
 
-    // Events
-    // -------------------------------------------------------------------------
+	/**
+	 * Fires an 'onBeforeAssignUserToDefaultGroup' event.
+	 *
+	 * @param Event $event
+	 *
+	 * @return null
+	 */
+	public function onBeforeAssignUserToDefaultGroup(Event $event)
+	{
+		$this->raiseEvent('onBeforeAssignUserToDefaultGroup', $event);
+	}
 
-    /**
-     * Fires an 'onBeforeAssignUserToGroups' event.
-     *
-     * @param Event $event
-     * @return null
-     */
-    public function onBeforeAssignUserToGroups(Event $event)
-    {
-        $this->raiseEvent('onBeforeAssignUserToGroups', $event);
-    }
+	/**
+	 * Fires an 'onAssignUserToDefaultGroup' event.
+	 *
+	 * @param Event $event
+	 *
+	 * @return null
+	 */
+	public function onAssignUserToDefaultGroup(Event $event)
+	{
+		$this->raiseEvent('onAssignUserToDefaultGroup', $event);
+	}
 
-    /**
-     * Fires an 'onAssignUserToGroups' event.
-     *
-     * @param Event $event
-     * @return null
-     */
-    public function onAssignUserToGroups(Event $event)
-    {
-        $this->raiseEvent('onAssignUserToGroups', $event);
-    }
+	// Private Methods
+	// =========================================================================
 
-    /**
-     * Fires an 'onBeforeAssignUserToDefaultGroup' event.
-     *
-     * @param Event $event
-     * @return null
-     */
-    public function onBeforeAssignUserToDefaultGroup(Event $event)
-    {
-        $this->raiseEvent('onBeforeAssignUserToDefaultGroup', $event);
-    }
+	/**
+	 * Gets a group's record.
+	 *
+	 * @param int $groupId
+	 *
+	 * @return UserGroupRecord
+	 */
+	private function _getGroupRecordById($groupId = null)
+	{
+		if ($groupId)
+		{
+			$groupRecord = UserGroupRecord::model()->findById($groupId);
 
-    /**
-     * Fires an 'onAssignUserToDefaultGroup' event.
-     *
-     * @param Event $event
-     * @return null
-     */
-    public function onAssignUserToDefaultGroup(Event $event)
-    {
-        $this->raiseEvent('onAssignUserToDefaultGroup', $event);
-    }
+			if (!$groupRecord)
+			{
+				$this->_noGroupExists($groupId);
+			}
+		}
+		else
+		{
+			$groupRecord = new UserGroupRecord();
+		}
 
-    // Private Methods
-    // =========================================================================
+		return $groupRecord;
+	}
 
-    /**
-     * Gets a group's record.
-     *
-     * @param int $groupId
-     * @return UserGroupRecord
-     */
-    private function _getGroupRecordById($groupId = null)
-    {
-        if ($groupId)
-        {
-            $groupRecord = UserGroupRecord::model()->findById($groupId);
-
-            if (!$groupRecord)
-            {
-                $this->_noGroupExists($groupId);
-            }
-        } else
-        {
-            $groupRecord = new UserGroupRecord();
-        }
-
-        return $groupRecord;
-    }
-
-    /**
-     * Throws a "No group exists" exception.
-     *
-     * @param int $groupId
-     * @throws Exception
-     * @return null
-     */
-    private function _noGroupExists($groupId)
-    {
-        throw new Exception(Craft::t('No group exists with the ID “{id}”.', array('id' => $groupId)));
-    }
+	/**
+	 * Throws a "No group exists" exception.
+	 *
+	 * @param int $groupId
+	 *
+	 * @throws Exception
+	 * @return null
+	 */
+	private function _noGroupExists($groupId)
+	{
+		throw new Exception(Craft::t('No group exists with the ID “{id}”.', array('id' => $groupId)));
+	}
 }

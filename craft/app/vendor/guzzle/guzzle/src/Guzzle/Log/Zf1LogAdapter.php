@@ -6,7 +6,6 @@ use Guzzle\Common\Version;
 
 /**
  * Adapts a Zend Framework 1 logger object
- *
  * @deprecated
  * @codeCoverageIgnore
  */

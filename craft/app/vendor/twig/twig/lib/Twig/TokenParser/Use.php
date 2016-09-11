@@ -11,9 +11,12 @@
 
 /**
  * Imports blocks defined in another template into the current template.
+ *
  * <pre>
  * {% extends "base.html" %}
+ *
  * {% use "blocks.html" %}
+ *
  * {% block title %}{% endblock %}
  * {% block content %}{% endblock %}
  * </pre>
@@ -25,30 +28,25 @@ class Twig_TokenParser_Use extends Twig_TokenParser
     public function parse(Twig_Token $token)
     {
         $template = $this->parser->getExpressionParser()->parseExpression();
-        $stream   = $this->parser->getStream();
+        $stream = $this->parser->getStream();
 
-        if (!$template instanceof Twig_Node_Expression_Constant)
-        {
+        if (!$template instanceof Twig_Node_Expression_Constant) {
             throw new Twig_Error_Syntax('The template references in a "use" statement must be a string.', $stream->getCurrent()->getLine(), $stream->getFilename());
         }
 
         $targets = array();
-        if ($stream->nextIf('with'))
-        {
-            do
-            {
+        if ($stream->nextIf('with')) {
+            do {
                 $name = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
 
                 $alias = $name;
-                if ($stream->nextIf('as'))
-                {
+                if ($stream->nextIf('as')) {
                     $alias = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
                 }
 
                 $targets[$name] = new Twig_Node_Expression_Constant($alias, -1);
 
-                if (!$stream->nextIf(Twig_Token::PUNCTUATION_TYPE, ','))
-                {
+                if (!$stream->nextIf(Twig_Token::PUNCTUATION_TYPE, ',')) {
                     break;
                 }
             } while (true);

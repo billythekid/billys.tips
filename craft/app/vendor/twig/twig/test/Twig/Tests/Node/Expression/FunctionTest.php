@@ -32,48 +32,48 @@ class Twig_Tests_Node_Expression_FunctionTest extends Twig_Test_NodeTestCase
 
         $tests = array();
 
-        $node    = $this->createFunction('foo');
+        $node = $this->createFunction('foo');
         $tests[] = array($node, 'foo()', $environment);
 
-        $node    = $this->createFunction('foo', array(new Twig_Node_Expression_Constant('bar', 1), new Twig_Node_Expression_Constant('foobar', 1)));
+        $node = $this->createFunction('foo', array(new Twig_Node_Expression_Constant('bar', 1), new Twig_Node_Expression_Constant('foobar', 1)));
         $tests[] = array($node, 'foo("bar", "foobar")', $environment);
 
-        $node    = $this->createFunction('bar');
+        $node = $this->createFunction('bar');
         $tests[] = array($node, 'bar($this->env)', $environment);
 
-        $node    = $this->createFunction('bar', array(new Twig_Node_Expression_Constant('bar', 1)));
+        $node = $this->createFunction('bar', array(new Twig_Node_Expression_Constant('bar', 1)));
         $tests[] = array($node, 'bar($this->env, "bar")', $environment);
 
-        $node    = $this->createFunction('foofoo');
+        $node = $this->createFunction('foofoo');
         $tests[] = array($node, 'foofoo($context)', $environment);
 
-        $node    = $this->createFunction('foofoo', array(new Twig_Node_Expression_Constant('bar', 1)));
+        $node = $this->createFunction('foofoo', array(new Twig_Node_Expression_Constant('bar', 1)));
         $tests[] = array($node, 'foofoo($context, "bar")', $environment);
 
-        $node    = $this->createFunction('foobar');
+        $node = $this->createFunction('foobar');
         $tests[] = array($node, 'foobar($this->env, $context)', $environment);
 
-        $node    = $this->createFunction('foobar', array(new Twig_Node_Expression_Constant('bar', 1)));
+        $node = $this->createFunction('foobar', array(new Twig_Node_Expression_Constant('bar', 1)));
         $tests[] = array($node, 'foobar($this->env, $context, "bar")', $environment);
 
         // named arguments
-        $node    = $this->createFunction('date', array(
+        $node = $this->createFunction('date', array(
             'timezone' => new Twig_Node_Expression_Constant('America/Chicago', 1),
-            'date'     => new Twig_Node_Expression_Constant(0, 1),
+            'date' => new Twig_Node_Expression_Constant(0, 1),
         ));
         $tests[] = array($node, 'twig_date_converter($this->env, 0, "America/Chicago")');
 
         // arbitrary named arguments
-        $node    = $this->createFunction('barbar');
+        $node = $this->createFunction('barbar');
         $tests[] = array($node, 'twig_tests_function_barbar()', $environment);
 
-        $node    = $this->createFunction('barbar', array('foo' => new Twig_Node_Expression_Constant('bar', 1)));
+        $node = $this->createFunction('barbar', array('foo' => new Twig_Node_Expression_Constant('bar', 1)));
         $tests[] = array($node, 'twig_tests_function_barbar(null, null, array("foo" => "bar"))', $environment);
 
-        $node    = $this->createFunction('barbar', array('arg2' => new Twig_Node_Expression_Constant('bar', 1)));
+        $node = $this->createFunction('barbar', array('arg2' => new Twig_Node_Expression_Constant('bar', 1)));
         $tests[] = array($node, 'twig_tests_function_barbar(null, "bar")', $environment);
 
-        $node    = $this->createFunction('barbar', array(
+        $node = $this->createFunction('barbar', array(
             new Twig_Node_Expression_Constant('1', 1),
             new Twig_Node_Expression_Constant('2', 1),
             new Twig_Node_Expression_Constant('3', 1),
@@ -82,9 +82,8 @@ class Twig_Tests_Node_Expression_FunctionTest extends Twig_Test_NodeTestCase
         $tests[] = array($node, 'twig_tests_function_barbar("1", "2", array(0 => "3", "foo" => "bar"))', $environment);
 
         // function as an anonymous function
-        if (PHP_VERSION_ID >= 50300)
-        {
-            $node    = $this->createFunction('anonymous', array(new Twig_Node_Expression_Constant('foo', 1)));
+        if (PHP_VERSION_ID >= 50300) {
+            $node = $this->createFunction('anonymous', array(new Twig_Node_Expression_Constant('foo', 1)));
             $tests[] = array($node, 'call_user_func_array($this->env->getFunction(\'anonymous\')->getCallable(), array("foo"))');
         }
 
@@ -98,8 +97,7 @@ class Twig_Tests_Node_Expression_FunctionTest extends Twig_Test_NodeTestCase
 
     protected function getEnvironment()
     {
-        if (PHP_VERSION_ID >= 50300)
-        {
+        if (PHP_VERSION_ID >= 50300) {
             return include 'PHP53/FunctionInclude.php';
         }
 

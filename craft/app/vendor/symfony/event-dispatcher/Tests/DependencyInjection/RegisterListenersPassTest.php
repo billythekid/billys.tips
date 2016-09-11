@@ -164,7 +164,7 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
         $registerListenersPass = new RegisterListenersPass();
         $registerListenersPass->process($container);
 
-        $definition     = $container->getDefinition('event_dispatcher');
+        $definition = $container->getDefinition('event_dispatcher');
         $expected_calls = array(
             array(
                 'addSubscriberService',

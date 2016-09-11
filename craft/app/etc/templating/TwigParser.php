@@ -13,17 +13,17 @@ namespace Craft;
  */
 class TwigParser extends \Twig_Parser
 {
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    protected function filterBodyNodes(\Twig_NodeInterface $node)
-    {
-        // Bypass "include" nodes as they "capture" the output
-        if ($node instanceof IncludeResource_Node)
-        {
-            return $node;
-        }
+	protected function filterBodyNodes(\Twig_NodeInterface $node)
+	{
+		// Bypass "include" nodes as they "capture" the output
+		if ($node instanceof IncludeResource_Node)
+		{
+			return $node;
+		}
 
-        return parent::filterBodyNodes($node);
-    }
+		return parent::filterBodyNodes($node);
+	}
 }

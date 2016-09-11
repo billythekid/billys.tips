@@ -13,21 +13,22 @@ namespace Craft;
  */
 class RequirePermission_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles a RequirePermission_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $compiler
-            ->addDebugInfo($this)
-            ->write('\Craft\craft()->userSession->requirePermission(')
-            ->subcompile($this->getNode('permissionName'))
-            ->raw(");\n");
-    }
+	/**
+	 * Compiles a RequirePermission_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler
+		    ->addDebugInfo($this)
+		    ->write('\Craft\craft()->userSession->requirePermission(')
+		    ->subcompile($this->getNode('permissionName'))
+		    ->raw(");\n");
+	}
 }

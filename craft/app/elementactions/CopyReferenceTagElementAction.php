@@ -13,28 +13,30 @@ namespace Craft;
  */
 class CopyReferenceTagElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Copy reference tag');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Copy reference tag');
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $prompt      = JsonHelper::encode(Craft::t('{ctrl}C to copy.'));
-        $elementType = lcfirst($this->getParams()->elementType);
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$prompt = JsonHelper::encode(Craft::t('{ctrl}C to copy.'));
+		$elementType = lcfirst($this->getParams()->elementType);
 
-        $js = <<<EOT
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -52,20 +54,21 @@ class CopyReferenceTagElementAction extends BaseElementAction
 })();
 EOT;
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseElementAction::defineParams()
-     * @return array
-     */
-    protected function defineParams()
-    {
-        return array(
-            'elementType' => AttributeType::String,
-        );
-    }
+	/**
+	 * @inheritDoc BaseElementAction::defineParams()
+	 *
+	 * @return array
+	 */
+	protected function defineParams()
+	{
+		return array(
+			'elementType' => AttributeType::String,
+		);
+	}
 }

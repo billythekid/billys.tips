@@ -8,6 +8,7 @@ use Guzzle\Http\Exception\HttpException;
 
 /**
  * Implements an exponential backoff retry strategy.
+ *
  * Warning: If no decision making strategies precede this strategy in the the chain, then all requests will be retried
  */
 class ExponentialBackoffStrategy extends AbstractBackoffStrategy
@@ -19,6 +20,6 @@ class ExponentialBackoffStrategy extends AbstractBackoffStrategy
 
     protected function getDelay($retries, RequestInterface $request, Response $response = null, HttpException $e = null)
     {
-        return (int)pow(2, $retries);
+        return (int) pow(2, $retries);
     }
 }

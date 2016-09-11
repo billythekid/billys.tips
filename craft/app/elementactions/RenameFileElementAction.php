@@ -13,27 +13,29 @@ namespace Craft;
  */
 class RenameFileElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Rename file');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Rename file');
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $prompt = JsonHelper::encode(Craft::t('Enter the new filename'));
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$prompt = JsonHelper::encode(Craft::t('Enter the new filename'));
 
-        $js = <<<EOT
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -108,6 +110,6 @@ class RenameFileElementAction extends BaseElementAction
 })();
 EOT;
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 }

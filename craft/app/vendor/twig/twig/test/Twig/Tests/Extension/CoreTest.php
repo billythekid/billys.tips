@@ -18,8 +18,7 @@ class Twig_Tests_Extension_CoreTest extends PHPUnit_Framework_TestCase
     {
         $env = new Twig_Environment($this->getMock('Twig_LoaderInterface'));
 
-        for ($i = 0; $i < 100; ++$i)
-        {
+        for ($i = 0; $i < 100; ++$i) {
             $this->assertTrue(in_array(twig_random($env, $value), $expectedInArray, true)); // assertContains() would not consider the type
         }
     }
@@ -62,8 +61,7 @@ class Twig_Tests_Extension_CoreTest extends PHPUnit_Framework_TestCase
     {
         $max = mt_getrandmax();
 
-        for ($i = 0; $i < 100; ++$i)
-        {
+        for ($i = 0; $i < 100; ++$i) {
             $val = twig_random(new Twig_Environment($this->getMock('Twig_LoaderInterface')));
             $this->assertTrue(is_int($val) && $val >= 0 && $val <= $max);
         }
@@ -88,8 +86,7 @@ class Twig_Tests_Extension_CoreTest extends PHPUnit_Framework_TestCase
 
     public function testRandomFunctionOnNonUTF8String()
     {
-        if (!function_exists('iconv') && !function_exists('mb_convert_encoding'))
-        {
+        if (!function_exists('iconv') && !function_exists('mb_convert_encoding')) {
             $this->markTestSkipped('needs iconv or mbstring');
         }
 
@@ -97,8 +94,7 @@ class Twig_Tests_Extension_CoreTest extends PHPUnit_Framework_TestCase
         $twig->setCharset('ISO-8859-1');
 
         $text = twig_convert_encoding('Äé', 'ISO-8859-1', 'UTF-8');
-        for ($i = 0; $i < 30; ++$i)
-        {
+        for ($i = 0; $i < 30; ++$i) {
             $rand = twig_random($twig, $text);
             $this->assertTrue(in_array(twig_convert_encoding($rand, 'UTF-8', 'ISO-8859-1'), array('Ä', 'é'), true));
         }
@@ -106,15 +102,14 @@ class Twig_Tests_Extension_CoreTest extends PHPUnit_Framework_TestCase
 
     public function testReverseFilterOnNonUTF8String()
     {
-        if (!function_exists('iconv') && !function_exists('mb_convert_encoding'))
-        {
+        if (!function_exists('iconv') && !function_exists('mb_convert_encoding')) {
             $this->markTestSkipped('needs iconv or mbstring');
         }
 
         $twig = new Twig_Environment($this->getMock('Twig_LoaderInterface'));
         $twig->setCharset('ISO-8859-1');
 
-        $input  = twig_convert_encoding('Äé', 'ISO-8859-1', 'UTF-8');
+        $input = twig_convert_encoding('Äé', 'ISO-8859-1', 'UTF-8');
         $output = twig_convert_encoding(twig_reverse_filter($twig, $input), 'UTF-8', 'ISO-8859-1');
 
         $this->assertEquals($output, 'éÄ');
@@ -159,5 +154,5 @@ class Twig_Tests_Extension_CoreTest extends PHPUnit_Framework_TestCase
 
 function foo_escaper_for_test(Twig_Environment $env, $string, $charset)
 {
-    return $string . $charset;
+    return $string.$charset;
 }

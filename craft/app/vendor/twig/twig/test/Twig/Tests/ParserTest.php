@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -101,19 +100,18 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Twig_Error_Syntax
-     * @expectedExceptionMessage A template that extends another one cannot have a body but a byte order mark (BOM) has
-     *                           been detected; it must be removed at line 1.
+     * @expectedExceptionMessage A template that extends another one cannot have a body but a byte order mark (BOM) has been detected; it must be removed at line 1.
      */
     public function testFilterBodyNodesWithBOM()
     {
         $parser = $this->getParser();
-        $parser->filterBodyNodes(new Twig_Node_Text(chr(0xEF) . chr(0xBB) . chr(0xBF), 1));
+        $parser->filterBodyNodes(new Twig_Node_Text(chr(0xEF).chr(0xBB).chr(0xBF), 1));
     }
 
     public function testParseIsReentrant()
     {
         $twig = new Twig_Environment($this->getMock('Twig_LoaderInterface'), array(
-            'autoescape'    => false,
+            'autoescape' => false,
             'optimizations' => 0,
         ));
         $twig->addTokenParser(new TestTokenParser());
@@ -139,7 +137,7 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
     public function testGetVarName()
     {
         $twig = new Twig_Environment($this->getMock('Twig_LoaderInterface'), array(
-            'autoescape'    => false,
+            'autoescape' => false,
             'optimizations' => 0,
         ));
 

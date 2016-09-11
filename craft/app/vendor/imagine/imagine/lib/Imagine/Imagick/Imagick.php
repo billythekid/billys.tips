@@ -4,28 +4,28 @@ namespace Imagine\Imagick;
 
 /**
  * An Imagick extension to provide better (higher quality, lower file size) image resizes.
+ *
  * This class extends Imagick (<http://php.net/manual/en/book.imagick.php>) based on
  * research into optimal image resizing techniques (<https://github.com/nwtn/image-resize-tests>).
+ *
  * Using these methods with their default settings should provide image resizing that is
  * visually indistinguishable from Photoshop’s “Save for Web…”, but at lower file sizes.
  *
- * @author         David Newton <david@davidnewton.ca>
- * @copyright      2015 David Newton
- * @license        https://raw.githubusercontent.com/nwtn/php-respimg/master/LICENSE MIT
- * @version        1.0.1
+ * @author		David Newton <david@davidnewton.ca>
+ * @copyright	2015 David Newton
+ * @license		https://raw.githubusercontent.com/nwtn/php-respimg/master/LICENSE MIT
+ * @version		1.0.1
  */
-class Imagick extends \Imagick
-{
+
+class Imagick extends \Imagick {
 
     /**
      * Resizes the image using smart defaults for high quality and low file size.
      *
-     * @param    integer $columns           The number of columns in the output image. 0 = maintain aspect ratio based
-     *                                      on $rows.
-     * @param    integer $rows              The number of rows in the output image. 0 = maintain aspect ratio based on
-     *                                      $columns.
-     * @param    bool    $preserveColorInfo Whether the color information should be preserved
-     * @param   integer  $quality           Defaults to 82 which produces a very similar image.
+     * @param	integer	$columns		    The number of columns in the output image. 0 = maintain aspect ratio based on $rows.
+     * @param	integer	$rows			    The number of rows in the output image. 0 = maintain aspect ratio based on $columns.
+     * @param	bool	$preserveColorInfo  Whether the color information should be preserved
+     * @param   integer $quality            Defaults to 82 which produces a very similar image.
      */
     public function smartResize($columns, $rows, $preserveColorInfo = false, $quality = 82)
     {
@@ -50,7 +50,7 @@ class Imagick extends \Imagick
         $this->setInterlaceScheme(\Imagick::INTERLACE_NO);
 
         // Older Imagick versions might not have this. Better make sure.
-        if (!$preserveColorInfo && method_exists($this, 'transformimagecolorspace'))
+        if (!$preserveColorInfo &&  method_exists($this, 'transformimagecolorspace'))
         {
             $this->stripImage();
             $this->transformimagecolorspace(\Imagick::COLORSPACE_SRGB);
@@ -60,22 +60,26 @@ class Imagick extends \Imagick
 
     /**
      * Changes the size of an image to the given dimensions and removes any associated profiles.
+     *
      * `thumbnailImage` changes the size of an image to the given dimensions and
      * removes any associated profiles.  The goal is to produce small low cost
      * thumbnail images suited for display on the Web.
+     *
      * With the original Imagick thumbnailImage implementation, there is no way to choose a
      * resampling filter. This class recreates Imagick’s C implementation and adds this
      * additional feature.
+     *
      * Note: <https://github.com/mkoppanen/imagick/issues/90> has been filed for this issue.
      *
-     * @access    public
-     * @param    integer $columns The number of columns in the output image. 0 = maintain aspect ratio based on $rows.
-     * @param    integer $rows    The number of rows in the output image. 0 = maintain aspect ratio based on $columns.
-     * @param    bool    $bestfit Treat $columns and $rows as a bounding box in which to fit the image.
-     * @param    bool    $fill    Fill in the bounding box with the background colour.
-     * @param    integer $filter  The resampling filter to use. Refer to the list of filter constants at
-     *                            <http://php.net/manual/en/imagick.constants.php>.
-     * @return    bool    Indicates whether the operation was performed successfully.
+     * @access	public
+     *
+     * @param	integer	$columns		The number of columns in the output image. 0 = maintain aspect ratio based on $rows.
+     * @param	integer	$rows			The number of rows in the output image. 0 = maintain aspect ratio based on $columns.
+     * @param	bool	$bestfit		Treat $columns and $rows as a bounding box in which to fit the image.
+     * @param	bool	$fill			Fill in the bounding box with the background colour.
+     * @param	integer	$filter			The resampling filter to use. Refer to the list of filter constants at <http://php.net/manual/en/imagick.constants.php>.
+     *
+     * @return	bool	Indicates whether the operation was performed successfully.
      */
 
     public function thumbnailImage($columns, $rows, $bestfit = false, $fill = false, $filter = \Imagick::FILTER_TRIANGLE)
@@ -101,14 +105,14 @@ class Imagick extends \Imagick
             \Imagick::FILTER_MITCHELL,
             \Imagick::FILTER_LANCZOS,
             \Imagick::FILTER_BESSEL,
-            \Imagick::FILTER_SINC,
+            \Imagick::FILTER_SINC
         );
 
         // Parse parameters given to function
-        $columns = (double)($columns);
-        $rows    = (double)($rows);
-        $bestfit = (bool)$bestfit;
-        $fill    = (bool)$fill;
+        $columns = (double) ($columns);
+        $rows = (double) ($rows);
+        $bestfit = (bool) $bestfit;
+        $fill = (bool) $fill;
 
         // We can’t resize to (0,0)
         if ($rows < 1 && $columns < 1)
@@ -123,9 +127,9 @@ class Imagick extends \Imagick
         }
 
         // figure out the output width and height
-        $width      = (double)$this->getImageWidth();
-        $height     = (double)$this->getImageHeight();
-        $new_width  = $columns;
+        $width = (double) $this->getImageWidth();
+        $height = (double) $this->getImageHeight();
+        $new_width = $columns;
         $new_height = $rows;
 
         $x_factor = $columns / $width;
@@ -134,7 +138,8 @@ class Imagick extends \Imagick
         if ($rows < 1)
         {
             $new_height = round($x_factor * $height);
-        } elseif ($columns < 1)
+        }
+        elseif ($columns < 1)
         {
             $new_width = round($y_factor * $width);
         }
@@ -143,11 +148,12 @@ class Imagick extends \Imagick
         // the columns/rows parameters; those will define a bounding box in which the image will be fit
         if ($bestfit && $x_factor > $y_factor)
         {
-            $x_factor  = $y_factor;
+            $x_factor = $y_factor;
             $new_width = round($y_factor * $width);
-        } elseif ($bestfit && $y_factor > $x_factor)
+        }
+        elseif ($bestfit && $y_factor > $x_factor)
         {
-            $y_factor   = $x_factor;
+            $y_factor = $x_factor;
             $new_height = round($x_factor * $height);
         }
 
@@ -168,12 +174,14 @@ class Imagick extends \Imagick
             $this->resizeImage($new_width, $new_height, $filter, 1);
 
             // if we’d be using sample to scale to smaller than 128x128, just use resize
-        } elseif ((($SampleFactor * $new_width) < 128) || (($SampleFactor * $new_height) < 128))
+        }
+        elseif ((($SampleFactor * $new_width) < 128) || (($SampleFactor * $new_height) < 128))
         {
             $this->resizeImage($new_width, $new_height, $filter, 1);
 
             // otherwise, use sample first, then resize
-        } else
+        }
+        else
         {
             $this->sampleImage($SampleFactor * $new_width, $SampleFactor * $new_height);
             $this->resizeImage($new_width, $new_height, $filter, 1);
@@ -192,14 +200,13 @@ class Imagick extends \Imagick
         $this->setInterlaceScheme(\Imagick::INTERLACE_NO);
 
         // Strip all profiles except color profiles.
-        foreach ($this->getImageProfiles('*', true) as $key => $value)
-        {
-            if ($key != 'icc' && $key != 'icm')
-            {
+        foreach ($this->getImageProfiles('*', true) as $key => $value) {
+            if ($key != 'icc' && $key != 'icm') {
                 try
                 {
                     $this->removeImageProfile($key);
-                } catch (\Exception $e)
+                }
+                catch (\Exception $e)
                 {
                     // Some Imagick versions have trouble removing an image profile that they found.
                 }
@@ -207,7 +214,7 @@ class Imagick extends \Imagick
         }
 
         $properties = array('commment', 'Thumb::URI', 'Thumb::MTime', 'Thumb::Size', 'Thumb::Mimetype', 'software', 'Thumb::Image::Width', 'Thumb::Image::Height', 'Thumb::Document::Pages');
-        $delete     = method_exists($this, 'deleteImageProperty');
+        $delete = method_exists($this, 'deleteImageProperty');
 
         foreach ($properties as $property)
         {
@@ -216,11 +223,13 @@ class Imagick extends \Imagick
                 if ($delete)
                 {
                     $this->deleteImageProperty($property);
-                } else
+                }
+                else
                 {
                     $this->setImageProperty($property, '');
                 }
-            } catch (\Exception $e)
+            }
+            catch (\Exception $e)
             {
                 // Mere exceptions cannot stop me!
             }
@@ -233,12 +242,10 @@ class Imagick extends \Imagick
             $extent_x = 0;
             $extent_y = 0;
 
-            if ($columns > $new_width)
-            {
+            if ($columns > $new_width) {
                 $extent_x = ($columns - $new_width) / 2;
             }
-            if ($rows > $new_height)
-            {
+            if ($rows > $new_height) {
                 $extent_y = ($rows - $new_height) / 2;
             }
 
@@ -249,5 +256,4 @@ class Imagick extends \Imagick
 
     }
 }
-
 ?>

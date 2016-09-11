@@ -6,53 +6,53 @@ namespace Craft;
  */
 class m141024_000001_field_layout_tabs extends BaseMigration
 {
-    /**
-     * Any migration code in here is wrapped inside of a transaction.
-     *
-     * @return bool
-     */
-    public function safeUp()
-    {
-        Craft::log('Adding tags to all field layouts...', LogLevel::Info, true);
+	/**
+	 * Any migration code in here is wrapped inside of a transaction.
+	 *
+	 * @return bool
+	 */
+	public function safeUp()
+	{
+		Craft::log('Adding tags to all field layouts...', LogLevel::Info, true);
 
-        // Get the field layouts that don't have any tabs
-        $layoutIds = craft()->db->createCommand()
-            ->select('l.id')
-            ->from('fieldlayouts l')
-            ->leftJoin('fieldlayouttabs t', 't.layoutId = l.id')
-            ->where('t.id is null')
-            ->queryColumn();
+		// Get the field layouts that don't have any tabs
+		$layoutIds = craft()->db->createCommand()
+			->select('l.id')
+			->from('fieldlayouts l')
+			->leftJoin('fieldlayouttabs t', 't.layoutId = l.id')
+			->where('t.id is null')
+			->queryColumn();
 
-        foreach ($layoutIds as $layoutId)
-        {
-            // Create a Content tab
-            $this->insert('fieldlayouttabs', array(
-                'layoutId'  => $layoutId,
-                'name'      => 'Content',
-                'sortOrder' => 1,
-            ));
+		foreach ($layoutIds as $layoutId)
+		{
+			// Create a Content tab
+			$this->insert('fieldlayouttabs', array(
+				'layoutId' => $layoutId,
+				'name' => 'Content',
+				'sortOrder' => 1
+			));
 
-            // Get its ID
-            $tabId = craft()->db->getLastInsertID();
+			// Get its ID
+			$tabId = craft()->db->getLastInsertID();
 
-            // Assign its fields to that tab
-            $this->update('fieldlayoutfields', array(
-                'tabId' => $tabId,
-            ), array(
-                'layoutId' => $layoutId,
-            ));
-        }
+			// Assign its fields to that tab
+			$this->update('fieldlayoutfields', array(
+				'tabId' => $tabId
+			), array(
+				'layoutId' => $layoutId
+			));
+		}
 
-        // Damn you MySQL 5.6!
-        $this->dropForeignKey('fieldlayoutfields', 'tabId');
+		// Damn you MySQL 5.6!
+		$this->dropForeignKey('fieldlayoutfields', 'tabId');
 
-        // Make the tabId column required
-        $this->alterColumn('fieldlayoutfields', 'tabId', array(ColumnType::Int, 'null' => false));
+		// Make the tabId column required
+		$this->alterColumn('fieldlayoutfields', 'tabId', array(ColumnType::Int, 'null' => false));
 
-        $this->addForeignKey('fieldlayoutfields', 'tabId', 'fieldlayouttabs', 'id', 'CASCADE');
+		$this->addForeignKey('fieldlayoutfields', 'tabId', 'fieldlayouttabs', 'id', 'CASCADE');
 
-        Craft::log('Done adding tabs to all field layouts.', LogLevel::Info, true);
+		Craft::log('Done adding tabs to all field layouts.', LogLevel::Info, true);
 
-        return true;
-    }
+		return true;
+	}
 }

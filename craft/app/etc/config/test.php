@@ -1,16 +1,16 @@
 <?php
 
-$main = require_once(CRAFT_APP_PATH . 'etc/config/main.php');
+$main = require_once(CRAFT_APP_PATH.'etc/config/main.php');
 
 return CMap::mergeArray(
-    $main,
+	$main,
 
-    array(
-        'components' => array(
-            'fixture' => array(
-                'class' => 'system.test.CDbFixtureManager',
-            ),
-            'request',
-        ),
-    )
+	array(
+		'components' => array(
+			'fixture' => array(
+				'class' => 'system.test.CDbFixtureManager',
+			),
+			'request'
+		),
+	)
 );

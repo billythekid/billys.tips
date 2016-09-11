@@ -27,8 +27,7 @@ class ParserRegistry
      */
     public static function getInstance()
     {
-        if (!self::$instance)
-        {
+        if (!self::$instance) {
             self::$instance = new static;
         }
 
@@ -38,8 +37,7 @@ class ParserRegistry
     public function __construct()
     {
         // Use the PECL URI template parser if available
-        if (extension_loaded('uri_template'))
-        {
+        if (extension_loaded('uri_template')) {
             $this->mapping['uri_template'] = 'Guzzle\\Parser\\UriTemplate\\PeclUriTemplate';
         }
     }
@@ -48,17 +46,16 @@ class ParserRegistry
      * Get a parser by name from an instance
      *
      * @param string $name Name of the parser to retrieve
+     *
      * @return mixed|null
      */
     public function getParser($name)
     {
-        if (!isset($this->instances[$name]))
-        {
-            if (!isset($this->mapping[$name]))
-            {
+        if (!isset($this->instances[$name])) {
+            if (!isset($this->mapping[$name])) {
                 return null;
             }
-            $class                  = $this->mapping[$name];
+            $class = $this->mapping[$name];
             $this->instances[$name] = new $class();
         }
 

@@ -3,6 +3,7 @@ namespace Craft;
 
 /**
  * Search Query Term class
+ *
  * Represents a term in the search query.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
@@ -14,36 +15,36 @@ namespace Craft;
  */
 class SearchQueryTerm
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var bool
-     */
-    public $exclude = false;
+	/**
+	 * @var bool
+	 */
+	public $exclude = false;
 
-    /**
-     * @var bool
-     */
-    public $exact = false;
+	/**
+	 * @var bool
+	 */
+	public $exact = false;
 
-    /**
-     * @var bool
-     */
-    public $subLeft = false;
+	/**
+	 * @var bool
+	 */
+	public $subLeft = false;
 
-    /**
-     * @var bool
-     */
-    public $subRight = false;
+	/**
+	 * @var bool
+	 */
+	public $subRight = false;
 
-    /**
-     * @var null
-     */
-    public $attribute = null;
+	/**
+	 * @var null
+	 */
+	public $attribute = null;
 
-    /**
-     * @var null
-     */
-    public $term = null;
+	/**
+	 * @var null
+	 */
+	public $term = null;
 }

@@ -20,21 +20,20 @@ class CallbackCanCacheStrategy extends DefaultCanCacheStrategy
     /**
      * @param \Closure|array|mixed $requestCallback  Callable method to invoke for requests
      * @param \Closure|array|mixed $responseCallback Callable method to invoke for responses
+     *
      * @throws InvalidArgumentException
      */
     public function __construct($requestCallback = null, $responseCallback = null)
     {
-        if ($requestCallback && !is_callable($requestCallback))
-        {
+        if ($requestCallback && !is_callable($requestCallback)) {
             throw new InvalidArgumentException('Method must be callable');
         }
 
-        if ($responseCallback && !is_callable($responseCallback))
-        {
+        if ($responseCallback && !is_callable($responseCallback)) {
             throw new InvalidArgumentException('Method must be callable');
         }
 
-        $this->requestCallback  = $requestCallback;
+        $this->requestCallback = $requestCallback;
         $this->responseCallback = $responseCallback;
     }
 

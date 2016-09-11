@@ -41,8 +41,7 @@ final class Bucket implements \Countable
      */
     public function add($value)
     {
-        if ($this->range->contains($value))
-        {
+        if ($this->range->contains($value)) {
             $this->count++;
         }
     }

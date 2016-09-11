@@ -24,8 +24,7 @@ final class StaticClient
     public static function mount($className = 'Guzzle', ClientInterface $client = null)
     {
         class_alias(__CLASS__, $className);
-        if ($client)
-        {
+        if ($client) {
             self::$client = $client;
         }
     }
@@ -39,23 +38,18 @@ final class StaticClient
     public static function request($method, $url, $options = array())
     {
         // @codeCoverageIgnoreStart
-        if (!self::$client)
-        {
+        if (!self::$client) {
             self::$client = new Client();
         }
         // @codeCoverageIgnoreEnd
 
         $request = self::$client->createRequest($method, $url, null, null, $options);
 
-        if (isset($options['stream']))
-        {
-            if ($options['stream'] instanceof StreamRequestFactoryInterface)
-            {
+        if (isset($options['stream'])) {
+            if ($options['stream'] instanceof StreamRequestFactoryInterface) {
                 return $options['stream']->fromRequest($request);
-            } elseif ($options['stream'] == true)
-            {
+            } elseif ($options['stream'] == true) {
                 $streamFactory = new PhpStreamRequestFactory();
-
                 return $streamFactory->fromRequest($request);
             }
         }
@@ -68,6 +62,7 @@ final class StaticClient
      *
      * @param string $url     URL of the request
      * @param array  $options Array of request options
+     *
      * @return \Guzzle\Http\Message\Response
      * @see Guzzle::request for a list of available options
      */
@@ -81,6 +76,7 @@ final class StaticClient
      *
      * @param string $url     URL of the request
      * @param array  $options Array of request options
+     *
      * @return \Guzzle\Http\Message\Response
      * @see Guzzle::request for a list of available options
      */
@@ -94,6 +90,7 @@ final class StaticClient
      *
      * @param string $url     URL of the request
      * @param array  $options Array of request options
+     *
      * @return \Guzzle\Http\Message\Response
      * @see Guzzle::request for a list of available options
      */
@@ -107,6 +104,7 @@ final class StaticClient
      *
      * @param string $url     URL of the request
      * @param array  $options Array of request options
+     *
      * @return \Guzzle\Http\Message\Response
      * @see Guzzle::request for a list of available options
      */
@@ -120,6 +118,7 @@ final class StaticClient
      *
      * @param string $url     URL of the request
      * @param array  $options Array of request options
+     *
      * @return \Guzzle\Http\Message\Response
      * @see Guzzle::request for a list of available options
      */
@@ -133,6 +132,7 @@ final class StaticClient
      *
      * @param string $url     URL of the request
      * @param array  $options Array of request options
+     *
      * @return \Guzzle\Http\Message\Response
      * @see Guzzle::request for a list of available options
      */
@@ -146,6 +146,7 @@ final class StaticClient
      *
      * @param string $url     URL of the request
      * @param array  $options Array of request options
+     *
      * @return \Guzzle\Http\Message\Response
      * @see Guzzle::request for a list of available options
      */

@@ -77,7 +77,7 @@ class Twig_Tests_Profiler_ProfileTest extends PHPUnit_Framework_TestCase
 
     public function testSerialize()
     {
-        $profile  = new Twig_Profiler_Profile('template', 'type', 'name');
+        $profile = new Twig_Profiler_Profile('template', 'type', 'name');
         $profile1 = new Twig_Profiler_Profile('template1', 'type1', 'name1');
         $profile->addProfile($profile1);
         $profile->leave();

@@ -13,7 +13,7 @@ class Twig_Tests_Node_IfTest extends Twig_Test_NodeTestCase
 {
     public function testConstructor()
     {
-        $t    = new Twig_Node(array(
+        $t = new Twig_Node(array(
             new Twig_Node_Expression_Constant(true, 1),
             new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1),
         ), array(), 1);
@@ -32,7 +32,7 @@ class Twig_Tests_Node_IfTest extends Twig_Test_NodeTestCase
     {
         $tests = array();
 
-        $t    = new Twig_Node(array(
+        $t = new Twig_Node(array(
             new Twig_Node_Expression_Constant(true, 1),
             new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1),
         ), array(), 1);
@@ -45,10 +45,9 @@ if (true) {
     echo {$this->getVariableGetter('foo')};
 }
 EOF
-    ,
         );
 
-        $t    = new Twig_Node(array(
+        $t = new Twig_Node(array(
             new Twig_Node_Expression_Constant(true, 1),
             new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1),
             new Twig_Node_Expression_Constant(false, 1),
@@ -65,10 +64,9 @@ if (true) {
     echo {$this->getVariableGetter('bar')};
 }
 EOF
-    ,
         );
 
-        $t    = new Twig_Node(array(
+        $t = new Twig_Node(array(
             new Twig_Node_Expression_Constant(true, 1),
             new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1),
         ), array(), 1);
@@ -83,7 +81,6 @@ if (true) {
     echo {$this->getVariableGetter('bar')};
 }
 EOF
-    ,
         );
 
         return $tests;

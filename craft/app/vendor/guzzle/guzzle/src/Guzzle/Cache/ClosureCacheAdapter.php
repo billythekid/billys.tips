@@ -20,15 +20,14 @@ class ClosureCacheAdapter implements CacheAdapterInterface
      * - save:     Callable that accepts an $id, $data, $lifeTime, and $options argument
      *
      * @param array $callables array of action names to callable
+     *
      * @throws \InvalidArgumentException if the callable is not callable
      */
     public function __construct(array $callables)
     {
         // Validate each key to ensure it exists and is callable
-        foreach (array('contains', 'delete', 'fetch', 'save') as $key)
-        {
-            if (!array_key_exists($key, $callables) || !is_callable($callables[$key]))
-            {
+        foreach (array('contains', 'delete', 'fetch', 'save') as $key) {
+            if (!array_key_exists($key, $callables) || !is_callable($callables[$key])) {
                 throw new \InvalidArgumentException("callables must contain a callable {$key} key");
             }
         }

@@ -33,17 +33,17 @@ final class Box implements BoxInterface
      *
      * @param integer $width
      * @param integer $height
+     *
      * @throws InvalidArgumentException
      */
     public function __construct($width, $height)
     {
-        if ($height < 1 || $width < 1)
-        {
+        if ($height < 1 || $width < 1) {
             throw new InvalidArgumentException(sprintf('Length of either side cannot be 0 or negative, current size is %sx%s', $width, $height));
         }
 
-        $this->width  = (int)$width;
-        $this->height = (int)$height;
+        $this->width  = (int) $width;
+        $this->height = (int) $height;
     }
 
     /**
@@ -75,7 +75,7 @@ final class Box implements BoxInterface
      */
     public function increase($size)
     {
-        return new Box((int)$size + $this->width, (int)$size + $this->height);
+        return new Box((int) $size + $this->width, (int) $size + $this->height);
     }
 
     /**

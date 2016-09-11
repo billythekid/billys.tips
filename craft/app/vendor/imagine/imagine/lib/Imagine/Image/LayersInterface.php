@@ -33,7 +33,9 @@ interface LayersInterface extends \Iterator, \Countable, \ArrayAccess
      * @param string  $format The output output format
      * @param integer $delay  The delay in milliseconds between two frames
      * @param integer $loops  The number of loops, 0 means infinite
+     *
      * @return LayersInterface
+     *
      * @throws InvalidArgumentException In case an invalid argument is provided
      * @throws RuntimeException         In case the driver fails to animate
      */
@@ -49,7 +51,9 @@ interface LayersInterface extends \Iterator, \Countable, \ArrayAccess
      * Adds an image at the end of the layers stack
      *
      * @param ImageInterface $image
+     *
      * @return LayersInterface
+     *
      * @throws RuntimeException
      */
     public function add(ImageInterface $image);
@@ -59,7 +63,9 @@ interface LayersInterface extends \Iterator, \Countable, \ArrayAccess
      *
      * @param integer        $offset
      * @param ImageInterface $image
+     *
      * @return LayersInterface
+     *
      * @throws RuntimeException
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -70,7 +76,9 @@ interface LayersInterface extends \Iterator, \Countable, \ArrayAccess
      * Removes the image at offset
      *
      * @param integer $offset
+     *
      * @return LayersInterface
+     *
      * @throws RuntimeException
      * @throws InvalidArgumentException
      */
@@ -80,7 +88,9 @@ interface LayersInterface extends \Iterator, \Countable, \ArrayAccess
      * Returns the image at offset
      *
      * @param integer $offset
+     *
      * @return ImageInterface
+     *
      * @throws RuntimeException
      * @throws InvalidArgumentException
      */
@@ -90,6 +100,7 @@ interface LayersInterface extends \Iterator, \Countable, \ArrayAccess
      * Returns true if a layer at offset is preset
      *
      * @param integer $offset
+     *
      * @return Boolean
      */
     public function has($offset);

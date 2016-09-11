@@ -22,12 +22,12 @@ class Twig_SimpleTest
 
     public function __construct($name, $callable, array $options = array())
     {
-        $this->name     = $name;
+        $this->name = $name;
         $this->callable = $callable;
-        $this->options  = array_merge(array(
+        $this->options = array_merge(array(
             'is_variadic' => false,
-            'node_class'  => 'Twig_Node_Expression_Test',
-            'deprecated'  => false,
+            'node_class' => 'Twig_Node_Expression_Test',
+            'deprecated' => false,
             'alternative' => null,
         ), $options);
     }
@@ -54,7 +54,7 @@ class Twig_SimpleTest
 
     public function isDeprecated()
     {
-        return (bool)$this->options['deprecated'];
+        return (bool) $this->options['deprecated'];
     }
 
     public function getDeprecatedVersion()

@@ -17,12 +17,12 @@ class SchemaFormatter
      *
      * @param string $format Registered format used to format the value
      * @param mixed  $value  Value being formatted
+     *
      * @return mixed
      */
     public static function format($format, $value)
     {
-        switch ($format)
-        {
+        switch ($format) {
             case 'date-time':
                 return self::formatDateTime($value);
             case 'date-time-http':
@@ -44,6 +44,7 @@ class SchemaFormatter
      * Create a ISO 8601 (YYYY-MM-DDThh:mm:ssZ) formatted date time value in UTC time
      *
      * @param string|integer|\DateTime $value Date time value
+     *
      * @return string
      */
     public static function formatDateTime($value)
@@ -55,6 +56,7 @@ class SchemaFormatter
      * Create an HTTP date (RFC 1123 / RFC 822) formatted UTC date-time string
      *
      * @param string|integer|\DateTime $value Date time value
+     *
      * @return string
      */
     public static function formatDateTimeHttp($value)
@@ -66,6 +68,7 @@ class SchemaFormatter
      * Create a YYYY-MM-DD formatted string
      *
      * @param string|integer|\DateTime $value Date time value
+     *
      * @return string
      */
     public static function formatDate($value)
@@ -77,6 +80,7 @@ class SchemaFormatter
      * Create a hh:mm:ss formatted string
      *
      * @param string|integer|\DateTime $value Date time value
+     *
      * @return string
      */
     public static function formatTime($value)
@@ -88,6 +92,7 @@ class SchemaFormatter
      * Formats a boolean value as a string
      *
      * @param string|integer|bool $value Value to convert to a boolean 'true' / 'false' value
+     *
      * @return string
      */
     public static function formatBooleanAsString($value)
@@ -99,11 +104,12 @@ class SchemaFormatter
      * Return a UNIX timestamp in the UTC timezone
      *
      * @param string|integer|\DateTime $value Time value
+     *
      * @return int
      */
     public static function formatTimestamp($value)
     {
-        return (int)self::dateFormatter($value, 'U');
+        return (int) self::dateFormatter($value, 'U');
     }
 
     /**
@@ -114,11 +120,9 @@ class SchemaFormatter
     protected static function getUtcTimeZone()
     {
         // @codeCoverageIgnoreStart
-        if (!self::$utcTimeZone)
-        {
+        if (!self::$utcTimeZone) {
             self::$utcTimeZone = new \DateTimeZone('UTC');
         }
-
         // @codeCoverageIgnoreEnd
 
         return self::$utcTimeZone;
@@ -129,23 +133,21 @@ class SchemaFormatter
      *
      * @param int|string|\DateTime $dateTime Date time value
      * @param string               $format   Format of the result
+     *
      * @return string
      * @throws InvalidArgumentException
      */
     protected static function dateFormatter($dateTime, $format)
     {
-        if (is_numeric($dateTime))
-        {
-            return gmdate($format, (int)$dateTime);
+        if (is_numeric($dateTime)) {
+            return gmdate($format, (int) $dateTime);
         }
 
-        if (is_string($dateTime))
-        {
+        if (is_string($dateTime)) {
             $dateTime = new \DateTime($dateTime);
         }
 
-        if ($dateTime instanceof \DateTime)
-        {
+        if ($dateTime instanceof \DateTime) {
             return $dateTime->setTimezone(self::getUtcTimeZone())->format($format);
         }
 

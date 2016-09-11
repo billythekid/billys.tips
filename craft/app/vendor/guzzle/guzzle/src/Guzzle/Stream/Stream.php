@@ -9,12 +9,12 @@ use Guzzle\Common\Exception\InvalidArgumentException;
  */
 class Stream implements StreamInterface
 {
-    const STREAM_TYPE  = 'stream_type';
+    const STREAM_TYPE = 'stream_type';
     const WRAPPER_TYPE = 'wrapper_type';
-    const IS_LOCAL     = 'is_local';
-    const IS_READABLE  = 'is_readable';
-    const IS_WRITABLE  = 'is_writable';
-    const SEEKABLE     = 'seekable';
+    const IS_LOCAL = 'is_local';
+    const IS_READABLE = 'is_readable';
+    const IS_WRITABLE = 'is_writable';
+    const SEEKABLE = 'seekable';
 
     /** @var resource Stream resource */
     protected $stream;
@@ -30,21 +30,22 @@ class Stream implements StreamInterface
 
     /** @var array Hash table of readable and writeable stream types for fast lookups */
     protected static $readWriteHash = array(
-        'read'  => array(
-            'r'  => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
+        'read' => array(
+            'r' => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
             'rb' => true, 'w+b' => true, 'r+b' => true, 'x+b' => true, 'c+b' => true,
-            'rt' => true, 'w+t' => true, 'r+t' => true, 'x+t' => true, 'c+t' => true, 'a+' => true,
+            'rt' => true, 'w+t' => true, 'r+t' => true, 'x+t' => true, 'c+t' => true, 'a+' => true
         ),
         'write' => array(
-            'w'   => true, 'w+' => true, 'rw' => true, 'r+' => true, 'x+' => true, 'c+' => true,
-            'wb'  => true, 'w+b' => true, 'r+b' => true, 'x+b' => true, 'c+b' => true,
-            'w+t' => true, 'r+t' => true, 'x+t' => true, 'c+t' => true, 'a' => true, 'a+' => true,
-        ),
+            'w' => true, 'w+' => true, 'rw' => true, 'r+' => true, 'x+' => true, 'c+' => true,
+            'wb' => true, 'w+b' => true, 'r+b' => true, 'x+b' => true, 'c+b' => true,
+            'w+t' => true, 'r+t' => true, 'x+t' => true, 'c+t' => true, 'a' => true, 'a+' => true
+        )
     );
 
     /**
      * @param resource $stream Stream resource to wrap
      * @param int      $size   Size of the stream in bytes. Only pass if the size cannot be obtained from the stream.
+     *
      * @throws InvalidArgumentException if the stream is not a stream resource
      */
     public function __construct($stream, $size = null)
@@ -62,13 +63,12 @@ class Stream implements StreamInterface
 
     public function __toString()
     {
-        if (!$this->isReadable() || (!$this->isSeekable() && $this->isConsumed()))
-        {
+        if (!$this->isReadable() || (!$this->isSeekable() && $this->isConsumed())) {
             return '';
         }
 
         $originalPos = $this->ftell();
-        $body        = stream_get_contents($this->stream, -1, 0);
+        $body = stream_get_contents($this->stream, -1, 0);
         $this->seek($originalPos);
 
         return $body;
@@ -76,8 +76,7 @@ class Stream implements StreamInterface
 
     public function close()
     {
-        if (is_resource($this->stream))
-        {
+        if (is_resource($this->stream)) {
             fclose($this->stream);
         }
         $this->cache[self::IS_READABLE] = false;
@@ -90,23 +89,22 @@ class Stream implements StreamInterface
      * @param StreamInterface $stream    Stream to calculate the hash for
      * @param string          $algo      Hash algorithm (e.g. md5, crc32, etc)
      * @param bool            $rawOutput Whether or not to use raw output
+     *
      * @return bool|string Returns false on failure or a hash string on success
      */
     public static function getHash(StreamInterface $stream, $algo, $rawOutput = false)
     {
         $pos = $stream->ftell();
-        if (!$stream->seek(0))
-        {
+        if (!$stream->seek(0)) {
             return false;
         }
 
         $ctx = hash_init($algo);
-        while (!$stream->feof())
-        {
+        while (!$stream->feof()) {
             hash_update($ctx, $stream->read(8192));
         }
 
-        $out = hash_final($ctx, (bool)$rawOutput);
+        $out = hash_final($ctx, (bool) $rawOutput);
         $stream->seek($pos);
 
         return $out;
@@ -126,12 +124,11 @@ class Stream implements StreamInterface
 
     public function setStream($stream, $size = null)
     {
-        if (!is_resource($stream))
-        {
+        if (!is_resource($stream)) {
             throw new InvalidArgumentException('Stream must be a resource');
         }
 
-        $this->size   = $size;
+        $this->size = $size;
         $this->stream = $stream;
         $this->rebuildCache();
 
@@ -167,26 +164,21 @@ class Stream implements StreamInterface
 
     public function getSize()
     {
-        if ($this->size !== null)
-        {
+        if ($this->size !== null) {
             return $this->size;
         }
 
         // If the stream is a file based stream and local, then use fstat
         clearstatcache(true, $this->cache['uri']);
         $stats = fstat($this->stream);
-        if (isset($stats['size']))
-        {
+        if (isset($stats['size'])) {
             $this->size = $stats['size'];
-
             return $this->size;
-        } elseif ($this->cache[self::IS_READABLE] && $this->cache[self::SEEKABLE])
-        {
+        } elseif ($this->cache[self::IS_READABLE] && $this->cache[self::SEEKABLE]) {
             // Only get the size based on the content if the the stream is readable and seekable
-            $pos        = $this->ftell();
-            $this->size = strlen((string)$this);
+            $pos = $this->ftell();
+            $this->size = strlen((string) $this);
             $this->seek($pos);
-
             return $this->size;
         }
 
@@ -265,11 +257,9 @@ class Stream implements StreamInterface
 
     public function readLine($maxLength = null)
     {
-        if (!$this->cache[self::IS_READABLE])
-        {
+        if (!$this->cache[self::IS_READABLE]) {
             return false;
-        } else
-        {
+        } else {
             return $maxLength ? fgets($this->getStream(), $maxLength) : fgets($this->getStream());
         }
     }
@@ -291,8 +281,8 @@ class Stream implements StreamInterface
      */
     protected function rebuildCache()
     {
-        $this->cache                    = stream_get_meta_data($this->stream);
-        $this->cache[self::IS_LOCAL]    = stream_is_local($this->stream);
+        $this->cache = stream_get_meta_data($this->stream);
+        $this->cache[self::IS_LOCAL] = stream_is_local($this->stream);
         $this->cache[self::IS_READABLE] = isset(self::$readWriteHash['read'][$this->cache['mode']]);
         $this->cache[self::IS_WRITABLE] = isset(self::$readWriteHash['write'][$this->cache['mode']]);
     }

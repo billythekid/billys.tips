@@ -10,7 +10,6 @@ use Guzzle\Common\Version;
 
 /**
  * Apply a callback to the contents of a {@see ResourceIteratorInterface}
- *
  * @deprecated Will be removed in a future version and is no longer maintained. Use the Batch\ abstractions instead.
  * @codeCoverageIgnore
  */
@@ -36,7 +35,7 @@ class ResourceIteratorApplyBatched extends AbstractHasDispatcher
             // Finished sending a batch of requests to the callback
             'iterator_batch.after_batch',
             // Created the batch object
-            'iterator_batch.created_batch',
+            'iterator_batch.created_batch'
         );
     }
 
@@ -56,19 +55,19 @@ class ResourceIteratorApplyBatched extends AbstractHasDispatcher
      * Apply the callback to the contents of the resource iterator
      *
      * @param int $perBatch The number of records to group per batch transfer
+     *
      * @return int Returns the number of iterated resources
      */
     public function apply($perBatch = 50)
     {
         $this->iterated = $this->batches = $batches = 0;
-        $that           = $this;
-        $it             = $this->iterator;
-        $callback       = $this->callback;
+        $that = $this;
+        $it = $this->iterator;
+        $callback = $this->callback;
 
         $batch = BatchBuilder::factory()
             ->createBatchesWith(new BatchSizeDivisor($perBatch))
-            ->transferWith(new BatchClosureTransfer(function (array $batch) use ($that, $callback, &$batches, $it)
-            {
+            ->transferWith(new BatchClosureTransfer(function (array $batch) use ($that, $callback, &$batches, $it) {
                 $batches++;
                 $that->dispatch('iterator_batch.before_batch', array('iterator' => $it, 'batch' => $batch));
                 call_user_func_array($callback, array($it, $batch));
@@ -79,8 +78,7 @@ class ResourceIteratorApplyBatched extends AbstractHasDispatcher
 
         $this->dispatch('iterator_batch.created_batch', array('batch' => $batch));
 
-        foreach ($this->iterator as $resource)
-        {
+        foreach ($this->iterator as $resource) {
             $this->iterated++;
             $batch->add($resource);
         }

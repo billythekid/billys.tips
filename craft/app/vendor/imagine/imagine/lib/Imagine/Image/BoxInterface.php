@@ -34,6 +34,7 @@ interface BoxInterface
      * Creates new BoxInterface instance with ratios applied to both sides
      *
      * @param float $ratio
+     *
      * @return BoxInterface
      */
     public function scale($ratio);
@@ -42,6 +43,7 @@ interface BoxInterface
      * Creates new BoxInterface, adding given size to both sides
      *
      * @param integer $size
+     *
      * @return BoxInterface
      */
     public function increase($size);
@@ -52,6 +54,7 @@ interface BoxInterface
      *
      * @param BoxInterface   $box
      * @param PointInterface $start
+     *
      * @return Boolean
      */
     public function contains(BoxInterface $box, PointInterface $start = null);
@@ -75,6 +78,7 @@ interface BoxInterface
      * Resizes box to given width, constraining proportions and returns the new box
      *
      * @param integer $width
+     *
      * @return BoxInterface
      */
     public function widen($width);
@@ -83,6 +87,7 @@ interface BoxInterface
      * Resizes box to given height, constraining proportions and returns the new box
      *
      * @param integer $height
+     *
      * @return BoxInterface
      */
     public function heighten($height);

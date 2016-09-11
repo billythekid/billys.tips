@@ -13,39 +13,40 @@ namespace Craft;
  */
 class ElementsVariable
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns all installed element types.
-     *
-     * @return array
-     */
-    public function getAllElementTypes()
-    {
-        $elementTypes = array();
+	/**
+	 * Returns all installed element types.
+	 *
+	 * @return array
+	 */
+	public function getAllElementTypes()
+	{
+		$elementTypes = array();
 
-        foreach (craft()->elements->getAllElementTypes() as $classHandle => $elementType)
-        {
-            $elementTypes[$classHandle] = new ElementTypeVariable($elementType);
-        }
+		foreach (craft()->elements->getAllElementTypes() as $classHandle => $elementType)
+		{
+			$elementTypes[$classHandle] = new ElementTypeVariable($elementType);
+		}
 
-        return $elementTypes;
-    }
+		return $elementTypes;
+	}
 
-    /**
-     * Returns an element type.
-     *
-     * @param string $class
-     * @return ElementTypeVariable|null
-     */
-    public function getElementType($class)
-    {
-        $elementType = craft()->elements->getElementType($class);
+	/**
+	 * Returns an element type.
+	 *
+	 * @param string $class
+	 *
+	 * @return ElementTypeVariable|null
+	 */
+	public function getElementType($class)
+	{
+		$elementType = craft()->elements->getElementType($class);
 
-        if ($elementType)
-        {
-            return new ElementTypeVariable($elementType);
-        }
-    }
+		if ($elementType)
+		{
+			return new ElementTypeVariable($elementType);
+		}
+	}
 }

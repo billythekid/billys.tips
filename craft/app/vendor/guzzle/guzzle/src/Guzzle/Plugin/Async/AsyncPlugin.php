@@ -18,7 +18,7 @@ class AsyncPlugin implements EventSubscriberInterface
             'request.before_send'    => 'onBeforeSend',
             'request.exception'      => 'onRequestTimeout',
             'request.sent'           => 'onRequestSent',
-            'curl.callback.progress' => 'onCurlProgress',
+            'curl.callback.progress' => 'onCurlProgress'
         );
     }
 
@@ -44,15 +44,13 @@ class AsyncPlugin implements EventSubscriberInterface
     {
         if ($event['handle'] &&
             ($event['downloaded'] || (isset($event['uploaded']) && $event['upload_size'] === $event['uploaded']))
-        )
-        {
+        ) {
             // Timeout after 1ms
             curl_setopt($event['handle'], CURLOPT_TIMEOUT_MS, 1);
             // Even if the response is quick, tell curl not to download the body.
             // - Note that we can only perform this shortcut if the request transmitted a body so as to ensure that the
             //   request method is not converted to a HEAD request before the request was sent via curl.
-            if ($event['uploaded'])
-            {
+            if ($event['uploaded']) {
                 curl_setopt($event['handle'], CURLOPT_NOBODY, true);
             }
         }
@@ -65,10 +63,9 @@ class AsyncPlugin implements EventSubscriberInterface
      */
     public function onRequestTimeout(Event $event)
     {
-        if ($event['exception'] instanceof CurlException)
-        {
+        if ($event['exception'] instanceof CurlException) {
             $event['request']->setResponse(new Response(200, array(
-                'X-Guzzle-Async' => 'Did not wait for the response',
+                'X-Guzzle-Async' => 'Did not wait for the response'
             )));
         }
     }

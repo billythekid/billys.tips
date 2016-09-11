@@ -8,6 +8,7 @@ use Guzzle\Http\Exception\HttpException;
 
 /**
  * Will retry the request using the same amount of delay for each retry.
+ *
  * Warning: If no decision making strategies precede this strategy in the the chain, then all requests will be retried
  */
 class ConstantBackoffStrategy extends AbstractBackoffStrategy

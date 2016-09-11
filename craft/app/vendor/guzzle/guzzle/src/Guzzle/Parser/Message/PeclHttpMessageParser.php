@@ -9,8 +9,7 @@ class PeclHttpMessageParser extends AbstractMessageParser
 {
     public function parseRequest($message)
     {
-        if (!$message)
-        {
+        if (!$message) {
             return false;
         }
 
@@ -21,7 +20,7 @@ class PeclHttpMessageParser extends AbstractMessageParser
             'protocol' => 'HTTP',
             'version'  => number_format($parts->httpVersion, 1),
             'headers'  => $parts->headers,
-            'body'     => $parts->body,
+            'body'     => $parts->body
         );
 
         $parsed['request_url'] = $this->getUrlPartsFromMessage($parts->requestUrl, $parsed);
@@ -31,8 +30,7 @@ class PeclHttpMessageParser extends AbstractMessageParser
 
     public function parseResponse($message)
     {
-        if (!$message)
-        {
+        if (!$message) {
             return false;
         }
 
@@ -44,7 +42,7 @@ class PeclHttpMessageParser extends AbstractMessageParser
             'code'          => $parts->responseCode,
             'reason_phrase' => $parts->responseStatus,
             'headers'       => $parts->headers,
-            'body'          => $parts->body,
+            'body'          => $parts->body
         );
     }
 }

@@ -27,7 +27,7 @@ class CookiePlugin implements EventSubscriberInterface
     {
         return array(
             'request.before_send' => array('onRequestBeforeSend', 125),
-            'request.sent'        => array('onRequestSent', 125),
+            'request.sent'        => array('onRequestSent', 125)
         );
     }
 
@@ -49,12 +49,10 @@ class CookiePlugin implements EventSubscriberInterface
     public function onRequestBeforeSend(Event $event)
     {
         $request = $event['request'];
-        if (!$request->getParams()->get('cookies.disable'))
-        {
+        if (!$request->getParams()->get('cookies.disable')) {
             $request->removeHeader('Cookie');
             // Find cookies that match this request
-            foreach ($this->cookieJar->getMatchingCookies($request) as $cookie)
-            {
+            foreach ($this->cookieJar->getMatchingCookies($request) as $cookie) {
                 $request->addCookie($cookie->getName(), $cookie->getValue());
             }
         }

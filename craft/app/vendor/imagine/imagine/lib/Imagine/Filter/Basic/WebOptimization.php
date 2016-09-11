@@ -26,7 +26,7 @@ class WebOptimization implements FilterInterface
 
     public function __construct($path = null, array $options = array())
     {
-        $this->path    = $path;
+        $this->path = $path;
         $this->options = array_replace(array(
             'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
             'resolution-y'     => 72,
@@ -44,14 +44,11 @@ class WebOptimization implements FilterInterface
             ->usePalette($this->palette)
             ->strip();
 
-        if (is_callable($this->path))
-        {
+        if (is_callable($this->path)) {
             $path = call_user_func($this->path, $image);
-        } elseif (null !== $this->path)
-        {
+        } elseif (null !== $this->path) {
             $path = $this->path;
-        } else
-        {
+        } else {
             return $image;
         }
 

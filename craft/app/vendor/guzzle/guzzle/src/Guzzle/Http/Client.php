@@ -26,12 +26,12 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     /** @deprecated Use [request.options][params] */
     const REQUEST_PARAMS = 'request.params';
 
-    const REQUEST_OPTIONS        = 'request.options';
-    const CURL_OPTIONS           = 'curl.options';
-    const SSL_CERT_AUTHORITY     = 'ssl.certificate_authority';
-    const DISABLE_REDIRECTS      = RedirectPlugin::DISABLE;
+    const REQUEST_OPTIONS = 'request.options';
+    const CURL_OPTIONS = 'curl.options';
+    const SSL_CERT_AUTHORITY = 'ssl.certificate_authority';
+    const DISABLE_REDIRECTS = RedirectPlugin::DISABLE;
     const DEFAULT_SELECT_TIMEOUT = 1.0;
-    const MAX_HANDLES            = 3;
+    const MAX_HANDLES = 3;
 
     /** @var Collection Default HTTP headers to set on each request */
     protected $defaultHeaders;
@@ -62,12 +62,12 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     /**
      * @param string           $baseUrl Base URL of the web service
      * @param array|Collection $config  Configuration settings
+     *
      * @throws RuntimeException if cURL is not installed
      */
     public function __construct($baseUrl = '', $config = null)
     {
-        if (!extension_loaded('curl'))
-        {
+        if (!extension_loaded('curl')) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException('The PHP cURL extension must be installed to use Guzzle.');
             // @codeCoverageIgnoreEnd
@@ -78,22 +78,18 @@ class Client extends AbstractHasDispatcher implements ClientInterface
         $this->defaultHeaders = new Collection();
         $this->setRequestFactory(RequestFactory::getInstance());
         $this->userAgent = $this->getDefaultUserAgent();
-        if (!$this->config[self::DISABLE_REDIRECTS])
-        {
+        if (!$this->config[self::DISABLE_REDIRECTS]) {
             $this->addSubscriber(new RedirectPlugin());
         }
     }
 
     final public function setConfig($config)
     {
-        if ($config instanceof Collection)
-        {
+        if ($config instanceof Collection) {
             $this->config = $config;
-        } elseif (is_array($config))
-        {
+        } elseif (is_array($config)) {
             $this->config = new Collection($config);
-        } else
-        {
+        } else {
             throw new InvalidArgumentException('Config must be an array or Collection');
         }
 
@@ -110,6 +106,7 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      *
      * @param string $keyOrPath request.options key (e.g. allow_redirects) or path to a nested key (e.g. headers/foo)
      * @param mixed  $value     Value to set
+     *
      * @return $this
      */
     public function setDefaultOption($keyOrPath, $value)
@@ -124,6 +121,7 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      * Retrieve a default request option from the client
      *
      * @param string $keyOrPath request.options key (e.g. allow_redirects) or path to a nested key (e.g. headers/foo)
+     *
      * @return mixed|null
      */
     public function getDefaultOption($keyOrPath)
@@ -137,37 +135,29 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     {
         $opts = $this->config[self::CURL_OPTIONS] ?: array();
 
-        if ($certificateAuthority === true)
-        {
+        if ($certificateAuthority === true) {
             // use bundled CA bundle, set secure defaults
-            $opts[CURLOPT_CAINFO]         = __DIR__ . '/Resources/cacert.pem';
+            $opts[CURLOPT_CAINFO] = __DIR__ . '/Resources/cacert.pem';
             $opts[CURLOPT_SSL_VERIFYPEER] = true;
             $opts[CURLOPT_SSL_VERIFYHOST] = 2;
-        } elseif ($certificateAuthority === false)
-        {
+        } elseif ($certificateAuthority === false) {
             unset($opts[CURLOPT_CAINFO]);
             $opts[CURLOPT_SSL_VERIFYPEER] = false;
             $opts[CURLOPT_SSL_VERIFYHOST] = 0;
-        } elseif ($verifyPeer !== true && $verifyPeer !== false && $verifyPeer !== 1 && $verifyPeer !== 0)
-        {
+        } elseif ($verifyPeer !== true && $verifyPeer !== false && $verifyPeer !== 1 && $verifyPeer !== 0) {
             throw new InvalidArgumentException('verifyPeer must be 1, 0 or boolean');
-        } elseif ($verifyHost !== 0 && $verifyHost !== 1 && $verifyHost !== 2)
-        {
+        } elseif ($verifyHost !== 0 && $verifyHost !== 1 && $verifyHost !== 2) {
             throw new InvalidArgumentException('verifyHost must be 0, 1 or 2');
-        } else
-        {
+        } else {
             $opts[CURLOPT_SSL_VERIFYPEER] = $verifyPeer;
             $opts[CURLOPT_SSL_VERIFYHOST] = $verifyHost;
-            if (is_file($certificateAuthority))
-            {
+            if (is_file($certificateAuthority)) {
                 unset($opts[CURLOPT_CAPATH]);
                 $opts[CURLOPT_CAINFO] = $certificateAuthority;
-            } elseif (is_dir($certificateAuthority))
-            {
+            } elseif (is_dir($certificateAuthority)) {
                 unset($opts[CURLOPT_CAINFO]);
                 $opts[CURLOPT_CAPATH] = $certificateAuthority;
-            } else
-            {
+            } else {
                 throw new RuntimeException(
                     'Invalid option passed to ' . self::SSL_CERT_AUTHORITY . ': ' . $certificateAuthority
                 );
@@ -181,44 +171,34 @@ class Client extends AbstractHasDispatcher implements ClientInterface
 
     public function createRequest($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array())
     {
-        if (!$uri)
-        {
+        if (!$uri) {
             $url = $this->getBaseUrl();
-        } else
-        {
-            if (!is_array($uri))
-            {
+        } else {
+            if (!is_array($uri)) {
                 $templateVars = null;
-            } else
-            {
+            } else {
                 list($uri, $templateVars) = $uri;
             }
-            if (strpos($uri, '://'))
-            {
+            if (strpos($uri, '://')) {
                 // Use absolute URLs as-is
                 $url = $this->expandTemplate($uri, $templateVars);
-            } else
-            {
+            } else {
                 $url = Url::factory($this->getBaseUrl())->combine($this->expandTemplate($uri, $templateVars));
             }
         }
 
         // If default headers are provided, then merge them under any explicitly provided headers for the request
-        if (count($this->defaultHeaders))
-        {
-            if (!$headers)
-            {
+        if (count($this->defaultHeaders)) {
+            if (!$headers) {
                 $headers = $this->defaultHeaders->toArray();
-            } elseif (is_array($headers))
-            {
+            } elseif (is_array($headers)) {
                 $headers += $this->defaultHeaders->toArray();
-            } elseif ($headers instanceof Collection)
-            {
+            } elseif ($headers instanceof Collection) {
                 $headers = $headers->toArray() + $this->defaultHeaders->toArray();
             }
         }
 
-        return $this->prepareRequest($this->requestFactory->create($method, (string)$url, $headers, $body), $options);
+        return $this->prepareRequest($this->requestFactory->create($method, (string) $url, $headers, $body), $options);
     }
 
     public function getBaseUrl($expand = true)
@@ -235,8 +215,7 @@ class Client extends AbstractHasDispatcher implements ClientInterface
 
     public function setUserAgent($userAgent, $includeDefault = false)
     {
-        if ($includeDefault)
-        {
+        if ($includeDefault) {
             $userAgent .= ' ' . $this->getDefaultUserAgent();
         }
         $this->userAgent = $userAgent;
@@ -252,8 +231,8 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     public function getDefaultUserAgent()
     {
         return 'Guzzle/' . Version::VERSION
-        . ' curl/' . CurlVersion::getInstance()->get('version')
-        . ' PHP/' . PHP_VERSION;
+            . ' curl/' . CurlVersion::getInstance()->get('version')
+            . ' PHP/' . PHP_VERSION;
     }
 
     public function get($uri = null, $headers = null, $options = array())
@@ -296,19 +275,15 @@ class Client extends AbstractHasDispatcher implements ClientInterface
 
     public function send($requests)
     {
-        if (!($requests instanceof RequestInterface))
-        {
+        if (!($requests instanceof RequestInterface)) {
             return $this->sendMultiple($requests);
         }
 
-        try
-        {
-            /** @var $requests RequestInterface */
+        try {
+            /** @var $requests RequestInterface  */
             $this->getCurlMulti()->add($requests)->send();
-
             return $requests->getResponse();
-        } catch (ExceptionCollection $e)
-        {
+        } catch (ExceptionCollection $e) {
             throw $e->getFirst();
         }
     }
@@ -317,6 +292,7 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      * Set a curl multi object to be used internally by the client for transferring requests.
      *
      * @param CurlMultiInterface $curlMulti Multi object
+     *
      * @return self
      */
     public function setCurlMulti(CurlMultiInterface $curlMulti)
@@ -331,8 +307,7 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      */
     public function getCurlMulti()
     {
-        if (!$this->curlMulti)
-        {
+        if (!$this->curlMulti) {
             $this->curlMulti = new CurlMultiProxy(
                 self::MAX_HANDLES,
                 $this->getConfig('select_timeout') ?: self::DEFAULT_SELECT_TIMEOUT
@@ -353,6 +328,7 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      * Set the URI template expander to use with the client
      *
      * @param UriTemplateInterface $uriTemplate URI template expander
+     *
      * @return self
      */
     public function setUriTemplate(UriTemplateInterface $uriTemplate)
@@ -367,13 +343,13 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      *
      * @param string $template  Template to expand
      * @param array  $variables Variables to inject
+     *
      * @return string
      */
     protected function expandTemplate($template, array $variables = null)
     {
         $expansionVars = $this->getConfig()->toArray();
-        if ($variables)
-        {
+        if ($variables) {
             $expansionVars = $variables + $expansionVars;
         }
 
@@ -387,8 +363,7 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      */
     protected function getUriTemplate()
     {
-        if (!$this->uriTemplate)
-        {
+        if (!$this->uriTemplate) {
             $this->uriTemplate = ParserRegistry::getInstance()->getParser('uri_template');
         }
 
@@ -399,21 +374,20 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      * Send multiple requests in parallel
      *
      * @param array $requests Array of RequestInterface objects
+     *
      * @return array Returns an array of Response objects
      */
     protected function sendMultiple(array $requests)
     {
         $curlMulti = $this->getCurlMulti();
-        foreach ($requests as $request)
-        {
+        foreach ($requests as $request) {
             $curlMulti->add($request);
         }
         $curlMulti->send();
 
         /** @var $request RequestInterface */
         $result = array();
-        foreach ($requests as $request)
-        {
+        foreach ($requests as $request) {
             $result[] = $request->getResponse();
         }
 
@@ -425,35 +399,31 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      *
      * @param RequestInterface $request Request to prepare for the client
      * @param array            $options Options to apply to the request
+     *
      * @return RequestInterface
      */
     protected function prepareRequest(RequestInterface $request, array $options = array())
     {
         $request->setClient($this)->setEventDispatcher(clone $this->getEventDispatcher());
 
-        if ($curl = $this->config[self::CURL_OPTIONS])
-        {
+        if ($curl = $this->config[self::CURL_OPTIONS]) {
             $request->getCurlOptions()->overwriteWith(CurlHandle::parseCurlConfig($curl));
         }
 
-        if ($params = $this->config[self::REQUEST_PARAMS])
-        {
+        if ($params = $this->config[self::REQUEST_PARAMS]) {
             Version::warn('request.params is deprecated. Use request.options to add default request options.');
             $request->getParams()->overwriteWith($params);
         }
 
-        if ($this->userAgent && !$request->hasHeader('User-Agent'))
-        {
+        if ($this->userAgent && !$request->hasHeader('User-Agent')) {
             $request->setHeader('User-Agent', $this->userAgent);
         }
 
-        if ($defaults = $this->config[self::REQUEST_OPTIONS])
-        {
+        if ($defaults = $this->config[self::REQUEST_OPTIONS]) {
             $this->requestFactory->applyOptions($request, $defaults, RequestFactoryInterface::OPTIONS_AS_DEFAULTS);
         }
 
-        if ($options)
-        {
+        if ($options) {
             $this->requestFactory->applyOptions($request, $options);
         }
 
@@ -469,18 +439,15 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     {
         $authority = $this->config[self::SSL_CERT_AUTHORITY];
 
-        if ($authority === 'system')
-        {
+        if ($authority === 'system') {
             return;
         }
 
-        if ($authority === null)
-        {
+        if ($authority === null) {
             $authority = true;
         }
 
-        if ($authority === true && substr(__FILE__, 0, 7) == 'phar://')
-        {
+        if ($authority === true && substr(__FILE__, 0, 7) == 'phar://') {
             $authority = self::extractPharCacert(__DIR__ . '/Resources/cacert.pem');
         }
 
@@ -493,7 +460,6 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     public function getDefaultHeaders()
     {
         Version::warn(__METHOD__ . ' is deprecated. Use the request.options array to retrieve default request options');
-
         return $this->defaultHeaders;
     }
 
@@ -503,14 +469,11 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     public function setDefaultHeaders($headers)
     {
         Version::warn(__METHOD__ . ' is deprecated. Use the request.options array to specify default request options');
-        if ($headers instanceof Collection)
-        {
+        if ($headers instanceof Collection) {
             $this->defaultHeaders = $headers;
-        } elseif (is_array($headers))
-        {
+        } elseif (is_array($headers)) {
             $this->defaultHeaders = new Collection($headers);
-        } else
-        {
+        } else {
             throw new InvalidArgumentException('Headers must be an array or Collection');
         }
 
@@ -530,9 +493,10 @@ class Client extends AbstractHasDispatcher implements ClientInterface
      *
      * @param string $pharCacertPath Path to the phar cacert. For example:
      *                               'phar://aws.phar/Guzzle/Http/Resources/cacert.pem'
+     *
      * @return string Returns the path to the extracted cacert file.
      * @throws \RuntimeException Throws if the phar cacert cannot be found or
-     *                               the file cannot be copied to the temp dir.
+     *                           the file cannot be copied to the temp dir.
      */
     public static function extractPharCacert($pharCacertPath)
     {
@@ -540,17 +504,14 @@ class Client extends AbstractHasDispatcher implements ClientInterface
         // folder.
         $certFile = sys_get_temp_dir() . '/guzzle-cacert.pem';
 
-        if (!file_exists($pharCacertPath))
-        {
+        if (!file_exists($pharCacertPath)) {
             throw new \RuntimeException("Could not find $pharCacertPath");
         }
 
         if (!file_exists($certFile) ||
             filesize($certFile) != filesize($pharCacertPath)
-        )
-        {
-            if (!copy($pharCacertPath, $certFile))
-            {
+        ) {
+            if (!copy($pharCacertPath, $certFile)) {
                 throw new \RuntimeException(
                     "Could not copy {$pharCacertPath} to {$certFile}: "
                     . var_export(error_get_last(), true)

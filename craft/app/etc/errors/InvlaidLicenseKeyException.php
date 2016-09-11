@@ -13,26 +13,27 @@ namespace Craft;
  */
 class InvalidLicenseKeyException extends \Twig_Error_Loader
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var string
-     */
-    public $licenseKey;
+	/**
+	 * @var string
+	 */
+	public $licenseKey;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @param string $licenseKey
-     * @return InvalidLicenseKeyException
-     */
-    public function __construct($licenseKey)
-    {
-        $this->licenseKey = $licenseKey;
-        $message          = "The license key “{$licenseKey}” is invalid.";
+	/**
+	 * @param string $licenseKey
+	 *
+	 * @return InvalidLicenseKeyException
+	 */
+	public function __construct($licenseKey)
+	{
+		$this->licenseKey = $licenseKey;
+		$message = "The license key “{$licenseKey}” is invalid.";
 
-        parent::__construct($message);
-    }
+		parent::__construct($message);
+	}
 }

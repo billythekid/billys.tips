@@ -13,38 +13,41 @@ namespace Craft;
  */
 class UpdateModel extends BaseModel
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::setAttribute()
-     * @param string $name
-     * @param mixed  $value
-     * @return bool|null
-     */
-    public function setAttribute($name, $value)
-    {
-        if ($name == 'plugins')
-        {
-            $value = PluginUpdateModel::populateModels($value);
-        }
+	/**
+	 * @inheritDoc BaseModel::setAttribute()
+	 *
+	 * @param string $name
+	 * @param mixed  $value
+	 *
+	 * @return bool|null
+	 */
+	public function setAttribute($name, $value)
+	{
+		if ($name == 'plugins')
+		{
+			$value = PluginUpdateModel::populateModels($value);
+		}
 
-        parent::setAttribute($name, $value);
-    }
+		parent::setAttribute($name, $value);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        $attributes['app']     = array(AttributeType::Mixed, 'model' => 'AppUpdateModel');
-        $attributes['plugins'] = array(AttributeType::Mixed, 'default' => array());
-        $attributes['errors']  = AttributeType::Mixed;
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		$attributes['app']      = array(AttributeType::Mixed, 'model' => 'AppUpdateModel');
+		$attributes['plugins']  = array(AttributeType::Mixed, 'default' => array());
+		$attributes['errors']   = AttributeType::Mixed;
 
-        return $attributes;
-    }
+		return $attributes;
+	}
 }

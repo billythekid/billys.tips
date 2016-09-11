@@ -3,7 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 /**
  * Console highlighter class generator
+ *
  * PHP versions 4 and 5
+ *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
  * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
@@ -22,11 +24,10 @@
 require_once 'Text/Highlighter/Generator.php';
 require_once 'Console/Getopt.php';
 
-$options = Console_Getopt::getopt($argv, 'x:p:d:h', array('xml=', 'php=', 'dir=', 'help'));
+$options = Console_Getopt::getopt($argv, 'x:p:d:h', array('xml=', 'php=','dir=', 'help'));
 
-if (PEAR::isError($options))
-{
-    $message = str_replace('Console_Getopt: ', '', $options->message);
+if (PEAR::isError($options)) {
+    $message = str_replace('Console_Getopt: ','',$options->message);
     usage($message);
 }
 
@@ -34,26 +35,22 @@ $source = array();
 $dest   = array();
 $dir    = '';
 
-$expectp     = false;
-$expectx     = false;
+$expectp = false;
+$expectx = false;
 $unexpectedx = false;
 $unexpectedp = false;
-$si          = $di = 0;
+$si = $di = 0;
 
-foreach ($options[0] as $option)
-{
-    switch ($option[0])
-    {
+foreach ($options[0] as $option) {
+    switch ($option[0]) {
         case 'x':
         case '--xml':
             $source[$si] = $option[1];
-            if ($si)
-            {
+            if ($si) {
                 $di++;
             }
             $si++;
-            if ($expectp)
-            {
+            if ($expectp) {
                 $unexpectedx = true;
             }
             $expectp = true;
@@ -62,13 +59,12 @@ foreach ($options[0] as $option)
 
         case 'p':
         case '--php':
-            if ($expectx)
-            {
+            if ($expectx) {
                 $unexpectedp = true;
             }
             $dest[$di] = $option[1];
-            $expectp   = false;
-            $expectx   = true;
+            $expectp = false;
+            $expectx = true;
             break;
 
         case 'd':
@@ -84,39 +80,31 @@ foreach ($options[0] as $option)
 }
 
 
-if ($unexpectedx && !$dir)
-{
+if ($unexpectedx && !$dir) {
     usage('Unexpected -x or --xml', STDERR);
 }
 
-if ($unexpectedp)
-{
+if ($unexpectedp) {
     usage('Unexpected -p or --php', STDERR);
 }
 
 $nsource = count($source);
-$ndest   = count($dest);
+$ndest = count($dest);
 
-if (!$nsource && !$ndest)
-{
-    $source[] = 'php://stdin';
-    if (!$dir)
-    {
-        $dest[] = 'php://stdout';
-    } else
-    {
-        $dest[] = null;
+if (!$nsource && !$ndest) {
+    $source[]='php://stdin';
+    if (!$dir) {
+        $dest[]='php://stdout';
+    } else {
+      $dest[] = null;
     }
-} elseif ($expectp && !$dir && $nsource > 1)
-{
+} elseif ($expectp && !$dir && $nsource > 1) {
     usage('-x or --xml without following -p or --php', STDERR);
-} elseif ($nsource == 1 && !$ndest && !$dir)
-{
-    $dest[] = 'php://stdout';
+} elseif ($nsource == 1 && !$ndest && !$dir) {
+    $dest[]='php://stdout';
 }
 
-if ($dir && substr($dir, -1) != '/' && substr($dir, -1) !== '\\')
-{
+if ($dir && substr($dir,-1)!='/' && substr($dir,-1)!=='\\' ) {
     $dir .= DIRECTORY_SEPARATOR;
 }
 
@@ -125,43 +113,35 @@ foreach ($source as $i => $xmlfile)
 {
     $gen =& new Text_Highlighter_Generator;
     $gen->setInputFile($xmlfile);
-    if ($gen->hasErrors())
-    {
+    if ($gen->hasErrors()) {
         break;
     }
     $gen->generate();
-    if ($gen->hasErrors())
-    {
+    if ($gen->hasErrors()) {
         break;
     }
-    if (isset($dest[$i]))
-    {
+    if (isset($dest[$i])) {
         $phpfile = $dest[$i];
-    } else
-    {
+    } else {
         $phpfile = $dir . $gen->language . '.php';
     }
     $gen->saveCode($phpfile);
-    if ($gen->hasErrors())
-    {
+    if ($gen->hasErrors()) {
         break;
     }
 }
-if ($gen->hasErrors())
-{
+if ($gen->hasErrors()) {
     $errors = $gen->getErrors();
-    foreach ($errors as $error)
-    {
-        fwrite(STDERR, $error . "\n");
+    foreach ($errors as $error) {
+        fwrite (STDERR, $error . "\n");
     }
     exit(1);
 }
 
-function usage($message = '', $file = STDOUT)
+function usage($message='', $file=STDOUT)
 {
     $code = 0;
-    if ($message)
-    {
+    if ($message) {
         $message .= "\n\n";
         $code = 1;
     }
@@ -184,9 +164,8 @@ Options:
   -h, --help
         This help
 MSG;
-    fwrite($file, $message);
+    fwrite ($file, $message);
     exit($code);
 }
-
 ?>
 

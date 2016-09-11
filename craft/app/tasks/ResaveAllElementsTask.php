@@ -13,81 +13,87 @@ namespace Craft;
  */
 class ResaveAllElementsTask extends BaseTask
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var
-     */
-    private $_elementTypes;
+	/**
+	 * @var
+	 */
+	private $_elementTypes;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc ITask::getDescription()
-     * @return string
-     */
-    public function getDescription()
-    {
-        if ($this->getSettings()->localizableOnly)
-        {
-            return Craft::t('Resaving all localizable elements');
-        } else
-        {
-            return Craft::t('Resaving all elements');
-        }
-    }
+	/**
+	 * @inheritDoc ITask::getDescription()
+	 *
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		if ($this->getSettings()->localizableOnly)
+		{
+			return Craft::t('Resaving all localizable elements');
+		}
+		else
+		{
+			return Craft::t('Resaving all elements');
+		}
+	}
 
-    /**
-     * @inheritDoc ITask::getTotalSteps()
-     * @return int
-     */
-    public function getTotalSteps()
-    {
-        $this->_elementTypes = array();
-        $localizableOnly     = $this->getSettings()->localizableOnly;
+	/**
+	 * @inheritDoc ITask::getTotalSteps()
+	 *
+	 * @return int
+	 */
+	public function getTotalSteps()
+	{
+		$this->_elementTypes = array();
+		$localizableOnly = $this->getSettings()->localizableOnly;
 
-        foreach (craft()->elements->getAllElementTypes() as $elementType)
-        {
-            if (!$localizableOnly || $elementType->isLocalized())
-            {
-                $this->_elementTypes[] = $elementType->getClassHandle();
-            }
-        }
+		foreach (craft()->elements->getAllElementTypes() as $elementType)
+		{
+			if (!$localizableOnly || $elementType->isLocalized())
+			{
+				$this->_elementTypes[] = $elementType->getClassHandle();
+			}
+		}
 
-        return count($this->_elementTypes);
-    }
+		return count($this->_elementTypes);
+	}
 
-    /**
-     * @inheritDoc ITask::runStep()
-     * @param int $step
-     * @return bool
-     */
-    public function runStep($step)
-    {
-        return $this->runSubTask('ResaveElements', null, array(
-            'elementType' => $this->_elementTypes[$step],
-            'criteria'    => array(
-                'locale'        => $this->getSettings()->locale,
-                'status'        => null,
-                'localeEnabled' => null,
-            ),
-        ));
-    }
+	/**
+	 * @inheritDoc ITask::runStep()
+	 *
+	 * @param int $step
+	 *
+	 * @return bool
+	 */
+	public function runStep($step)
+	{
+		return $this->runSubTask('ResaveElements', null, array(
+			'elementType' => $this->_elementTypes[$step],
+			'criteria' => array(
+				'locale'        => $this->getSettings()->locale,
+				'status'        => null,
+				'localeEnabled' => null,
+			)
+		));
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseSavableComponentType::defineSettings()
-     * @return array
-     */
-    protected function defineSettings()
-    {
-        return array(
-            'locale'          => array(AttributeType::Locale, 'default' => craft()->language),
-            'localizableOnly' => AttributeType::Bool,
-        );
-    }
+	/**
+	 * @inheritDoc BaseSavableComponentType::defineSettings()
+	 *
+	 * @return array
+	 */
+	protected function defineSettings()
+	{
+		return array(
+			'locale'          => array(AttributeType::Locale, 'default' => craft()->language),
+			'localizableOnly' => AttributeType::Bool
+		);
+	}
 }

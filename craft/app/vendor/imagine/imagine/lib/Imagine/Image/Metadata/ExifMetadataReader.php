@@ -21,8 +21,7 @@ class ExifMetadataReader extends AbstractMetadataReader
 {
     public function __construct()
     {
-        if (!self::isSupported())
-        {
+        if (!self::isSupported()) {
             throw new NotSupportedException('PHP exif extension is required to use the ExifMetadataReader');
         }
     }
@@ -37,8 +36,7 @@ class ExifMetadataReader extends AbstractMetadataReader
      */
     protected function extractFromFile($file)
     {
-        if (false === $data = @file_get_contents($file))
-        {
+        if (false === $data = @file_get_contents($file)) {
             throw new InvalidArgumentException(sprintf('File %s is not readable.', $file));
         }
 
@@ -65,15 +63,14 @@ class ExifMetadataReader extends AbstractMetadataReader
      * Extracts metadata from raw data, merges with existing metadata
      *
      * @param string $data
+     *
      * @return MetadataBag
      */
     private function doReadData($data)
     {
-        if (substr($data, 0, 2) === 'II')
-        {
+        if (substr($data, 0, 2) === 'II') {
             $mime = 'image/tiff';
-        } else
-        {
+        } else {
             $mime = 'image/jpeg';
         }
 
@@ -84,27 +81,24 @@ class ExifMetadataReader extends AbstractMetadataReader
      * Performs the exif data extraction given a path or data-URI representation.
      *
      * @param string $path The path to the file or the data-URI representation.
+     *
      * @return MetadataBag
      */
     private function extract($path)
     {
-        if (false === $exifData = @exif_read_data($path, null, true, false))
-        {
+        if (false === $exifData = @exif_read_data($path, null, true, false)) {
             return array();
         }
 
         $metadata = array();
-        $sources  = array('EXIF' => 'exif', 'IFD0' => 'ifd0');
+        $sources = array('EXIF' => 'exif', 'IFD0' => 'ifd0');
 
-        foreach ($sources as $name => $prefix)
-        {
-            if (!isset($exifData[$name]))
-            {
+        foreach ($sources as $name => $prefix) {
+            if (!isset($exifData[$name])) {
                 continue;
             }
-            foreach ($exifData[$name] as $prop => $value)
-            {
-                $metadata[$prefix . '.' . $prop] = $value;
+            foreach ($exifData[$name] as $prop => $value) {
+                $metadata[$prefix.'.'.$prop] = $value;
             }
         }
 

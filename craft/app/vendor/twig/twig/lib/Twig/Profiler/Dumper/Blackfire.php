@@ -21,7 +21,7 @@ class Twig_Profiler_Dumper_Blackfire
         $this->dumpChildren('main()', $profile, $data);
 
         $start = microtime(true);
-        $str   = <<<EOF
+        $str = <<<EOF
 file-format: BlackfireProbe
 cost-dimensions: wt mu pmu
 request-start: {$start}
@@ -29,8 +29,7 @@ request-start: {$start}
 
 EOF;
 
-        foreach ($data as $name => $values)
-        {
+        foreach ($data as $name => $values) {
             $str .= "{$name}//{$values['ct']} {$values['wt']} {$values['mu']} {$values['pmu']}\n";
         }
 
@@ -39,13 +38,10 @@ EOF;
 
     private function dumpChildren($parent, Twig_Profiler_Profile $profile, &$data)
     {
-        foreach ($profile as $p)
-        {
-            if ($p->isTemplate())
-            {
+        foreach ($profile as $p) {
+            if ($p->isTemplate()) {
                 $name = $p->getTemplate();
-            } else
-            {
+            } else {
                 $name = sprintf('%s::%s(%s)', $p->getTemplate(), $p->getType(), $p->getName());
             }
             $this->dumpProfile(sprintf('%s==>%s', $parent, $name), $p, $data);
@@ -55,18 +51,16 @@ EOF;
 
     private function dumpProfile($edge, Twig_Profiler_Profile $profile, &$data)
     {
-        if (isset($data[$edge]))
-        {
+        if (isset($data[$edge])) {
             $data[$edge]['ct'] += 1;
             $data[$edge]['wt'] += floor($profile->getDuration() * 1000000);
             $data[$edge]['mu'] += $profile->getMemoryUsage();
             $data[$edge]['pmu'] += $profile->getPeakMemoryUsage();
-        } else
-        {
+        } else {
             $data[$edge] = array(
-                'ct'  => 1,
-                'wt'  => floor($profile->getDuration() * 1000000),
-                'mu'  => $profile->getMemoryUsage(),
+                'ct' => 1,
+                'wt' => floor($profile->getDuration() * 1000000),
+                'mu' => $profile->getMemoryUsage(),
                 'pmu' => $profile->getPeakMemoryUsage(),
             );
         }

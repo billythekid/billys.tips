@@ -14,7 +14,8 @@
 /**
  * Autoloads Twig classes.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @deprecated since 1.21 and will be removed in 2.0. Use Composer instead. 2.0.
  */
 class Twig_Autoloader
@@ -28,11 +29,9 @@ class Twig_Autoloader
     {
         @trigger_error('Using Twig_Autoloader is deprecated since version 1.21. Use Composer instead.', E_USER_DEPRECATED);
 
-        if (PHP_VERSION_ID < 50300)
-        {
+        if (PHP_VERSION_ID < 50300) {
             spl_autoload_register(array(__CLASS__, 'autoload'));
-        } else
-        {
+        } else {
             spl_autoload_register(array(__CLASS__, 'autoload'), true, $prepend);
         }
     }
@@ -44,13 +43,11 @@ class Twig_Autoloader
      */
     public static function autoload($class)
     {
-        if (0 !== strpos($class, 'Twig'))
-        {
+        if (0 !== strpos($class, 'Twig')) {
             return;
         }
 
-        if (is_file($file = dirname(__FILE__) . '/../' . str_replace(array('_', "\0"), array('/', ''), $class) . '.php'))
-        {
+        if (is_file($file = dirname(__FILE__).'/../'.str_replace(array('_', "\0"), array('/', ''), $class).'.php')) {
             require $file;
         }
     }

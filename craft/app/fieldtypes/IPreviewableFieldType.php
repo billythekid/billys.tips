@@ -13,14 +13,15 @@ namespace Craft;
  */
 interface IPreviewableFieldType
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns the HTML that should be shown for this field in Table View.
-     *
-     * @param mixed $value
-     * @return string|null
-     */
-    public function getTableAttributeHtml($value);
+	/**
+	 * Returns the HTML that should be shown for this field in Table View.
+	 *
+	 * @param mixed $value
+	 *
+	 * @return string|null
+	 */
+	public function getTableAttributeHtml($value);
 }

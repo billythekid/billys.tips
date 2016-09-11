@@ -13,35 +13,36 @@ namespace Craft;
  */
 class SingleOptionFieldData extends OptionData
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var
-     */
-    private $_options;
+	/**
+	 * @var
+	 */
+	private $_options;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns the options.
-     *
-     * @return array|null
-     */
-    public function getOptions()
-    {
-        return $this->_options;
-    }
+	/**
+	 * Returns the options.
+	 *
+	 * @return array|null
+	 */
+	public function getOptions()
+	{
+		return $this->_options;
+	}
 
-    /**
-     * Sets the options.
-     *
-     * @param array $options
-     * @return null
-     */
-    public function setOptions($options)
-    {
-        $this->_options = $options;
-    }
+	/**
+	 * Sets the options.
+	 *
+	 * @param array $options
+	 *
+	 * @return null
+	 */
+	public function setOptions($options)
+	{
+		$this->_options = $options;
+	}
 }

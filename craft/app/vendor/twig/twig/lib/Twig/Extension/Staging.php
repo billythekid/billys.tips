@@ -11,9 +11,11 @@
 
 /**
  * Internal class.
+ *
  * This class is used by Twig_Environment as a staging area and must not be used directly.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @internal
  */
 class Twig_Extension_Staging extends Twig_Extension

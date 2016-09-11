@@ -15,22 +15,23 @@ craft()->requireEdition(Craft::Client);
  */
 class RebrandEmailModel extends BaseModel
 {
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'key'      => AttributeType::String,
-            'locale'   => AttributeType::Locale,
-            'subject'  => AttributeType::String,
-            'body'     => AttributeType::String,
-            'htmlBody' => AttributeType::String,
-            'heading'  => AttributeType::String,
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'key'      => AttributeType::String,
+			'locale'   => AttributeType::Locale,
+			'subject'  => AttributeType::String,
+			'body'     => AttributeType::String,
+			'htmlBody' => AttributeType::String,
+			'heading'  => AttributeType::String,
+		);
+	}
 }

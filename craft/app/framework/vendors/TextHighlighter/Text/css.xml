@@ -3,94 +3,94 @@
 
 <highlight lang="css" case="no">
 
-    <authors>
-        <author name="Andrey Demenev" email="demenev@gmail.com"/>
-    </authors>
+  <authors>
+    <author name="Andrey Demenev" email="demenev@gmail.com"/>
+  </authors>
 
 
-    <default innerClass="code"/>
+  <default innerClass="code" />
 
 
-    <region name="mlcomment" innerClass="comment" start="\/\*" end="\*\/">
+  <region name="mlcomment" innerClass="comment" start="\/\*" end="\*\/" >
 
-    </region>
-
-
-    <block name="atrule" match="(@[a-z\d]+)"
-           innerClass="var" never-contained="yes"/>
-
-    <region name="property" start="[a-z][a-z\d\-]*\s*:" end="(?=;|\})"
-            innerClass="code" delimClass="reserved" contained="yes"/>
-
-    <block name="selector" match="(((\.|#)?[a-z]+[a-z\d\-]*(?![a-z\d\-]))|(\*))(?!\s*:\s*[\s\{])"
-           innerClass="identifier">
-    </block>
-
-    <block name="pseudo" match=":[a-z][a-z\d\-]*"
-           innerClass="special"/>
-
-    <block name="bescaped" match="\\[\\(\\)\\]"
-           innerClass="string" contained="yes"/>
+  </region>
 
 
-    <region name="paramselector" start="\[" end="\]" innerClass="code"
-            delimClass="brackets">
-        <contains block="paramname"/>
-        <not-contains block="identifier"/>
-        <contains region="strdouble"/>
-        <contains region="strsingle"/>
-    </region>
+  <block name="atrule" match="(@[a-z\d]+)"
+         innerClass="var" never-contained="yes"/>
 
-    <region name="block" start="\{" end="\}" innerClass="code"
-            delimClass="brackets">
-        <contains region="block"/>
-        <contains region="property"/>
-        <contains block="selector"/>
-        <contains region="mlcomment"/>
-    </region>
+  <region name="property" start="[a-z][a-z\d\-]*\s*:" end="(?=;|\})"
+         innerClass="code" delimClass="reserved" contained="yes"/>
 
-    <region name="brackets" start="\(" end="\)" innerClass="string"
-            delimClass="brackets" contained="yes">
-        <contains block="bescaped"/>
-    </region>
+  <block name="selector" match="(((\.|#)?[a-z]+[a-z\d\-]*(?![a-z\d\-]))|(\*))(?!\s*:\s*[\s\{])"
+         innerClass="identifier" >
+  </block>
 
-    <region name="strsingle" delimClass="quotes" innerClass="string" start="'" end="'" contained="yes"/>
+  <block name="pseudo" match=":[a-z][a-z\d\-]*"
+         innerClass="special" />
 
-    <block name="escaped" match="\\\\|\\&quot;|\\'|\\`" innerClass="special" contained="yes">
-        <onlyin region="strsingle"/>
-    </block>
+  <block name="bescaped" match="\\[\\(\\)\\]"
+         innerClass="string" contained="yes"/>
 
-    <block name="descaped" match="\\\\|\\&quot;|\\'|\\`|\\t|\\n|\\r" innerClass="special" contained="yes">
-        <onlyin region="strdouble"/>
-    </block>
 
-    <region name="strdouble" delimClass="quotes" innerClass="string"
-            start="&quot;" end="&quot;" contained="yes"/>
+  <region name="paramselector" start="\[" end="\]" innerClass="code"
+          delimClass="brackets" >
+    <contains block="paramname" />
+    <not-contains block="identifier" />
+    <contains region="strdouble" />
+    <contains region="strsingle" />
+  </region>
 
-    <block name="measure" match="\d*\.?\d+(\%|em|ex|pc|pt|px|in|mm|cm)"
-           innerClass="number" contained="yes">
-        <onlyin region="property"/>
-        <partClass index="1" innerClass="string"/>
-    </block>
+  <region name="block" start="\{" end="\}" innerClass="code"
+          delimClass="brackets" >
+    <contains region="block" />
+    <contains region="property" />
+    <contains block="selector" />
+    <contains region="mlcomment" />
+  </region>
 
-    <block name="number" match="\d*\.?\d+" innerClass="number" contained="yes">
-        <onlyin region="property"/>
-    </block>
+  <region name="brackets" start="\(" end="\)" innerClass="string"
+          delimClass="brackets" contained="yes">
+    <contains block="bescaped"/>
+  </region>
 
-    <block name="identifier" match="[a-z][a-z\d\-]*"
-           innerClass="code" contained="yes">
-        <onlyin region="property"/>
-    </block>
+  <region name="strsingle" delimClass="quotes" innerClass="string" start="'" end="'" contained="yes"/>
 
-    <block name="hexcolor" match="#([\da-f]{6}|[\da-f]{3})\b" innerClass="var" contained="yes">
-        <onlyin region="property"/>
-    </block>
+  <block name="escaped" match="\\\\|\\&quot;|\\'|\\`" innerClass="special" contained="yes">
+    <onlyin region="strsingle"/>
+  </block>
 
-    <block name="paramname" match="[\w\-\:]+" innerClass="var" contained="yes">
-        <onlyin region="paramselector"/>
-    </block>
+  <block name="descaped" match="\\\\|\\&quot;|\\'|\\`|\\t|\\n|\\r" innerClass="special" contained="yes">
+    <onlyin region="strdouble"/>
+  </block>
 
-    <keywords name="propertyValue" inherits="identifier" innerClass="string" case="no">
+  <region name="strdouble" delimClass="quotes" innerClass="string"
+          start="&quot;" end="&quot;" contained="yes" />
+
+  <block name="measure" match="\d*\.?\d+(\%|em|ex|pc|pt|px|in|mm|cm)"
+         innerClass="number" contained="yes">
+    <onlyin region="property"/>
+    <partClass index="1" innerClass="string" />
+  </block>
+
+  <block name="number" match="\d*\.?\d+" innerClass="number" contained="yes" >
+    <onlyin region="property"/>
+  </block>
+
+  <block name="identifier" match="[a-z][a-z\d\-]*"
+         innerClass="code" contained="yes">
+    <onlyin region="property"/>
+  </block>
+
+  <block name="hexcolor" match="#([\da-f]{6}|[\da-f]{3})\b" innerClass="var" contained="yes">
+    <onlyin region="property"/>
+  </block>
+
+  <block name="paramname" match="[\w\-\:]+" innerClass="var" contained="yes">
+    <onlyin region="paramselector"/>
+  </block>
+
+  <keywords name="propertyValue" inherits="identifier" innerClass="string" case = "no">
         <word name="left-side"/>
         <keyword match="far-left"/>
         <keyword match="left"/>
@@ -316,53 +316,53 @@
         <keyword match="male"/>
         <keyword match="female"/>
         <keyword match="child"/>
-    </keywords>
+  </keywords>
 
 
-    <keywords name="namedcolor" inherits="identifier" innerClass="var" case="no">
-        <keyword match="aqua"/>
-        <keyword match="black"/>
-        <keyword match="blue"/>
-        <keyword match="fuchsia"/>
-        <keyword match="gray"/>
-        <keyword match="green"/>
-        <keyword match="lime"/>
-        <keyword match="maroon"/>
-        <keyword match="navy"/>
-        <keyword match="olive"/>
-        <keyword match="purple"/>
-        <keyword match="red"/>
-        <keyword match="silver"/>
-        <keyword match="teal"/>
-        <keyword match="white"/>
-        <keyword match="yellow"/>
-        <keyword match="ActiveBorder"/>
-        <keyword match="ActiveCaption"/>
-        <keyword match="AppWorkspace"/>
-        <keyword match="Background"/>
-        <keyword match="ButtonFace"/>
-        <keyword match="ButtonHighlight"/>
-        <keyword match="ButtonShadow"/>
-        <keyword match="ButtonText"/>
-        <keyword match="CaptionText"/>
-        <keyword match="GrayText"/>
-        <keyword match="Highlight"/>
-        <keyword match="HighlightText"/>
-        <keyword match="InactiveBorder"/>
-        <keyword match="InactiveCaption"/>
-        <keyword match="InactiveCaptionText"/>
-        <keyword match="InfoBackground"/>
-        <keyword match="InfoText"/>
-        <keyword match="Menu"/>
-        <keyword match="MenuText"/>
-        <keyword match="Scrollbar"/>
-        <keyword match="ThreeDDarkShadow"/>
-        <keyword match="ThreeDFace"/>
-        <keyword match="ThreeDHighlight"/>
-        <keyword match="ThreeDLightShadow"/>
-        <keyword match="ThreeDShadow"/>
-        <keyword match="Window"/>
-        <keyword match="WindowFrame"/>
-        <keyword match="WindowText"/>
-    </keywords>
+  <keywords name="namedcolor" inherits="identifier" innerClass="var" case = "no">
+    <keyword match="aqua"/>
+    <keyword match="black"/>
+    <keyword match="blue"/>
+    <keyword match="fuchsia"/>
+    <keyword match="gray"/>
+    <keyword match="green"/>
+    <keyword match="lime"/>
+    <keyword match="maroon"/>
+    <keyword match="navy"/>
+    <keyword match="olive"/>
+    <keyword match="purple"/>
+    <keyword match="red"/>
+    <keyword match="silver"/>
+    <keyword match="teal"/>
+    <keyword match="white"/>
+    <keyword match="yellow"/>
+    <keyword match="ActiveBorder"/>
+    <keyword match="ActiveCaption"/>
+    <keyword match="AppWorkspace"/>
+    <keyword match="Background"/>
+    <keyword match="ButtonFace"/>
+    <keyword match="ButtonHighlight"/>
+    <keyword match="ButtonShadow"/>
+    <keyword match="ButtonText"/>
+    <keyword match="CaptionText"/>
+    <keyword match="GrayText"/>
+    <keyword match="Highlight"/>
+    <keyword match="HighlightText"/>
+    <keyword match="InactiveBorder"/>
+    <keyword match="InactiveCaption"/>
+    <keyword match="InactiveCaptionText"/>
+    <keyword match="InfoBackground"/>
+    <keyword match="InfoText"/>
+    <keyword match="Menu"/>
+    <keyword match="MenuText"/>
+    <keyword match="Scrollbar"/>
+    <keyword match="ThreeDDarkShadow"/>
+    <keyword match="ThreeDFace"/>
+    <keyword match="ThreeDHighlight"/>
+    <keyword match="ThreeDLightShadow"/>
+    <keyword match="ThreeDShadow"/>
+    <keyword match="Window"/>
+    <keyword match="WindowFrame"/>
+    <keyword match="WindowText"/>
+  </keywords>
 </highlight>

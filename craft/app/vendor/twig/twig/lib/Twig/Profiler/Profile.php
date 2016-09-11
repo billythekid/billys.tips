@@ -14,10 +14,10 @@
  */
 class Twig_Profiler_Profile implements IteratorAggregate, Serializable
 {
-    const ROOT     = 'ROOT';
-    const BLOCK    = 'block';
+    const ROOT = 'ROOT';
+    const BLOCK = 'block';
     const TEMPLATE = 'template';
-    const MACRO    = 'macro';
+    const MACRO = 'macro';
 
     private $template;
     private $name;
@@ -29,8 +29,8 @@ class Twig_Profiler_Profile implements IteratorAggregate, Serializable
     public function __construct($template = 'main', $type = self::ROOT, $name = 'main')
     {
         $this->template = $template;
-        $this->type     = $type;
-        $this->name     = 0 === strpos($name, '__internal_') ? 'INTERNAL' : $name;
+        $this->type = $type;
+        $this->name = 0 === strpos($name, '__internal_') ? 'INTERNAL' : $name;
         $this->enter();
     }
 
@@ -86,12 +86,10 @@ class Twig_Profiler_Profile implements IteratorAggregate, Serializable
      */
     public function getDuration()
     {
-        if ($this->isRoot() && $this->profiles)
-        {
+        if ($this->isRoot() && $this->profiles) {
             // for the root node with children, duration is the sum of all child durations
             $duration = 0;
-            foreach ($this->profiles as $profile)
-            {
+            foreach ($this->profiles as $profile) {
                 $duration += $profile->getDuration();
             }
 
@@ -127,8 +125,8 @@ class Twig_Profiler_Profile implements IteratorAggregate, Serializable
     public function enter()
     {
         $this->starts = array(
-            'wt'  => microtime(true),
-            'mu'  => memory_get_usage(),
+            'wt' => microtime(true),
+            'mu' => memory_get_usage(),
             'pmu' => memory_get_peak_usage(),
         );
     }
@@ -139,8 +137,8 @@ class Twig_Profiler_Profile implements IteratorAggregate, Serializable
     public function leave()
     {
         $this->ends = array(
-            'wt'  => microtime(true),
-            'mu'  => memory_get_usage(),
+            'wt' => microtime(true),
+            'mu' => memory_get_usage(),
             'pmu' => memory_get_peak_usage(),
         );
     }

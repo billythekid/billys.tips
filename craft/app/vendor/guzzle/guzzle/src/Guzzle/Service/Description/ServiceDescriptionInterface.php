@@ -25,6 +25,7 @@ interface ServiceDescriptionInterface extends \Serializable
      * Check if the service has an operation by name
      *
      * @param string $name Name of the operation to check
+     *
      * @return bool
      */
     public function hasOperation($name);
@@ -33,6 +34,7 @@ interface ServiceDescriptionInterface extends \Serializable
      * Get an API operation by name
      *
      * @param string $name Name of the command
+     *
      * @return OperationInterface|null
      */
     public function getOperation($name);
@@ -41,6 +43,7 @@ interface ServiceDescriptionInterface extends \Serializable
      * Get a specific model from the description
      *
      * @param string $id ID of the model
+     *
      * @return Parameter|null
      */
     public function getModel($id);
@@ -56,6 +59,7 @@ interface ServiceDescriptionInterface extends \Serializable
      * Check if the description has a specific model by name
      *
      * @param string $id ID of the model
+     *
      * @return bool
      */
     public function hasModel($id);
@@ -85,6 +89,7 @@ interface ServiceDescriptionInterface extends \Serializable
      * Get arbitrary data from the service description that is not part of the Guzzle spec
      *
      * @param string $key Data key to retrieve
+     *
      * @return null|mixed
      */
     public function getData($key);
@@ -94,6 +99,7 @@ interface ServiceDescriptionInterface extends \Serializable
      *
      * @param string $key   Data key to set
      * @param mixed  $value Value to set
+     *
      * @return self
      */
     public function setData($key, $value);

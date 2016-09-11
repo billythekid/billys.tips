@@ -16,7 +16,7 @@ class Twig_Tests_ErrorTest extends PHPUnit_Framework_TestCase
         $error = new Twig_Error('foo');
         $error->setTemplateFile(new SplFileInfo(__FILE__));
 
-        $this->assertContains('test' . DIRECTORY_SEPARATOR . 'Twig' . DIRECTORY_SEPARATOR . 'Tests' . DIRECTORY_SEPARATOR . 'ErrorTest.php', $error->getMessage());
+        $this->assertContains('test'.DIRECTORY_SEPARATOR.'Twig'.DIRECTORY_SEPARATOR.'Tests'.DIRECTORY_SEPARATOR.'ErrorTest.php', $error->getMessage());
     }
 
     public function testErrorWithArrayFilename()
@@ -29,29 +29,25 @@ class Twig_Tests_ErrorTest extends PHPUnit_Framework_TestCase
 
     public function testTwigExceptionAddsFileAndLineWhenMissingWithInheritanceOnDisk()
     {
-        $loader = new Twig_Loader_Filesystem(dirname(__FILE__) . '/Fixtures/errors');
-        $twig   = new Twig_Environment($loader, array('strict_variables' => true, 'debug' => true, 'cache' => false));
+        $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/Fixtures/errors');
+        $twig = new Twig_Environment($loader, array('strict_variables' => true, 'debug' => true, 'cache' => false));
 
         $template = $twig->loadTemplate('index.html');
-        try
-        {
+        try {
             $template->render(array());
 
             $this->fail();
-        } catch (Twig_Error_Runtime $e)
-        {
+        } catch (Twig_Error_Runtime $e) {
             $this->assertEquals('Variable "foo" does not exist in "index.html" at line 3', $e->getMessage());
             $this->assertEquals(3, $e->getTemplateLine());
             $this->assertEquals('index.html', $e->getTemplateFile());
         }
 
-        try
-        {
+        try {
             $template->render(array('foo' => new Twig_Tests_ErrorTest_Foo()));
 
             $this->fail();
-        } catch (Twig_Error_Runtime $e)
-        {
+        } catch (Twig_Error_Runtime $e) {
             $this->assertEquals('An exception has been thrown during the rendering of a template ("Runtime error...") in "index.html" at line 3.', $e->getMessage());
             $this->assertEquals(3, $e->getTemplateLine());
             $this->assertEquals('index.html', $e->getTemplateFile());
@@ -64,29 +60,25 @@ class Twig_Tests_ErrorTest extends PHPUnit_Framework_TestCase
     public function testTwigExceptionAddsFileAndLine($templates, $name, $line)
     {
         $loader = new Twig_Loader_Array($templates);
-        $twig   = new Twig_Environment($loader, array('strict_variables' => true, 'debug' => true, 'cache' => false));
+        $twig = new Twig_Environment($loader, array('strict_variables' => true, 'debug' => true, 'cache' => false));
 
         $template = $twig->loadTemplate('index');
 
-        try
-        {
+        try {
             $template->render(array());
 
             $this->fail();
-        } catch (Twig_Error_Runtime $e)
-        {
+        } catch (Twig_Error_Runtime $e) {
             $this->assertEquals(sprintf('Variable "foo" does not exist in "%s" at line %d', $name, $line), $e->getMessage());
             $this->assertEquals($line, $e->getTemplateLine());
             $this->assertEquals($name, $e->getTemplateFile());
         }
 
-        try
-        {
+        try {
             $template->render(array('foo' => new Twig_Tests_ErrorTest_Foo()));
 
             $this->fail();
-        } catch (Twig_Error_Runtime $e)
-        {
+        } catch (Twig_Error_Runtime $e) {
             $this->assertEquals(sprintf('An exception has been thrown during the rendering of a template ("Runtime error...") in "%s" at line %d.', $name, $line), $e->getMessage());
             $this->assertEquals($line, $e->getTemplateLine());
             $this->assertEquals($name, $e->getTemplateFile());
@@ -107,7 +99,7 @@ class Twig_Tests_ErrorTest extends PHPUnit_Framework_TestCase
             // error occurs in an included template
             array(
                 array(
-                    'index'   => "{% include 'partial' %}",
+                    'index' => "{% include 'partial' %}",
                     'partial' => '{{ foo.bar }}',
                 ),
                 'partial', 1,
@@ -120,7 +112,7 @@ class Twig_Tests_ErrorTest extends PHPUnit_Framework_TestCase
                     {% block content %}
                         {{ parent() }}
                     {% endblock %}",
-                    'base'  => '{% block content %}{{ foo.bar }}{% endblock %}',
+                    'base' => '{% block content %}{{ foo.bar }}{% endblock %}',
                 ),
                 'base', 1,
             ),
@@ -135,7 +127,7 @@ class Twig_Tests_ErrorTest extends PHPUnit_Framework_TestCase
                     {% block foo %}
                         {{ foo.bar }}
                     {% endblock %}",
-                    'base'  => '{% block content %}{% endblock %}',
+                    'base' => '{% block content %}{% endblock %}',
                 ),
                 'index', 3,
             ),

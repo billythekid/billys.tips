@@ -13,44 +13,47 @@ namespace Craft;
  */
 class ElementRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'elements';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'elements';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('type')),
-            array('columns' => array('enabled')),
-            array('columns' => array('archived, dateCreated')),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('type')),
+			array('columns' => array('enabled')),
+			array('columns' => array('archived, dateCreated')),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'type'     => array(AttributeType::ClassName, 'required' => true),
-            'enabled'  => array(AttributeType::Bool, 'default' => true),
-            'archived' => array(AttributeType::Bool, 'default' => false),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'type'     => array(AttributeType::ClassName, 'required' => true),
+			'enabled'  => array(AttributeType::Bool, 'default' => true),
+			'archived' => array(AttributeType::Bool, 'default' => false),
+		);
+	}
 }

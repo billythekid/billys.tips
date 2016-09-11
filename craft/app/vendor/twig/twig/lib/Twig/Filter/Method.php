@@ -13,9 +13,11 @@
 
 /**
  * Represents a method template filter.
+ *
  * Use Twig_SimpleFilter instead.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @deprecated since 1.12 (to be removed in 2.0)
  */
 class Twig_Filter_Method extends Twig_Filter
@@ -30,7 +32,7 @@ class Twig_Filter_Method extends Twig_Filter
         parent::__construct($options);
 
         $this->extension = $extension;
-        $this->method    = $method;
+        $this->method = $method;
     }
 
     public function compile()

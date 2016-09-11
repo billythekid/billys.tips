@@ -37,7 +37,6 @@ if (!\$alreadySandboxed) {
     \$sandbox->disableSandbox();
 }
 EOF
-    ,
         );
 
         return $tests;

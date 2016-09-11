@@ -3,6 +3,7 @@ namespace Craft;
 
 /**
  * The ElementType class is an abstract class that defines all of the element types that are available in Craft.
+ *
  * This class is a poor man's version of an enum, since PHP does not have support for native enumerations.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
@@ -14,14 +15,14 @@ namespace Craft;
  */
 abstract class ElementType extends BaseEnum
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const Asset       = 'Asset';
-    const Category    = 'Category';
-    const Entry       = 'Entry';
-    const GlobalSet   = 'GlobalSet';
-    const MatrixBlock = 'MatrixBlock';
-    const Tag         = 'Tag';
-    const User        = 'User';
+	const Asset       = 'Asset';
+	const Category    = 'Category';
+	const Entry       = 'Entry';
+	const GlobalSet   = 'GlobalSet';
+	const MatrixBlock = 'MatrixBlock';
+	const Tag         = 'Tag';
+	const User        = 'User';
 }

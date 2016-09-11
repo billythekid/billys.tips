@@ -34,7 +34,7 @@ class Resize implements FilterInterface
      */
     public function __construct(BoxInterface $size, $filter = ImageInterface::FILTER_UNDEFINED)
     {
-        $this->size   = $size;
+        $this->size = $size;
         $this->filter = $filter;
     }
 

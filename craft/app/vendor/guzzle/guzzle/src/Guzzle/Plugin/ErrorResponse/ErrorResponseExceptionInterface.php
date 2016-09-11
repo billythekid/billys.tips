@@ -15,6 +15,7 @@ interface ErrorResponseExceptionInterface
      *
      * @param CommandInterface $command  Command that was sent
      * @param Response         $response The error response
+     *
      * @return self
      */
     public static function fromCommand(CommandInterface $command, Response $response);

@@ -4,7 +4,9 @@ namespace Craft;
 /**
  * The LogLevel class is an abstract class that defines all of the different log level options that are available in
  * Craft when calling {@link Craft::log()}.
+ *
  * These are just a duplicate of the constants in Yii's {@link \CLogger} for consistency!
+ *
  * This class is a poor man's version of an enum, since PHP does not have support for native enumerations.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
@@ -16,12 +18,12 @@ namespace Craft;
  */
 abstract class LogLevel extends BaseEnum
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const Trace   = 'trace';
-    const Warning = 'warning';
-    const Error   = 'error';
-    const Info    = 'info';
-    const Profile = 'profile';
+	const Trace   = 'trace';
+	const Warning = 'warning';
+	const Error   = 'error';
+	const Info    = 'info';
+	const Profile = 'profile';
 }

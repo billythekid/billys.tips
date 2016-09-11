@@ -41,9 +41,9 @@ class Layers extends AbstractLayers
 
     public function __construct(Image $image, PaletteInterface $palette, \Imagick $resource)
     {
-        $this->image    = $image;
+        $this->image = $image;
         $this->resource = $resource;
-        $this->palette  = $palette;
+        $this->palette = $palette;
     }
 
     /**
@@ -51,14 +51,11 @@ class Layers extends AbstractLayers
      */
     public function merge()
     {
-        foreach ($this->layers as $offset => $image)
-        {
-            try
-            {
+        foreach ($this->layers as $offset => $image) {
+            try {
                 $this->resource->setIteratorIndex($offset);
                 $this->resource->setImage($image->getImagick());
-            } catch (\ImagickException $e)
-            {
+            } catch (\ImagickException $e) {
                 throw new RuntimeException('Failed to substitute layer', $e->getCode(), $e);
             }
         }
@@ -69,34 +66,29 @@ class Layers extends AbstractLayers
      */
     public function animate($format, $delay, $loops)
     {
-        if ('gif' !== strtolower($format))
-        {
+        if ('gif' !== strtolower($format)) {
             throw new InvalidArgumentException('Animated picture is currently only supported on gif');
         }
 
-        if (!is_int($loops) || $loops < 0)
-        {
+        if (!is_int($loops) || $loops < 0) {
             throw new InvalidArgumentException('Loops must be a positive integer.');
         }
 
-        if (null !== $delay && (!is_int($delay) || $delay < 0))
-        {
+        if (null !== $delay && (!is_int($delay) || $delay < 0)) {
             throw new InvalidArgumentException('Delay must be either null or a positive integer.');
         }
 
-        try
-        {
-            foreach ($this as $offset => $layer)
-            {
+        try {
+            foreach ($this as $offset => $layer) {
                 $imagick = $layer->getImagick();
                 $this->resource->setIteratorIndex($offset);
                 $this->resource->setFormat($format);
 
-                if (null !== $delay)
-                {
+                if (null !== $delay) {
                     $imagick->setImageDelay($delay);
                     $imagick->setImageTicksPerSecond(100);
-                } else if ($frameDelay = $layer->getImagick()->getImageDelay())
+                }
+                else if ($frameDelay = $layer->getImagick()->getImageDelay())
                 {
                     $imagick->setImageDelay($frameDelay);
                     $imagick->setImageTicksPerSecond(100);
@@ -106,8 +98,7 @@ class Layers extends AbstractLayers
 
                 $this->resource->setImage($imagick);
             }
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to animate layers', $e->getCode(), $e);
         }
 
@@ -119,23 +110,18 @@ class Layers extends AbstractLayers
      */
     public function coalesce()
     {
-        try
-        {
+        try {
             $coalescedResource = $this->resource->coalesceImages();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to coalesce layers', $e->getCode(), $e);
         }
 
         $count = $coalescedResource->getNumberImages();
-        for ($offset = 0; $offset < $count; $offset++)
-        {
-            try
-            {
+        for ($offset = 0; $offset < $count; $offset++) {
+            try {
                 $coalescedResource->setIteratorIndex($offset);
                 $this->layers[$offset] = new Image($coalescedResource->getImage(), $this->palette, new MetadataBag());
-            } catch (\ImagickException $e)
-            {
+            } catch (\ImagickException $e) {
                 throw new RuntimeException('Failed to retrieve layer', $e->getCode(), $e);
             }
         }
@@ -153,19 +139,17 @@ class Layers extends AbstractLayers
      * Tries to extract layer at given offset
      *
      * @param integer $offset
+     *
      * @return Image
      * @throws RuntimeException
      */
     private function extractAt($offset)
     {
-        if (!isset($this->layers[$offset]))
-        {
-            try
-            {
+        if (!isset($this->layers[$offset])) {
+            try {
                 $this->resource->setIteratorIndex($offset);
                 $this->layers[$offset] = new Image($this->resource->getImage(), $this->palette, new MetadataBag());
-            } catch (\ImagickException $e)
-            {
+            } catch (\ImagickException $e) {
                 throw new RuntimeException(sprintf('Failed to extract layer %d', $offset), $e->getCode(), $e);
             }
         }
@@ -210,11 +194,9 @@ class Layers extends AbstractLayers
      */
     public function count()
     {
-        try
-        {
+        try {
             return $this->resource->getNumberImages();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to count the number of layers', $e->getCode(), $e);
         }
     }
@@ -240,28 +222,22 @@ class Layers extends AbstractLayers
      */
     public function offsetSet($offset, $image)
     {
-        if (!$image instanceof Image)
-        {
+        if (!$image instanceof Image) {
             throw new InvalidArgumentException('Only an Imagick Image can be used as layer');
         }
 
-        if (null === $offset)
-        {
+        if (null === $offset) {
             $offset = count($this) - 1;
-        } else
-        {
-            if (!is_int($offset))
-            {
+        } else {
+            if (!is_int($offset)) {
                 throw new InvalidArgumentException('Invalid offset for layer, it must be an integer');
             }
 
-            if (count($this) < $offset || 0 > $offset)
-            {
+            if (count($this) < $offset || 0 > $offset) {
                 throw new OutOfBoundsException(sprintf('Invalid offset for layer, it must be a value between 0 and %d, %d given', count($this), $offset));
             }
 
-            if (isset($this[$offset]))
-            {
+            if (isset($this[$offset])) {
                 unset($this[$offset]);
                 $offset = $offset - 1;
             }
@@ -269,15 +245,12 @@ class Layers extends AbstractLayers
 
         $frame = $image->getImagick();
 
-        try
-        {
-            if (count($this) > 0)
-            {
+        try {
+            if (count($this) > 0) {
                 $this->resource->setIteratorIndex($offset);
             }
             $this->resource->addImage($frame);
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Unable to set the layer', $e->getCode(), $e);
         }
 
@@ -289,20 +262,16 @@ class Layers extends AbstractLayers
      */
     public function offsetUnset($offset)
     {
-        try
-        {
+        try {
             $this->extractAt($offset);
-        } catch (RuntimeException $e)
-        {
+        } catch (RuntimeException $e) {
             return;
         }
 
-        try
-        {
+        try {
             $this->resource->setIteratorIndex($offset);
             $this->resource->removeImage();
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Unable to remove layer', $e->getCode(), $e);
         }
     }

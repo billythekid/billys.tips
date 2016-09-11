@@ -49,13 +49,12 @@ final class Drawer implements DrawerInterface
         $width  = $size->getWidth();
         $height = $size->getHeight();
 
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $arc   = new \GmagickDraw();
 
             $arc->setstrokecolor($pixel);
-            $arc->setstrokewidth(max(1, (int)$thickness));
+            $arc->setstrokewidth(max(1, (int) $thickness));
             $arc->setfillcolor('transparent');
             $arc->arc(
                 $x - $width / 2,
@@ -71,8 +70,7 @@ final class Drawer implements DrawerInterface
             $pixel = null;
 
             $arc = null;
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Draw arc operation failed', $e->getCode(), $e);
         }
 
@@ -89,19 +87,16 @@ final class Drawer implements DrawerInterface
         $width  = $size->getWidth();
         $height = $size->getHeight();
 
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $chord = new \GmagickDraw();
 
             $chord->setstrokecolor($pixel);
-            $chord->setstrokewidth(max(1, (int)$thickness));
+            $chord->setstrokewidth(max(1, (int) $thickness));
 
-            if ($fill)
-            {
+            if ($fill) {
                 $chord->setfillcolor($pixel);
-            } else
-            {
+            } else {
                 $x1 = round($x + $width / 2 * cos(deg2rad($start)));
                 $y1 = round($y + $height / 2 * sin(deg2rad($start)));
                 $x2 = round($x + $width / 2 * cos(deg2rad($end)));
@@ -119,8 +114,7 @@ final class Drawer implements DrawerInterface
             $pixel = null;
 
             $chord = null;
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Draw chord operation failed', $e->getCode(), $e);
         }
 
@@ -135,19 +129,16 @@ final class Drawer implements DrawerInterface
         $width  = $size->getWidth();
         $height = $size->getHeight();
 
-        try
-        {
+        try {
             $pixel   = $this->getColor($color);
             $ellipse = new \GmagickDraw();
 
             $ellipse->setstrokecolor($pixel);
-            $ellipse->setstrokewidth(max(1, (int)$thickness));
+            $ellipse->setstrokewidth(max(1, (int) $thickness));
 
-            if ($fill)
-            {
+            if ($fill) {
                 $ellipse->setfillcolor($pixel);
-            } else
-            {
+            } else {
                 $ellipse->setfillcolor('transparent');
             }
 
@@ -164,8 +155,7 @@ final class Drawer implements DrawerInterface
             $pixel = null;
 
             $ellipse = null;
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Draw ellipse operation failed', $e->getCode(), $e);
         }
 
@@ -177,13 +167,12 @@ final class Drawer implements DrawerInterface
      */
     public function line(PointInterface $start, PointInterface $end, ColorInterface $color, $thickness = 1)
     {
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $line  = new \GmagickDraw();
 
             $line->setstrokecolor($pixel);
-            $line->setstrokewidth(max(1, (int)$thickness));
+            $line->setstrokewidth(max(1, (int) $thickness));
             $line->setfillcolor($pixel);
             $line->line(
                 $start->getX(),
@@ -197,8 +186,7 @@ final class Drawer implements DrawerInterface
             $pixel = null;
 
             $line = null;
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Draw line operation failed', $e->getCode(), $e);
         }
 
@@ -218,8 +206,7 @@ final class Drawer implements DrawerInterface
         $x2 = round($center->getX() + $width / 2 * cos(deg2rad($end)));
         $y2 = round($center->getY() + $height / 2 * sin(deg2rad($end)));
 
-        if ($fill)
-        {
+        if ($fill) {
             $this->chord($center, $size, $start, $end, $color, true, $thickness);
             $this->polygon(
                 array(
@@ -231,8 +218,7 @@ final class Drawer implements DrawerInterface
                 true,
                 $thickness
             );
-        } else
-        {
+        } else {
             $this->arc($center, $size, $start, $end, $color, $thickness);
             $this->line($center, new Point($x1, $y1), $color, $thickness);
             $this->line($center, new Point($x2, $y2), $color, $thickness);
@@ -249,8 +235,7 @@ final class Drawer implements DrawerInterface
         $x = $position->getX();
         $y = $position->getY();
 
-        try
-        {
+        try {
             $pixel = $this->getColor($color);
             $point = new \GmagickDraw();
 
@@ -261,8 +246,7 @@ final class Drawer implements DrawerInterface
 
             $pixel = null;
             $point = null;
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Draw point operation failed', $e->getCode(), $e);
         }
 
@@ -274,29 +258,24 @@ final class Drawer implements DrawerInterface
      */
     public function polygon(array $coordinates, ColorInterface $color, $fill = false, $thickness = 1)
     {
-        if (count($coordinates) < 3)
-        {
+        if (count($coordinates) < 3) {
             throw new InvalidArgumentException(sprintf('Polygon must consist of at least 3 coordinates, %d given', count($coordinates)));
         }
 
-        $points = array_map(function (PointInterface $p)
-        {
+        $points = array_map(function (PointInterface $p) {
             return array('x' => $p->getX(), 'y' => $p->getY());
         }, $coordinates);
 
-        try
-        {
+        try {
             $pixel   = $this->getColor($color);
             $polygon = new \GmagickDraw();
 
             $polygon->setstrokecolor($pixel);
-            $polygon->setstrokewidth(max(1, (int)$thickness));
+            $polygon->setstrokewidth(max(1, (int) $thickness));
 
-            if ($fill)
-            {
+            if ($fill) {
                 $polygon->setfillcolor($pixel);
-            } else
-            {
+            } else {
                 $polygon->setfillcolor('transparent');
             }
 
@@ -305,8 +284,7 @@ final class Drawer implements DrawerInterface
             $this->gmagick->drawImage($polygon);
 
             unset($pixel, $polygon);
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Draw polygon operation failed', $e->getCode(), $e);
         }
 
@@ -318,17 +296,17 @@ final class Drawer implements DrawerInterface
      */
     public function text($string, AbstractFont $font, PointInterface $position, $angle = 0, $width = null)
     {
-        try
-        {
+        try {
             $pixel = $this->getColor($font->getColor());
             $text  = new \GmagickDraw();
 
             $text->setfont($font->getFile());
             /**
              * @see http://www.php.net/manual/en/imagick.queryfontmetrics.php#101027
+             *
              * ensure font resolution is the same as GD's hard-coded 96
              */
-            $text->setfontsize((int)($font->getSize() * (96 / 72)));
+            $text->setfontsize((int) ($font->getSize() * (96 / 72)));
             $text->setfillcolor($pixel);
 
             $info = $this->gmagick->queryfontmetrics($text, $string);
@@ -344,16 +322,14 @@ final class Drawer implements DrawerInterface
             $xdiff = 0 - min($x1, $x2);
             $ydiff = 0 - min($y1, $y2);
 
-            if ($width !== null)
-            {
+            if ($width !== null) {
                 throw new NotSupportedException('Gmagick doesn\'t support queryfontmetrics function for multiline text', 1);
             }
 
             $this->gmagick->annotateimage($text, $position->getX() + $x1 + $xdiff, $position->getY() + $y2 + $ydiff, $angle, $string);
 
             unset($pixel, $text);
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Draw text operation failed', $e->getCode(), $e);
         }
 
@@ -364,16 +340,17 @@ final class Drawer implements DrawerInterface
      * Gets specifically formatted color string from Color instance
      *
      * @param ColorInterface $color
+     *
      * @return \GmagickPixel
+     *
      * @throws InvalidArgumentException In case a non-opaque color is passed
      */
     private function getColor(ColorInterface $color)
     {
-        if (!$color->isOpaque())
-        {
+        if (!$color->isOpaque()) {
             throw new InvalidArgumentException('Gmagick doesn\'t support transparency');
         }
 
-        return new \GmagickPixel((string)$color);
+        return new \GmagickPixel((string) $color);
     }
 }

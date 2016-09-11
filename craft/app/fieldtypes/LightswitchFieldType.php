@@ -13,111 +13,128 @@ namespace Craft;
  */
 class LightswitchFieldType extends BaseFieldType implements IPreviewableFieldType
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Lightswitch');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Lightswitch');
+	}
 
-    /**
-     * @inheritDoc IFieldType::defineContentAttribute()
-     * @return mixed
-     */
-    public function defineContentAttribute()
-    {
-        return AttributeType::Bool;
-    }
+	/**
+	 * @inheritDoc IFieldType::defineContentAttribute()
+	 *
+	 * @return mixed
+	 */
+	public function defineContentAttribute()
+	{
+		return AttributeType::Bool;
+	}
 
-    /**
-     * @inheritDoc ISavableComponentType::getSettingsHtml()
-     * @return string|null
-     */
-    public function getSettingsHtml()
-    {
-        return craft()->templates->renderMacro('_includes/forms', 'lightswitchField', array(
-            array(
-                'label' => Craft::t('Default Value'),
-                'id'    => 'default',
-                'name'  => 'default',
-                'on'    => $this->getSettings()->default,
-            ),
-        ));
-    }
+	/**
+	 * @inheritDoc ISavableComponentType::getSettingsHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getSettingsHtml()
+	{
+		return craft()->templates->renderMacro('_includes/forms', 'lightswitchField', array(
+			array(
+				'label' => Craft::t('Default Value'),
+				'id'    => 'default',
+				'name'  => 'default',
+				'on'    => $this->getSettings()->default,
+			)
+		));
+	}
 
-    /**
-     * @inheritDoc IFieldType::getInputHtml()
-     * @param string $name
-     * @param mixed  $value
-     * @return string
-     */
-    public function getInputHtml($name, $value)
-    {
-        // If this is a new entry, look for a default option
-        if ($this->isFresh())
-        {
-            $value = $this->getSettings()->default;
-        }
+	/**
+	 * @inheritDoc IFieldType::getInputHtml()
+	 *
+	 * @param string $name
+	 * @param mixed  $value
+	 *
+	 * @return string
+	 */
+	public function getInputHtml($name, $value)
+	{
+		// If this is a new entry, look for a default option
+		if ($this->isFresh())
+		{
+			$value = $this->getSettings()->default;
+		}
 
-        return craft()->templates->render('_includes/forms/lightswitch', array(
-            'name' => $name,
-            'on'   => (bool)$value,
-        ));
-    }
+		$id = craft()->templates->formatInputId($name);
 
-    /**
-     * @inheritDoc IFieldType::prepValueFromPost()
-     * @param mixed $value
-     * @return mixed
-     */
-    public function prepValueFromPost($value)
-    {
-        return (bool)$value;
-    }
+		return craft()->templates->render('_includes/forms/lightswitch', array(
+			'id'      => $id,
+			'labelId' => $id.'-label',
+			'name'    => $name,
+			'on'      => (bool) $value,
+		));
+	}
 
-    /**
-     * @inheritDoc IFieldType::prepValue()
-     * @param mixed $value
-     * @return mixed
-     */
-    public function prepValue($value)
-    {
-        // It's stored as '0' in the database, but it's returned as false. Change it back to '0'.
-        return $value == false ? '0' : $value;
-    }
+	/**
+	 * @inheritDoc IFieldType::prepValueFromPost()
+	 *
+	 * @param mixed $value
+	 *
+	 * @return mixed
+	 */
+	public function prepValueFromPost($value)
+	{
+		return (bool) $value;
+	}
 
-    /**
-     * @inheritDoc IPreviewableFieldType::getTableAttributeHtml()
-     * @param mixed $value
-     * @return string
-     */
-    public function getTableAttributeHtml($value)
-    {
-        if ($value)
-        {
-            return '<div class="status enabled" title="' . Craft::t('Enabled') . '"></div>';
-        } else
-        {
-            return '<div class="status" title="' . Craft::t('Not enabled') . '"></div>';
-        }
-    }
+	/**
+	 * @inheritDoc IFieldType::prepValue()
+	 *
+	 * @param mixed $value
+	 *
+	 * @return mixed
+	 */
+	public function prepValue($value)
+	{
+		// It's stored as '0' in the database, but it's returned as false. Change it back to '0'.
+		return $value == false ? '0' : $value;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	/**
+	 * @inheritDoc IPreviewableFieldType::getTableAttributeHtml()
+	 *
+	 * @param mixed $value
+	 *
+	 * @return string
+	 */
+	public function getTableAttributeHtml($value)
+	{
+		if ($value)
+		{
+			return '<div class="status enabled" title="'.Craft::t('Enabled').'"></div>';
+		}
+		else
+		{
+			return '<div class="status" title="'.Craft::t('Not enabled').'"></div>';
+		}
+	}
 
-    /**
-     * @inheritDoc BaseSavableComponentType::defineSettings()
-     * @return array
-     */
-    protected function defineSettings()
-    {
-        return array(
-            'default' => array(AttributeType::Bool, 'default' => false),
-        );
-    }
+	// Protected Methods
+	// =========================================================================
+
+	/**
+	 * @inheritDoc BaseSavableComponentType::defineSettings()
+	 *
+	 * @return array
+	 */
+	protected function defineSettings()
+	{
+		return array(
+			'default' => array(AttributeType::Bool, 'default' => false),
+		);
+	}
 }

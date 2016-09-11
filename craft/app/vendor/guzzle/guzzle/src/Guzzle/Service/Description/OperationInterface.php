@@ -9,10 +9,10 @@ use Guzzle\Common\ToArrayInterface;
  */
 interface OperationInterface extends ToArrayInterface
 {
-    const TYPE_PRIMITIVE     = 'primitive';
-    const TYPE_CLASS         = 'class';
+    const TYPE_PRIMITIVE = 'primitive';
+    const TYPE_CLASS = 'class';
     const TYPE_DOCUMENTATION = 'documentation';
-    const TYPE_MODEL         = 'model';
+    const TYPE_MODEL = 'model';
 
     /**
      * Get the service description that the operation belongs to
@@ -25,6 +25,7 @@ interface OperationInterface extends ToArrayInterface
      * Set the service description that the operation belongs to
      *
      * @param ServiceDescriptionInterface $description Service description
+     *
      * @return self
      */
     public function setServiceDescription(ServiceDescriptionInterface $description);
@@ -47,6 +48,7 @@ interface OperationInterface extends ToArrayInterface
      * Check if the operation has a specific parameter by name
      *
      * @param string $name Name of the param
+     *
      * @return bool
      */
     public function hasParam($name);
@@ -55,6 +57,7 @@ interface OperationInterface extends ToArrayInterface
      * Get a single parameter of the operation
      *
      * @param string $param Parameter to retrieve by name
+     *
      * @return Parameter|null
      */
     public function getParam($param);
@@ -149,6 +152,7 @@ interface OperationInterface extends ToArrayInterface
      * Get extra data from the operation
      *
      * @param string $name Name of the data point to retrieve
+     *
      * @return mixed|null
      */
     public function getData($name);

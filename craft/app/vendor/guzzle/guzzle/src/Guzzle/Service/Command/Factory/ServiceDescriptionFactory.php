@@ -30,6 +30,7 @@ class ServiceDescriptionFactory implements FactoryInterface
      * Change the service description used with the factory
      *
      * @param ServiceDescriptionInterface $description Service description to use
+     *
      * @return FactoryInterface
      */
     public function setServiceDescription(ServiceDescriptionInterface $description)
@@ -54,20 +55,16 @@ class ServiceDescriptionFactory implements FactoryInterface
         $command = $this->description->getOperation($name);
 
         // If a command wasn't found, then try to uppercase the first letter and try again
-        if (!$command)
-        {
+        if (!$command) {
             $command = $this->description->getOperation(ucfirst($name));
             // If an inflector was passed, then attempt to get the command using snake_case inflection
-            if (!$command && $this->inflector)
-            {
+            if (!$command && $this->inflector) {
                 $command = $this->description->getOperation($this->inflector->snake($name));
             }
         }
 
-        if ($command)
-        {
+        if ($command) {
             $class = $command->getClass();
-
             return new $class($args, $command, $this->description);
         }
     }

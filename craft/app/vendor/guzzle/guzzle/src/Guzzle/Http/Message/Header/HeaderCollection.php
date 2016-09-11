@@ -19,8 +19,7 @@ class HeaderCollection implements \IteratorAggregate, \Countable, \ArrayAccess, 
 
     public function __clone()
     {
-        foreach ($this->headers as &$header)
-        {
+        foreach ($this->headers as &$header) {
             $header = clone $header;
         }
     }
@@ -37,6 +36,7 @@ class HeaderCollection implements \IteratorAggregate, \Countable, \ArrayAccess, 
      * Set a header on the collection
      *
      * @param HeaderInterface $header Header to add
+     *
      * @return self
      */
     public function add(HeaderInterface $header)
@@ -99,8 +99,7 @@ class HeaderCollection implements \IteratorAggregate, \Countable, \ArrayAccess, 
     public function toArray()
     {
         $result = array();
-        foreach ($this->headers as $header)
-        {
+        foreach ($this->headers as $header) {
             $result[$header->getName()] = $header->toArray();
         }
 

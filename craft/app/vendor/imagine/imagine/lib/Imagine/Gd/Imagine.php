@@ -50,33 +50,28 @@ final class Imagine extends AbstractImagine
 
         $resource = imagecreatetruecolor($width, $height);
 
-        if (false === $resource)
-        {
+        if (false === $resource) {
             throw new RuntimeException('Create operation failed');
         }
 
         $palette = null !== $color ? $color->getPalette() : new RGB();
-        $color   = $color ? $color : $palette->color('fff');
+        $color = $color ? $color : $palette->color('fff');
 
-        if (!$color instanceof RGBColor)
-        {
+        if (!$color instanceof RGBColor) {
             throw new InvalidArgumentException('GD driver only supports RGB colors');
         }
 
         $index = imagecolorallocatealpha($resource, $color->getRed(), $color->getGreen(), $color->getBlue(), round(127 * (100 - $color->getAlpha()) / 100));
 
-        if (false === $index)
-        {
+        if (false === $index) {
             throw new RuntimeException('Unable to allocate color');
         }
 
-        if (false === imagefill($resource, 0, 0, $index))
-        {
+        if (false === imagefill($resource, 0, 0, $index)) {
             throw new RuntimeException('Could not set background color fill');
         }
 
-        if ($color->getAlpha() >= 95)
-        {
+        if ($color->getAlpha() >= 95) {
             imagecolortransparent($resource, $index);
         }
 
@@ -91,15 +86,13 @@ final class Imagine extends AbstractImagine
         $path = $this->checkPath($path);
         $data = @file_get_contents($path);
 
-        if (false === $data)
-        {
+        if (false === $data) {
             throw new RuntimeException(sprintf('Failed to open file %s', $path));
         }
 
         $resource = @imagecreatefromstring($data);
 
-        if (!is_resource($resource))
-        {
+        if (!is_resource($resource)) {
             throw new RuntimeException(sprintf('Unable to open image %s', $path));
         }
 
@@ -119,15 +112,13 @@ final class Imagine extends AbstractImagine
      */
     public function read($resource)
     {
-        if (!is_resource($resource))
-        {
+        if (!is_resource($resource)) {
             throw new InvalidArgumentException('Variable does not contain a stream resource');
         }
 
         $content = stream_get_contents($resource);
 
-        if (false === $content)
-        {
+        if (false === $content) {
             throw new InvalidArgumentException('Cannot read resource content');
         }
 
@@ -139,8 +130,7 @@ final class Imagine extends AbstractImagine
      */
     public function font($file, $size, ColorInterface $color)
     {
-        if (!$this->info['FreeType Support'])
-        {
+        if (!$this->info['FreeType Support']) {
             throw new RuntimeException('GD is not compiled with FreeType support');
         }
 
@@ -149,8 +139,7 @@ final class Imagine extends AbstractImagine
 
     private function wrap($resource, PaletteInterface $palette, MetadataBag $metadata)
     {
-        if (!imageistruecolor($resource))
-        {
+        if (!imageistruecolor($resource)) {
             list($width, $height) = array(imagesx($resource), imagesy($resource));
 
             // create transparent truecolor canvas
@@ -166,13 +155,11 @@ final class Imagine extends AbstractImagine
             $resource = $truecolor;
         }
 
-        if (false === imagealphablending($resource, false) || false === imagesavealpha($resource, true))
-        {
+        if (false === imagealphablending($resource, false) || false === imagesavealpha($resource, true)) {
             throw new RuntimeException('Could not set alphablending, savealpha and antialias values');
         }
 
-        if (function_exists('imageantialias'))
-        {
+        if (function_exists('imageantialias')) {
             imageantialias($resource, true);
         }
 
@@ -181,8 +168,7 @@ final class Imagine extends AbstractImagine
 
     private function loadGdInfo()
     {
-        if (!function_exists('gd_info'))
-        {
+        if (!function_exists('gd_info')) {
             throw new RuntimeException('Gd not installed');
         }
 
@@ -191,8 +177,7 @@ final class Imagine extends AbstractImagine
 
     private function requireGdVersion($version)
     {
-        if (version_compare(GD_VERSION, $version, '<'))
-        {
+        if (version_compare(GD_VERSION, $version, '<')) {
             throw new RuntimeException(sprintf('GD2 version %s or higher is required, %s provided', $version, GD_VERSION));
         }
     }
@@ -201,8 +186,7 @@ final class Imagine extends AbstractImagine
     {
         $resource = @imagecreatefromstring($string);
 
-        if (!is_resource($resource))
-        {
+        if (!is_resource($resource)) {
             throw new RuntimeException('An image could not be created from the given input');
         }
 

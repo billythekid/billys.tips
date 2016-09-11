@@ -22,8 +22,7 @@ class Version
      */
     public static function warn($message)
     {
-        if (self::$emitWarnings)
-        {
+        if (self::$emitWarnings) {
             trigger_error('Deprecation warning: ' . $message, E_USER_DEPRECATED);
         }
     }

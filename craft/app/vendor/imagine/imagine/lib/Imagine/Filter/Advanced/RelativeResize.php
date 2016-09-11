@@ -32,12 +32,11 @@ class RelativeResize implements FilterInterface
      */
     public function __construct($method, $parameter)
     {
-        if (!in_array($method, array('heighten', 'increase', 'scale', 'widen')))
-        {
+        if (!in_array($method, array('heighten', 'increase', 'scale', 'widen'))) {
             throw new InvalidArgumentException(sprintf('Unsupported method: ', $method));
         }
 
-        $this->method    = $method;
+        $this->method = $method;
         $this->parameter = $parameter;
     }
 

@@ -11,6 +11,7 @@
 
 /**
  * Checks if a variable is divisible by a number.
+ *
  * <pre>
  *  {% if loop.index is divisible by(3) %}
  * </pre>
@@ -26,6 +27,7 @@ class Twig_Node_Expression_Test_Divisibleby extends Twig_Node_Expression_Test
             ->subcompile($this->getNode('node'))
             ->raw(' % ')
             ->subcompile($this->getNode('arguments')->getNode(0))
-            ->raw(')');
+            ->raw(')')
+        ;
     }
 }

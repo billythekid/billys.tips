@@ -23,13 +23,13 @@ class ExceptionCollection extends \Exception implements GuzzleException, \Iterat
      * Set all of the exceptions
      *
      * @param array $exceptions Array of exceptions
+     *
      * @return self
      */
     public function setExceptions(array $exceptions)
     {
         $this->exceptions = array();
-        foreach ($exceptions as $exception)
-        {
+        foreach ($exceptions as $exception) {
             $this->add($exception);
         }
 
@@ -40,13 +40,13 @@ class ExceptionCollection extends \Exception implements GuzzleException, \Iterat
      * Add exceptions to the collection
      *
      * @param ExceptionCollection|\Exception $e Exception to add
+     *
      * @return ExceptionCollection;
      */
     public function add($e)
     {
         $this->exceptions[] = $e;
-        if ($this->message)
-        {
+        if ($this->message) {
             $this->message .= "\n";
         }
 
@@ -88,21 +88,17 @@ class ExceptionCollection extends \Exception implements GuzzleException, \Iterat
     private function getExceptionMessage(\Exception $e, $depth = 0)
     {
         static $sp = '    ';
-        $prefix  = $depth ? str_repeat($sp, $depth) : '';
+        $prefix = $depth ? str_repeat($sp, $depth) : '';
         $message = "{$prefix}(" . get_class($e) . ') ' . $e->getFile() . ' line ' . $e->getLine() . "\n";
 
-        if ($e instanceof self)
-        {
-            if ($e->shortMessage)
-            {
+        if ($e instanceof self) {
+            if ($e->shortMessage) {
                 $message .= "\n{$prefix}{$sp}" . str_replace("\n", "\n{$prefix}{$sp}", $e->shortMessage) . "\n";
             }
-            foreach ($e as $ee)
-            {
+            foreach ($e as $ee) {
                 $message .= "\n" . $this->getExceptionMessage($ee, $depth + 1);
             }
-        } else
-        {
+        }  else {
             $message .= "\n{$prefix}{$sp}" . str_replace("\n", "\n{$prefix}{$sp}", $e->getMessage()) . "\n";
             $message .= "\n{$prefix}{$sp}" . str_replace("\n", "\n{$prefix}{$sp}", $e->getTraceAsString()) . "\n";
         }

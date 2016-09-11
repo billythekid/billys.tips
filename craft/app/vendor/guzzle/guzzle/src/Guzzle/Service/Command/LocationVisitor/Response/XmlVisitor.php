@@ -22,16 +22,13 @@ class XmlVisitor extends AbstractResponseVisitor
         Response $response,
         Parameter $param,
         &$value,
-        $context = null
-    )
-    {
+        $context =  null
+    ) {
         $sentAs = $param->getWireName();
-        $name   = $param->getName();
-        if (isset($value[$sentAs]))
-        {
+        $name = $param->getName();
+        if (isset($value[$sentAs])) {
             $this->recursiveProcess($param, $value[$sentAs]);
-            if ($name != $sentAs)
-            {
+            if ($name != $sentAs) {
                 $value[$name] = $value[$sentAs];
                 unset($value[$sentAs]);
             }
@@ -48,27 +45,21 @@ class XmlVisitor extends AbstractResponseVisitor
     {
         $type = $param->getType();
 
-        if (!is_array($value))
-        {
-            if ($type == 'array')
-            {
+        if (!is_array($value)) {
+            if ($type == 'array') {
                 // Cast to an array if the value was a string, but should be an array
                 $this->recursiveProcess($param->getItems(), $value);
                 $value = array($value);
             }
-        } elseif ($type == 'object')
-        {
+        } elseif ($type == 'object') {
             $this->processObject($param, $value);
-        } elseif ($type == 'array')
-        {
+        } elseif ($type == 'array') {
             $this->processArray($param, $value);
-        } elseif ($type == 'string' && gettype($value) == 'array')
-        {
+        } elseif ($type == 'string' && gettype($value) == 'array') {
             $value = '';
         }
 
-        if ($value !== null)
-        {
+        if ($value !== null) {
             $value = $param->filter($value);
         }
     }
@@ -82,32 +73,27 @@ class XmlVisitor extends AbstractResponseVisitor
     protected function processArray(Parameter $param, &$value)
     {
         // Convert the node if it was meant to be an array
-        if (!isset($value[0]))
-        {
+        if (!isset($value[0])) {
             // Collections fo nodes are sometimes wrapped in an additional array. For example:
             // <Items><Item><a>1</a></Item><Item><a>2</a></Item></Items> should become:
             // array('Items' => array(array('a' => 1), array('a' => 2))
             // Some nodes are not wrapped. For example: <Foo><a>1</a></Foo><Foo><a>2</a></Foo>
             // should become array('Foo' => array(array('a' => 1), array('a' => 2))
-            if ($param->getItems() && isset($value[$param->getItems()->getWireName()]))
-            {
+            if ($param->getItems() && isset($value[$param->getItems()->getWireName()])) {
                 // Account for the case of a collection wrapping wrapped nodes: Items => Item[]
                 $value = $value[$param->getItems()->getWireName()];
                 // If the wrapped node only had one value, then make it an array of nodes
-                if (!isset($value[0]) || !is_array($value))
-                {
+                if (!isset($value[0]) || !is_array($value)) {
                     $value = array($value);
                 }
-            } elseif (!empty($value))
-            {
+            } elseif (!empty($value)) {
                 // Account for repeated nodes that must be an array: Foo => Baz, Foo => Baz, but only if the
                 // value is set and not empty
                 $value = array($value);
             }
         }
 
-        foreach ($value as &$item)
-        {
+        foreach ($value as &$item) {
             $this->recursiveProcess($param->getItems(), $item);
         }
     }
@@ -121,22 +107,17 @@ class XmlVisitor extends AbstractResponseVisitor
     protected function processObject(Parameter $param, &$value)
     {
         // Ensure that the array is associative and not numerically indexed
-        if (!isset($value[0]) && ($properties = $param->getProperties()))
-        {
+        if (!isset($value[0]) && ($properties = $param->getProperties())) {
             $knownProperties = array();
-            foreach ($properties as $property)
-            {
-                $name                   = $property->getName();
-                $sentAs                 = $property->getWireName();
+            foreach ($properties as $property) {
+                $name = $property->getName();
+                $sentAs = $property->getWireName();
                 $knownProperties[$name] = 1;
-                if ($property->getData('xmlAttribute'))
-                {
+                if ($property->getData('xmlAttribute')) {
                     $this->processXmlAttribute($property, $value);
-                } elseif (isset($value[$sentAs]))
-                {
+                } elseif (isset($value[$sentAs])) {
                     $this->recursiveProcess($property, $value[$sentAs]);
-                    if ($name != $sentAs)
-                    {
+                    if ($name != $sentAs) {
                         $value[$name] = $value[$sentAs];
                         unset($value[$sentAs]);
                     }
@@ -144,8 +125,7 @@ class XmlVisitor extends AbstractResponseVisitor
             }
 
             // Remove any unknown and potentially unsafe properties
-            if ($param->getAdditionalProperties() === false)
-            {
+            if ($param->getAdditionalProperties() === false) {
                 $value = array_intersect_key($value, $knownProperties);
             }
         }
@@ -160,12 +140,10 @@ class XmlVisitor extends AbstractResponseVisitor
     protected function processXmlAttribute(Parameter $property, array &$value)
     {
         $sentAs = $property->getWireName();
-        if (isset($value['@attributes'][$sentAs]))
-        {
+        if (isset($value['@attributes'][$sentAs])) {
             $value[$property->getName()] = $value['@attributes'][$sentAs];
             unset($value['@attributes'][$sentAs]);
-            if (empty($value['@attributes']))
-            {
+            if (empty($value['@attributes'])) {
                 unset($value['@attributes']);
             }
         }

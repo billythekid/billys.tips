@@ -29,6 +29,7 @@ class MetadataBag implements \ArrayAccess, \IteratorAggregate, \Countable
      *
      * @param string     $key
      * @param mixed|null $default
+     *
      * @return mixed
      */
     public function get($key, $default = null)

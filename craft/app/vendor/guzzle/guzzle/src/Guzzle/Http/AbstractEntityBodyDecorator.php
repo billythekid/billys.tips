@@ -22,7 +22,7 @@ class AbstractEntityBodyDecorator implements EntityBodyInterface
 
     public function __toString()
     {
-        return (string)$this->body;
+        return (string) $this->body;
     }
 
     /**
@@ -30,6 +30,7 @@ class AbstractEntityBodyDecorator implements EntityBodyInterface
      *
      * @param string $method Missing method name
      * @param array  $args   Method arguments
+     *
      * @return mixed
      */
     public function __call($method, array $args)

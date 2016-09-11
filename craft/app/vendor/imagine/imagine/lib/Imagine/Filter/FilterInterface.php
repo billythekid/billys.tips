@@ -23,6 +23,7 @@ interface FilterInterface
      * Returns processed ImageInterface instance
      *
      * @param ImageInterface $image
+     *
      * @return ImageInterface
      */
     public function apply(ImageInterface $image);

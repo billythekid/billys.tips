@@ -10,7 +10,7 @@ use Guzzle\Common\Exception\RuntimeException;
  */
 class BatchBuilder
 {
-    /** @var bool Whether or not the batch should automatically flush */
+    /** @var bool Whether or not the batch should automatically flush*/
     protected $autoFlush = false;
 
     /** @var bool Whether or not to maintain a batch history */
@@ -31,7 +31,7 @@ class BatchBuilder
     /** @var array of Mapped transfer strategies by handle name */
     protected static $mapping = array(
         'request' => 'Guzzle\Batch\BatchRequestTransfer',
-        'command' => 'Guzzle\Batch\BatchCommandTransfer',
+        'command' => 'Guzzle\Batch\BatchCommandTransfer'
     );
 
     /**
@@ -48,6 +48,7 @@ class BatchBuilder
      * Automatically flush the batch when the size of the queue reaches a certain threshold. Adds {@see FlushingBatch}.
      *
      * @param $threshold Number of items to allow in the queue before a flush
+     *
      * @return BatchBuilder
      */
     public function autoFlushAt($threshold)
@@ -86,6 +87,7 @@ class BatchBuilder
      * Notify a callable each time a batch flush completes. Enables the {@see NotifyingBatch} decorator.
      *
      * @param mixed $callable Callable function to notify
+     *
      * @return BatchBuilder
      * @throws InvalidArgumentException if the argument is not callable
      */
@@ -101,13 +103,14 @@ class BatchBuilder
      * object as both the transfer and divisor strategy.
      *
      * @param int $batchSize Batch size for each batch of requests
+     *
      * @return BatchBuilder
      */
     public function transferRequests($batchSize = 50)
     {
-        $className              = self::$mapping['request'];
+        $className = self::$mapping['request'];
         $this->transferStrategy = new $className($batchSize);
-        $this->divisorStrategy  = $this->transferStrategy;
+        $this->divisorStrategy = $this->transferStrategy;
 
         return $this;
     }
@@ -117,13 +120,14 @@ class BatchBuilder
      * {@see \Guzzle\Service\Command\BatchCommandTransfer} as both the transfer and divisor strategy.
      *
      * @param int $batchSize Batch size for each batch of commands
+     *
      * @return BatchBuilder
      */
     public function transferCommands($batchSize = 50)
     {
-        $className              = self::$mapping['command'];
+        $className = self::$mapping['command'];
         $this->transferStrategy = new $className($batchSize);
-        $this->divisorStrategy  = $this->transferStrategy;
+        $this->divisorStrategy = $this->transferStrategy;
 
         return $this;
     }
@@ -132,6 +136,7 @@ class BatchBuilder
      * Specify the strategy used to divide the queue into an array of batches
      *
      * @param BatchDivisorInterface $divisorStrategy Strategy used to divide a batch queue into batches
+     *
      * @return BatchBuilder
      */
     public function createBatchesWith(BatchDivisorInterface $divisorStrategy)
@@ -145,6 +150,7 @@ class BatchBuilder
      * Specify the strategy used to transport the items when flush is called
      *
      * @param BatchTransferInterface $transferStrategy How items are transferred
+     *
      * @return BatchBuilder
      */
     public function transferWith(BatchTransferInterface $transferStrategy)
@@ -162,35 +168,29 @@ class BatchBuilder
      */
     public function build()
     {
-        if (!$this->transferStrategy)
-        {
+        if (!$this->transferStrategy) {
             throw new RuntimeException('No transfer strategy has been specified');
         }
 
-        if (!$this->divisorStrategy)
-        {
+        if (!$this->divisorStrategy) {
             throw new RuntimeException('No divisor strategy has been specified');
         }
 
         $batch = new Batch($this->transferStrategy, $this->divisorStrategy);
 
-        if ($this->exceptionBuffering)
-        {
+        if ($this->exceptionBuffering) {
             $batch = new ExceptionBufferingBatch($batch);
         }
 
-        if ($this->afterFlush)
-        {
+        if ($this->afterFlush) {
             $batch = new NotifyingBatch($batch, $this->afterFlush);
         }
 
-        if ($this->autoFlush)
-        {
+        if ($this->autoFlush) {
             $batch = new FlushingBatch($batch, $this->autoFlush);
         }
 
-        if ($this->history)
-        {
+        if ($this->history) {
             $batch = new HistoryBatch($batch);
         }
 

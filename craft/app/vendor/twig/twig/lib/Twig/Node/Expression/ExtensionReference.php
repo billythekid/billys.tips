@@ -14,7 +14,8 @@
 /**
  * Represents an extension call node.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @deprecated since 1.23 and will be removed in 2.0.
  */
 class Twig_Node_Expression_ExtensionReference extends Twig_Node_Expression

@@ -73,7 +73,7 @@ class Request extends AbstractMessage implements RequestInterface
             // An exception is being thrown because of an unsuccessful response
             'request.exception',
             // Received response status line
-            'request.receive.status_line',
+            'request.receive.status_line'
         );
     }
 
@@ -86,26 +86,20 @@ class Request extends AbstractMessage implements RequestInterface
     public function __construct($method, $url, $headers = array())
     {
         parent::__construct();
-        $this->method      = strtoupper($method);
+        $this->method = strtoupper($method);
         $this->curlOptions = new Collection();
         $this->setUrl($url);
 
-        if ($headers)
-        {
+        if ($headers) {
             // Special handling for multi-value headers
-            foreach ($headers as $key => $value)
-            {
+            foreach ($headers as $key => $value) {
                 // Deal with collisions with Host and Authorization
-                if ($key == 'host' || $key == 'Host')
-                {
+                if ($key == 'host' || $key == 'Host') {
                     $this->setHeader($key, $value);
-                } elseif ($value instanceof HeaderInterface)
-                {
+                } elseif ($value instanceof HeaderInterface) {
                     $this->addHeader($key, $value);
-                } else
-                {
-                    foreach ((array)$value as $v)
-                    {
+                } else {
+                    foreach ((array) $value as $v) {
                         $this->addHeader($key, $v);
                     }
                 }
@@ -117,15 +111,14 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function __clone()
     {
-        if ($this->eventDispatcher)
-        {
+        if ($this->eventDispatcher) {
             $this->eventDispatcher = clone $this->eventDispatcher;
         }
         $this->curlOptions = clone $this->curlOptions;
-        $this->params      = clone $this->params;
-        $this->url         = clone $this->url;
-        $this->response    = $this->responseBody = null;
-        $this->headers     = clone $this->headers;
+        $this->params = clone $this->params;
+        $this->url = clone $this->url;
+        $this->response = $this->responseBody = null;
+        $this->headers = clone $this->headers;
 
         $this->setState(RequestInterface::STATE_NEW);
         $this->dispatch('request.clone', array('request' => $this));
@@ -171,25 +164,22 @@ class Request extends AbstractMessage implements RequestInterface
         $protocolVersion = $this->protocolVersion ?: '1.1';
 
         return trim($this->method . ' ' . $this->getResource()) . ' '
-        . strtoupper(str_replace('https', 'http', $this->url->getScheme()))
-        . '/' . $protocolVersion . "\r\n" . implode("\r\n", $this->getHeaderLines());
+            . strtoupper(str_replace('https', 'http', $this->url->getScheme()))
+            . '/' . $protocolVersion . "\r\n" . implode("\r\n", $this->getHeaderLines());
     }
 
     public function setUrl($url)
     {
-        if ($url instanceof Url)
-        {
+        if ($url instanceof Url) {
             $this->url = $url;
-        } else
-        {
+        } else {
             $this->url = Url::factory($url);
         }
 
         // Update the port and host header
         $this->setPort($this->url->getPort());
 
-        if ($this->url->getUsername() || $this->url->getPassword())
-        {
+        if ($this->url->getUsername() || $this->url->getPassword()) {
             $this->setAuth($this->url->getUsername(), $this->url->getPassword());
             // Remove the auth info from the URL
             $this->url->setUsername(null);
@@ -201,8 +191,7 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function send()
     {
-        if (!$this->client)
-        {
+        if (!$this->client) {
             throw new RuntimeException('A client must be set on the request');
         }
 
@@ -217,7 +206,7 @@ class Request extends AbstractMessage implements RequestInterface
     public function getQuery($asString = false)
     {
         return $asString
-            ? (string)$this->url->getQuery()
+            ? (string) $this->url->getQuery()
             : $this->url->getQuery();
     }
 
@@ -286,11 +275,9 @@ class Request extends AbstractMessage implements RequestInterface
 
         // Include the port in the Host header if it is not the default port for the scheme of the URL
         $scheme = $this->url->getScheme();
-        if ($port && (($scheme == 'http' && $port != 80) || ($scheme == 'https' && $port != 443)))
-        {
+        if ($port && (($scheme == 'http' && $port != 80) || ($scheme == 'https' && $port != 443))) {
             $this->headers['host'] = $this->headerFactory->createHeader('Host', $this->url->getHost() . ':' . $port);
-        } else
-        {
+        } else {
             $this->headers['host'] = $this->headerFactory->createHeader('Host', $this->url->getHost());
         }
 
@@ -313,24 +300,20 @@ class Request extends AbstractMessage implements RequestInterface
             'basic'  => CURLAUTH_BASIC,
             'digest' => CURLAUTH_DIGEST,
             'ntlm'   => CURLAUTH_NTLM,
-            'any'    => CURLAUTH_ANY,
+            'any'    => CURLAUTH_ANY
         );
 
         // If we got false or null, disable authentication
-        if (!$user)
-        {
+        if (!$user) {
             $this->password = $this->username = null;
             $this->removeHeader('Authorization');
             $this->getCurlOptions()->remove(CURLOPT_HTTPAUTH);
-
             return $this;
         }
 
-        if (!is_numeric($scheme))
-        {
+        if (!is_numeric($scheme)) {
             $scheme = strtolower($scheme);
-            if (!isset($authMap[$scheme]))
-            {
+            if (!isset($authMap[$scheme])) {
                 throw new InvalidArgumentException($scheme . ' is not a valid authentication type');
             }
             $scheme = $authMap[$scheme];
@@ -340,12 +323,10 @@ class Request extends AbstractMessage implements RequestInterface
         $this->password = $password;
 
         // Bypass CURL when using basic auth to promote connection reuse
-        if ($scheme == CURLAUTH_BASIC)
-        {
+        if ($scheme == CURLAUTH_BASIC) {
             $this->getCurlOptions()->remove(CURLOPT_HTTPAUTH);
             $this->setHeader('Authorization', 'Basic ' . base64_encode($this->username . ':' . $this->password));
-        } else
-        {
+        } else {
             $this->getCurlOptions()
                 ->set(CURLOPT_HTTPAUTH, $scheme)
                 ->set(CURLOPT_USERPWD, $this->username . ':' . $this->password);
@@ -357,8 +338,7 @@ class Request extends AbstractMessage implements RequestInterface
     public function getResource()
     {
         $resource = $this->getPath();
-        if ($query = (string)$this->url->getQuery())
-        {
+        if ($query = (string) $this->url->getQuery()) {
             $resource .= '?' . $query;
         }
 
@@ -367,7 +347,7 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function getUrl($asObject = false)
     {
-        return $asObject ? clone $this->url : (string)$this->url;
+        return $asObject ? clone $this->url : (string) $this->url;
     }
 
     public function getState()
@@ -377,39 +357,34 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function setState($state, array $context = array())
     {
-        $oldState    = $this->state;
+        $oldState = $this->state;
         $this->state = $state;
 
-        switch ($state)
-        {
+        switch ($state) {
             case self::STATE_NEW:
                 $this->response = null;
                 break;
             case self::STATE_TRANSFER:
-                if ($oldState !== $state)
-                {
+                if ($oldState !== $state) {
                     // Fix Content-Length and Transfer-Encoding collisions
-                    if ($this->hasHeader('Transfer-Encoding') && $this->hasHeader('Content-Length'))
-                    {
+                    if ($this->hasHeader('Transfer-Encoding') && $this->hasHeader('Content-Length')) {
                         $this->removeHeader('Transfer-Encoding');
                     }
                     $this->dispatch('request.before_send', array('request' => $this));
                 }
                 break;
             case self::STATE_COMPLETE:
-                if ($oldState !== $state)
-                {
+                if ($oldState !== $state) {
                     $this->processResponse($context);
                     $this->responseBody = null;
                 }
                 break;
             case self::STATE_ERROR:
-                if (isset($context['exception']))
-                {
+                if (isset($context['exception'])) {
                     $this->dispatch('request.exception', array(
                         'request'   => $this,
                         'response'  => isset($context['response']) ? $context['response'] : $this->response,
-                        'exception' => isset($context['exception']) ? $context['exception'] : null,
+                        'exception' => isset($context['exception']) ? $context['exception'] : null
                     ));
                 }
         }
@@ -425,7 +400,7 @@ class Request extends AbstractMessage implements RequestInterface
     public function startResponse(Response $response)
     {
         $this->state = self::STATE_TRANSFER;
-        $response->setEffectiveUrl((string)$this->getUrl());
+        $response->setEffectiveUrl((string) $this->getUrl());
         $this->response = $response;
 
         return $this;
@@ -433,25 +408,20 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function setResponse(Response $response, $queued = false)
     {
-        $response->setEffectiveUrl((string)$this->url);
+        $response->setEffectiveUrl((string) $this->url);
 
-        if ($queued)
-        {
+        if ($queued) {
             $ed = $this->getEventDispatcher();
-            $ed->addListener('request.before_send', $f = function ($e) use ($response, &$f, $ed)
-            {
+            $ed->addListener('request.before_send', $f = function ($e) use ($response, &$f, $ed) {
                 $e['request']->setResponse($response);
                 $ed->removeListener('request.before_send', $f);
             }, -9999);
-        } else
-        {
+        } else {
             $this->response = $response;
             // If a specific response body is specified, then use it instead of the response's body
-            if ($this->responseBody && !$this->responseBody->getCustomData('default') && !$response->isRedirect())
-            {
-                $this->getResponseBody()->write((string)$this->response->getBody());
-            } else
-            {
+            if ($this->responseBody && !$this->responseBody->getCustomData('default') && !$response->isRedirect()) {
+                $this->getResponseBody()->write((string) $this->response->getBody());
+            } else {
                 $this->responseBody = $this->response->getBody();
             }
             $this->setState(self::STATE_COMPLETE);
@@ -463,11 +433,9 @@ class Request extends AbstractMessage implements RequestInterface
     public function setResponseBody($body)
     {
         // Attempt to open a file for writing if a string was passed
-        if (is_string($body))
-        {
+        if (is_string($body)) {
             // @codeCoverageIgnoreStart
-            if (!($body = fopen($body, 'w+')))
-            {
+            if (!($body = fopen($body, 'w+'))) {
                 throw new InvalidArgumentException('Could not open ' . $body . ' for writing');
             }
             // @codeCoverageIgnoreEnd
@@ -480,8 +448,7 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function getResponseBody()
     {
-        if ($this->responseBody === null)
-        {
+        if ($this->responseBody === null) {
             $this->responseBody = EntityBody::factory()->setCustomData('default', true);
         }
 
@@ -498,16 +465,13 @@ class Request extends AbstractMessage implements RequestInterface
     public function isResponseBodyRepeatable()
     {
         Version::warn(__METHOD__ . ' is deprecated. Use $request->getResponseBody()->isRepeatable()');
-
         return !$this->responseBody ? true : $this->responseBody->isRepeatable();
     }
 
     public function getCookies()
     {
-        if ($cookie = $this->getHeader('Cookie'))
-        {
+        if ($cookie = $this->getHeader('Cookie')) {
             $data = ParserRegistry::getInstance()->getParser('cookie')->parseCookie($cookie);
-
             return $data['cookies'];
         }
 
@@ -523,11 +487,9 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function addCookie($name, $value)
     {
-        if (!$this->hasHeader('Cookie'))
-        {
+        if (!$this->hasHeader('Cookie')) {
             $this->setHeader('Cookie', "{$name}={$value}");
-        } else
-        {
+        } else {
             $this->getHeader('Cookie')->add("{$name}={$value}");
         }
 
@@ -539,12 +501,9 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function removeCookie($name)
     {
-        if ($cookie = $this->getHeader('Cookie'))
-        {
-            foreach ($cookie as $cookieValue)
-            {
-                if (strpos($cookieValue, $name . '=') === 0)
-                {
+        if ($cookie = $this->getHeader('Cookie')) {
+            foreach ($cookie as $cookieValue) {
+                if (strpos($cookieValue, $name . '=') === 0) {
                     $cookie->removeValue($cookieValue);
                 }
             }
@@ -563,8 +522,7 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function getEventDispatcher()
     {
-        if (!$this->eventDispatcher)
-        {
+        if (!$this->eventDispatcher) {
             $this->setEventDispatcher(new EventDispatcher());
         }
 
@@ -594,7 +552,7 @@ class Request extends AbstractMessage implements RequestInterface
     {
         return array(
             'request'  => $this,
-            'response' => $this->response,
+            'response' => $this->response
         );
     }
 
@@ -606,8 +564,7 @@ class Request extends AbstractMessage implements RequestInterface
      */
     protected function processResponse(array $context = array())
     {
-        if (!$this->response)
-        {
+        if (!$this->response) {
             // If no response, then processResponse shouldn't have been called
             $e = new RequestException('Error completing request');
             $e->setRequest($this);
@@ -620,28 +577,24 @@ class Request extends AbstractMessage implements RequestInterface
         $this->dispatch('request.sent', $this->getEventArray() + $context);
 
         // Some response processors will remove the response or reset the state (example: ExponentialBackoffPlugin)
-        if ($this->state == RequestInterface::STATE_COMPLETE)
-        {
+        if ($this->state == RequestInterface::STATE_COMPLETE) {
 
             // The request completed, so the HTTP transaction is complete
             $this->dispatch('request.complete', $this->getEventArray());
 
             // If the response is bad, allow listeners to modify it or throw exceptions. You can change the response by
             // modifying the Event object in your listeners or calling setResponse() on the request
-            if ($this->response->isError())
-            {
+            if ($this->response->isError()) {
                 $event = new Event($this->getEventArray());
                 $this->getEventDispatcher()->dispatch('request.error', $event);
                 // Allow events of request.error to quietly change the response
-                if ($event['response'] !== $this->response)
-                {
+                if ($event['response'] !== $this->response) {
                     $this->response = $event['response'];
                 }
             }
 
             // If a successful response was received, dispatch an event
-            if ($this->response->isSuccessful())
-            {
+            if ($this->response->isSuccessful()) {
                 $this->dispatch('request.success', $this->getEventArray());
             }
         }
@@ -654,13 +607,10 @@ class Request extends AbstractMessage implements RequestInterface
     public function canCache()
     {
         Version::warn(__METHOD__ . ' is deprecated. Use Guzzle\Plugin\Cache\DefaultCanCacheStrategy.');
-        if (class_exists('Guzzle\Plugin\Cache\DefaultCanCacheStrategy'))
-        {
+        if (class_exists('Guzzle\Plugin\Cache\DefaultCanCacheStrategy')) {
             $canCache = new \Guzzle\Plugin\Cache\DefaultCanCacheStrategy();
-
             return $canCache->canCacheRequest($this);
-        } else
-        {
+        } else {
             return false;
         }
     }
@@ -683,7 +633,6 @@ class Request extends AbstractMessage implements RequestInterface
     public function isRedirect()
     {
         Version::warn(__METHOD__ . ' is deprecated. Use the HistoryPlugin to track this.');
-
         return $this->isRedirect;
     }
 }

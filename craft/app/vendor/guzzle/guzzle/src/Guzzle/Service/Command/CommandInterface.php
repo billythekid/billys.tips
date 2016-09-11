@@ -49,6 +49,7 @@ interface CommandInterface extends \ArrayAccess, ToArrayInterface
      * Set the client object that will execute the command
      *
      * @param ClientInterface $client The client object that will execute the command
+     *
      * @return self
      */
     public function setClient(ClientInterface $client);
@@ -81,6 +82,7 @@ interface CommandInterface extends \ArrayAccess, ToArrayInterface
      * Set the result of the command
      *
      * @param mixed $result Result to set
+     *
      * @return self
      */
     public function setResult($result);

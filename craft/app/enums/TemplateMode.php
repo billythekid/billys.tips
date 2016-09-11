@@ -4,6 +4,7 @@ namespace Craft;
 /**
  * The TemplateMode class is an abstract class that defines whether the {@link TemplateService}
  * is in a Control Panel or Site context.
+ *
  * This class is a poor man's version of an enum, since PHP does not have support for native enumerations.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
@@ -15,9 +16,9 @@ namespace Craft;
  */
 abstract class TemplateMode
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const CP   = 'cp';
-    const Site = 'site';
+	const CP = 'cp';
+	const Site = 'site';
 }

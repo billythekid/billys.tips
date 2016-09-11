@@ -32,7 +32,9 @@ interface DrawerInterface
      * @param integer        $end
      * @param ColorInterface $color
      * @param integer        $thickness
+     *
      * @throws RuntimeException
+     *
      * @return DrawerInterface
      */
     public function arc(PointInterface $center, BoxInterface $size, $start, $end, ColorInterface $color, $thickness = 1);
@@ -47,7 +49,9 @@ interface DrawerInterface
      * @param ColorInterface $color
      * @param Boolean        $fill
      * @param integer        $thickness
+     *
      * @throws RuntimeException
+     *
      * @return DrawerInterface
      */
     public function chord(PointInterface $center, BoxInterface $size, $start, $end, ColorInterface $color, $fill = false, $thickness = 1);
@@ -61,7 +65,9 @@ interface DrawerInterface
      * @param ColorInterface $color
      * @param Boolean        $fill
      * @param integer        $thickness
+     *
      * @throws RuntimeException
+     *
      * @return DrawerInterface
      */
     public function ellipse(PointInterface $center, BoxInterface $size, ColorInterface $color, $fill = false, $thickness = 1);
@@ -73,6 +79,7 @@ interface DrawerInterface
      * @param PointInterface $end
      * @param ColorInterface $outline
      * @param integer        $thickness
+     *
      * @return DrawerInterface
      */
     public function line(PointInterface $start, PointInterface $end, ColorInterface $outline, $thickness = 1);
@@ -87,7 +94,9 @@ interface DrawerInterface
      * @param ColorInterface $color
      * @param Boolean        $fill
      * @param integer        $thickness
+     *
      * @throws RuntimeException
+     *
      * @return DrawerInterface
      */
     public function pieSlice(PointInterface $center, BoxInterface $size, $start, $end, ColorInterface $color, $fill = false, $thickness = 1);
@@ -98,7 +107,9 @@ interface DrawerInterface
      *
      * @param PointInterface $position
      * @param ColorInterface $color
+     *
      * @throws RuntimeException
+     *
      * @return DrawerInterface
      */
     public function dot(PointInterface $position, ColorInterface $color);
@@ -111,7 +122,9 @@ interface DrawerInterface
      * @param ColorInterface $color
      * @param Boolean        $fill
      * @param integer        $thickness
+     *
      * @throws RuntimeException
+     *
      * @return DrawerInterface
      */
     public function polygon(array $coordinates, ColorInterface $color, $fill = false, $thickness = 1);
@@ -119,6 +132,7 @@ interface DrawerInterface
     /**
      * Annotates image with specified text at a given position starting on the
      * top left of the final text box
+     *
      * The rotation is done CW
      *
      * @param string         $string
@@ -126,7 +140,9 @@ interface DrawerInterface
      * @param PointInterface $position
      * @param integer        $angle
      * @param integer        $width
+     *
      * @throws RuntimeException
+     *
      * @return DrawerInterface
      */
     public function text($string, AbstractFont $font, PointInterface $position, $angle = 0, $width = null);

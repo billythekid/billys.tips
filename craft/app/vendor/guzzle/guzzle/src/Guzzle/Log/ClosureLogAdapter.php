@@ -9,8 +9,7 @@ class ClosureLogAdapter extends AbstractLogAdapter
 {
     public function __construct($logObject)
     {
-        if (!is_callable($logObject))
-        {
+        if (!is_callable($logObject)) {
             throw new \InvalidArgumentException('Object must be callable');
         }
 

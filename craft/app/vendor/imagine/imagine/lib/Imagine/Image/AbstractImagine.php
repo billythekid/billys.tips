@@ -23,6 +23,7 @@ abstract class AbstractImagine implements ImagineInterface
 
     /**
      * @param MetadataReaderInterface $metadataReader
+     *
      * @return ImagineInterface
      */
     public function setMetadataReader(MetadataReaderInterface $metadataReader)
@@ -37,13 +38,10 @@ abstract class AbstractImagine implements ImagineInterface
      */
     public function getMetadataReader()
     {
-        if (null === $this->metadataReader)
-        {
-            if (ExifMetadataReader::isSupported())
-            {
+        if (null === $this->metadataReader) {
+            if (ExifMetadataReader::isSupported()) {
                 $this->metadataReader = new ExifMetadataReader();
-            } else
-            {
+            } else {
                 $this->metadataReader = new DefaultMetadataReader();
             }
         }
@@ -56,21 +54,21 @@ abstract class AbstractImagine implements ImagineInterface
      * a proper string.
      *
      * @param string|object $path
+     *
      * @return string
+     *
      * @throws InvalidArgumentException In case the given path is invalid.
      */
     protected function checkPath($path)
     {
         // provide compatibility with objects such as \SplFileInfo
-        if (is_object($path) && method_exists($path, '__toString'))
-        {
-            $path = (string)$path;
+        if (is_object($path) && method_exists($path, '__toString')) {
+            $path = (string) $path;
         }
 
         $handle = @fopen($path, 'r');
 
-        if (false === $handle)
-        {
+        if (false === $handle) {
             throw new InvalidArgumentException(sprintf('File %s does not exist.', $path));
         }
 

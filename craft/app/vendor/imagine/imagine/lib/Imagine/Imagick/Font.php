@@ -26,7 +26,7 @@ final class Font extends AbstractFont
     private $imagick;
 
     /**
-     * @param Imagick        $imagick
+     * @param Imagick       $imagick
      * @param string         $file
      * @param integer        $size
      * @param ColorInterface $color
@@ -49,15 +49,14 @@ final class Font extends AbstractFont
 
         /**
          * @see http://www.php.net/manual/en/imagick.queryfontmetrics.php#101027
+         *
          * ensure font resolution is the same as GD's hard-coded 96
          */
-        if (version_compare(phpversion("imagick"), "3.0.2", ">="))
-        {
+        if (version_compare(phpversion("imagick"), "3.0.2", ">=")) {
             $text->setResolution(96, 96);
             $text->setFontSize($this->size);
-        } else
-        {
-            $text->setFontSize((int)($this->size * (96 / 72)));
+        } else {
+            $text->setFontSize((int) ($this->size * (96 / 72)));
         }
 
         $info = $this->imagick->queryFontMetrics($text, $string);

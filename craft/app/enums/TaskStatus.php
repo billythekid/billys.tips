@@ -4,6 +4,7 @@ namespace Craft;
 /**
  * The TaskStatus class is an abstract class that defines the different task status options available in Craft for the
  * {@link TaskService}.
+ *
  * This class is a poor man's version of an enum, since PHP does not have support for native enumerations.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
@@ -15,10 +16,10 @@ namespace Craft;
  */
 abstract class TaskStatus
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const Pending = 'pending';
-    const Running = 'running';
-    const Error   = 'error';
+	const Pending = 'pending';
+	const Running = 'running';
+	const Error   = 'error';
 }

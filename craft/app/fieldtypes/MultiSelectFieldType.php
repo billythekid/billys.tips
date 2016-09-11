@@ -13,58 +13,62 @@ namespace Craft;
  */
 class MultiSelectFieldType extends BaseOptionsFieldType
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var bool
-     */
-    protected $multi = true;
+	/**
+	 * @var bool
+	 */
+	protected $multi = true;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Multi-select');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Multi-select');
+	}
 
-    /**
-     * @inheritDoc IFieldType::getInputHtml()
-     * @param string $name
-     * @param mixed  $values
-     * @return string
-     */
-    public function getInputHtml($name, $values)
-    {
-        $options = $this->getTranslatedOptions();
+	/**
+	 * @inheritDoc IFieldType::getInputHtml()
+	 *
+	 * @param string $name
+	 * @param mixed  $values
+	 *
+	 * @return string
+	 */
+	public function getInputHtml($name, $values)
+	{
+		$options = $this->getTranslatedOptions();
 
-        // If this is a new entry, look for any default options
-        if ($this->isFresh())
-        {
-            $values = $this->getDefaultValue();
-        }
+		// If this is a new entry, look for any default options
+		if ($this->isFresh())
+		{
+			$values = $this->getDefaultValue();
+		}
 
-        return craft()->templates->render('_includes/forms/multiselect', array(
-            'name'    => $name,
-            'values'  => $values,
-            'options' => $options,
-        ));
-    }
+		return craft()->templates->render('_includes/forms/multiselect', array(
+			'name'    => $name,
+			'values'  => $values,
+			'options' => $options
+		));
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseOptionsFieldType::getOptionsSettingsLabel()
-     * @return string
-     */
-    protected function getOptionsSettingsLabel()
-    {
-        return Craft::t('Multi-select Options');
-    }
+	/**
+	 * @inheritDoc BaseOptionsFieldType::getOptionsSettingsLabel()
+	 *
+	 * @return string
+	 */
+	protected function getOptionsSettingsLabel()
+	{
+		return Craft::t('Multi-select Options');
+	}
 }

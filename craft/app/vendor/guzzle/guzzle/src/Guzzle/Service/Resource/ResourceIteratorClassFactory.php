@@ -25,14 +25,15 @@ class ResourceIteratorClassFactory extends AbstractResourceIteratorFactory
      */
     public function __construct($namespaces = array(), InflectorInterface $inflector = null)
     {
-        $this->namespaces = (array)$namespaces;
-        $this->inflector  = $inflector ?: Inflector::getDefault();
+        $this->namespaces = (array) $namespaces;
+        $this->inflector = $inflector ?: Inflector::getDefault();
     }
 
     /**
      * Registers a namespace to check for Iterators
      *
      * @param string $namespace Namespace which contains Iterator classes
+     *
      * @return self
      */
     public function registerNamespace($namespace)
@@ -47,11 +48,9 @@ class ResourceIteratorClassFactory extends AbstractResourceIteratorFactory
         $iteratorName = $this->inflector->camel($command->getName()) . 'Iterator';
 
         // Determine the name of the class to load
-        foreach ($this->namespaces as $namespace)
-        {
+        foreach ($this->namespaces as $namespace) {
             $potentialClassName = $namespace . '\\' . $iteratorName;
-            if (class_exists($potentialClassName))
-            {
+            if (class_exists($potentialClassName)) {
                 return $potentialClassName;
             }
         }

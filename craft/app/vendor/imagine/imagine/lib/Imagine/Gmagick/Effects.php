@@ -33,11 +33,9 @@ class Effects implements EffectsInterface
      */
     public function gamma($correction)
     {
-        try
-        {
+        try {
             $this->gmagick->gammaimage($correction);
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Failed to apply gamma correction to the image');
         }
 
@@ -49,16 +47,13 @@ class Effects implements EffectsInterface
      */
     public function negative()
     {
-        if (!method_exists($this->gmagick, 'negateimage'))
-        {
+        if (!method_exists($this->gmagick, 'negateimage')) {
             throw new NotSupportedException('Gmagick version 1.1.0 RC3 is required for negative effect');
         }
 
-        try
-        {
+        try {
             $this->gmagick->negateimage(false, \Gmagick::CHANNEL_ALL);
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Failed to negate the image');
         }
 
@@ -70,11 +65,9 @@ class Effects implements EffectsInterface
      */
     public function grayscale()
     {
-        try
-        {
+        try {
             $this->gmagick->setImageType(2);
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Failed to grayscale the image');
         }
 
@@ -102,11 +95,9 @@ class Effects implements EffectsInterface
      */
     public function blur($sigma = 1)
     {
-        try
-        {
+        try {
             $this->gmagick->blurImage(0, $sigma);
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Failed to blur the image', $e->getCode(), $e);
         }
 

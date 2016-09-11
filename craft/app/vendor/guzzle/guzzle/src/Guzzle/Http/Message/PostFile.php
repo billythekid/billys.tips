@@ -26,7 +26,7 @@ class PostFile implements PostFileInterface
     {
         $this->fieldName = $fieldName;
         $this->setFilename($filename);
-        $this->postname    = $postname ? $postname : basename($filename);
+        $this->postname = $postname ? $postname : basename($filename);
         $this->contentType = $contentType ?: $this->guessContentType();
     }
 
@@ -45,13 +45,11 @@ class PostFile implements PostFileInterface
     public function setFilename($filename)
     {
         // Remove leading @ symbol
-        if (strpos($filename, '@') === 0)
-        {
+        if (strpos($filename, '@') === 0) {
             $filename = substr($filename, 1);
         }
 
-        if (!is_readable($filename))
-        {
+        if (!is_readable($filename)) {
             throw new InvalidArgumentException("Unable to open {$filename} for reading");
         }
 
@@ -93,15 +91,13 @@ class PostFile implements PostFileInterface
     {
         // PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
         // See: https://wiki.php.net/rfc/curl-file-upload
-        if (function_exists('curl_file_create'))
-        {
+        if (function_exists('curl_file_create')) {
             return curl_file_create($this->filename, $this->contentType, $this->postname);
         }
 
         // Use the old style if using an older version of PHP
         $value = "@{$this->filename};filename=" . $this->postname;
-        if ($this->contentType)
-        {
+        if ($this->contentType) {
             $value .= ';type=' . $this->contentType;
         }
 
@@ -115,7 +111,6 @@ class PostFile implements PostFileInterface
     public function getCurlString()
     {
         Version::warn(__METHOD__ . ' is deprecated. Use getCurlValue()');
-
         return $this->getCurlValue();
     }
 

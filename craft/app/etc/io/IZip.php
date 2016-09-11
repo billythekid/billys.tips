@@ -13,25 +13,27 @@ namespace Craft;
  */
 interface IZip
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @param $sourceFolder
-     * @param $destZip
-     * @return mixed
-     */
-    public function zip($sourceFolder, $destZip);
+	/**
+	 * @param $sourceFolder
+	 * @param $destZip
+	 *
+	 * @return mixed
+	 */
+	public function zip($sourceFolder, $destZip);
 
-    /**
-     * @param $sourceZip
-     * @param $destFolder
-     * @return mixed
-     */
-    public function unzip($sourceZip, $destFolder);
+	/**
+	 * @param $sourceZip
+	 * @param $destFolder
+	 *
+	 * @return mixed
+	 */
+	public function unzip($sourceZip, $destFolder);
 
-    /**
-     * Will add either a file or a folder to an existing zip file.  If it is a folder, it will add the contents
+	/**
+	 * Will add either a file or a folder to an existing zip file.  If it is a folder, it will add the contents
      * recursively.
      *
      * @param string $sourceZip  The zip file to be added to.
@@ -39,7 +41,8 @@ interface IZip
      *                           the folder to the zip.
      * @param string $basePath   The root path of the file(s) to be added that will be removed before adding.
      * @param string $pathPrefix A path to be prepended to each file before it is added to the zip.
+     *
      * @return bool
-     */
-    public function add($sourceZip, $filePath, $basePath, $pathPrefix = null);
+	 */
+	public function add($sourceZip, $filePath, $basePath, $pathPrefix = null);
 }

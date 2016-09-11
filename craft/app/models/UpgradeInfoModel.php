@@ -13,20 +13,21 @@ namespace Craft;
  */
 class UpgradeInfoModel extends BaseModel
 {
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'editions'        => array(AttributeType::Mixed, 'required' => true),
-            'stripePublicKey' => array(AttributeType::String, 'required' => true),
-            'countries'       => AttributeType::Mixed,
-            'states'          => AttributeType::Mixed,
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'editions'        => array(AttributeType::Mixed, 'required' => true),
+			'stripePublicKey' => array(AttributeType::String, 'required' => true),
+			'countries'       => AttributeType::Mixed,
+			'states'          => AttributeType::Mixed,
+		);
+	}
 }

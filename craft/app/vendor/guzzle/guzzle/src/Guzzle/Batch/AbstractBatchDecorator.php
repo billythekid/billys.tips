@@ -11,7 +11,7 @@ abstract class AbstractBatchDecorator implements BatchInterface
     protected $decoratedBatch;
 
     /**
-     * @param BatchInterface $decoratedBatch BatchInterface that is being decorated
+     * @param BatchInterface $decoratedBatch  BatchInterface that is being decorated
      */
     public function __construct(BatchInterface $decoratedBatch)
     {
@@ -23,6 +23,7 @@ abstract class AbstractBatchDecorator implements BatchInterface
      *
      * @param string $method Missing method name
      * @param array  $args   Method arguments
+     *
      * @return mixed
      * @codeCoverageIgnore
      */
@@ -56,8 +57,7 @@ abstract class AbstractBatchDecorator implements BatchInterface
     public function getDecorators()
     {
         $found = array($this);
-        if (method_exists($this->decoratedBatch, 'getDecorators'))
-        {
+        if (method_exists($this->decoratedBatch, 'getDecorators')) {
             $found = array_merge($found, $this->decoratedBatch->getDecorators());
         }
 

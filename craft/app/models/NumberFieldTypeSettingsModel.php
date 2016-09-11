@@ -11,44 +11,46 @@ namespace Craft;
  */
 class NumberFieldTypeSettingsModel extends BaseModel
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::rules()
-     * @return array
-     */
-    public function rules()
-    {
-        $rules = parent::rules();
+	/**
+	 * @inheritDoc BaseModel::rules()
+	 *
+	 * @return array
+	 */
+	public function rules()
+	{
+		$rules = parent::rules();
 
-        if ($this->decimals && intval($this->decimals) && intval($this->decimals) > 0)
-        {
-            foreach ($rules as $key => &$rule)
-            {
-                if (isset($rule[0]) && isset($rule[1]) && ($rule[0] == 'min' || $rule[0] == 'max') && $rule[1] == 'numerical')
-                {
-                    $rule['integerOnly'] = false;
-                }
-            }
-        }
+		if ($this->decimals && intval($this->decimals) && intval($this->decimals) > 0)
+		{
+			foreach ($rules as $key => &$rule)
+			{
+				if (isset($rule[0]) && isset($rule[1]) && ($rule[0] == 'min' || $rule[0] == 'max') && $rule[1] == 'numerical')
+				{
+					$rule['integerOnly'] = false;
+				}
+			}
+		}
 
-        return $rules;
-    }
+		return $rules;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'min'      => array(AttributeType::Number, 'default' => 0),
-            'max'      => array(AttributeType::Number, 'compare' => '>= min'),
-            'decimals' => array(AttributeType::Number, 'default' => 0),
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'min'      => array(AttributeType::Number, 'default' => 0),
+			'max'      => array(AttributeType::Number, 'compare' => '>= min'),
+			'decimals' => array(AttributeType::Number, 'default' => 0),
+		);
+	}
 }

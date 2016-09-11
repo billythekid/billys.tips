@@ -13,25 +13,27 @@ namespace Craft;
  */
 class DownloadFileElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Download file');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Download file');
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $js = <<<EOT
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -54,9 +56,9 @@ class DownloadFileElementAction extends BaseElementAction
 })();
 EOT;
 
-        $js = str_replace("{csrfName}", craft()->config->get('csrfTokenName'), $js);
-        $js = str_replace("{csrfValue}", craft()->request->getCsrfToken(), $js);
+		$js = str_replace("{csrfName}", craft()->config->get('csrfTokenName'), $js);
+		$js = str_replace("{csrfValue}", craft()->request->getCsrfToken(), $js);
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 }

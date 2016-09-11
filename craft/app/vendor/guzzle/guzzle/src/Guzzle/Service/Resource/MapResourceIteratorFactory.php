@@ -22,11 +22,9 @@ class MapResourceIteratorFactory extends AbstractResourceIteratorFactory
     {
         $className = $command->getName();
 
-        if (isset($this->map[$className]))
-        {
+        if (isset($this->map[$className])) {
             return $this->map[$className];
-        } elseif (isset($this->map['*']))
-        {
+        } elseif (isset($this->map['*'])) {
             // If a wildcard was added, then always use that
             return $this->map['*'];
         }

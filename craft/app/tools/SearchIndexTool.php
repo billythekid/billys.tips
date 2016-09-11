@@ -13,116 +13,122 @@ namespace Craft;
  */
 class SearchIndexTool extends BaseTool
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Rebuild Search Indexes');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Rebuild Search Indexes');
+	}
 
-    /**
-     * @inheritDoc ITool::getIconValue()
-     * @return string
-     */
-    public function getIconValue()
-    {
-        return 'search';
-    }
+	/**
+	 * @inheritDoc ITool::getIconValue()
+	 *
+	 * @return string
+	 */
+	public function getIconValue()
+	{
+		return 'search';
+	}
 
-    /**
-     * @inheritDoc ITool::performAction()
-     * @param array $params
-     * @return array
-     */
-    public function performAction($params = array())
-    {
-        if (!empty($params['start']))
-        {
-            // Truncate the searchindex table
-            craft()->db->createCommand()->truncateTable('searchindex');
+	/**
+	 * @inheritDoc ITool::performAction()
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 */
+	public function performAction($params = array())
+	{
+		if (!empty($params['start']))
+		{
+			// Truncate the searchindex table
+			craft()->db->createCommand()->truncateTable('searchindex');
 
-            // Get all the element IDs ever
-            $elements = craft()->db->createCommand()
-                ->select('id, type')
-                ->from('elements')
-                ->queryAll();
+			// Get all the element IDs ever
+			$elements = craft()->db->createCommand()
+				->select('id, type')
+				->from('elements')
+				->queryAll();
 
-            $batch = array();
+			$batch = array();
 
-            foreach ($elements as $element)
-            {
-                $batch[] = array('params' => $element);
-            }
+			foreach ($elements as $element)
+			{
+				$batch[] = array('params' => $element);
+			}
 
-            return array(
-                'batches' => array($batch),
-            );
-        } else
-        {
-            // Get the element type
-            $elementType = craft()->elements->getElementType($params['type']);
+			return array(
+				'batches' => array($batch)
+			);
+		}
+		else
+		{
+			// Get the element type
+			$elementType = craft()->elements->getElementType($params['type']);
 
-            if ($elementType)
-            {
-                if ($elementType->isLocalized())
-                {
-                    $localeIds = craft()->i18n->getSiteLocaleIds();
-                } else
-                {
-                    $localeIds = array(craft()->i18n->getPrimarySiteLocaleId());
-                }
+			if ($elementType)
+			{
+				if ($elementType->isLocalized())
+				{
+					$localeIds = craft()->i18n->getSiteLocaleIds();
+				}
+				else
+				{
+					$localeIds = array(craft()->i18n->getPrimarySiteLocaleId());
+				}
 
-                $criteria = craft()->elements->getCriteria($params['type'], array(
-                    'id'            => $params['id'],
-                    'status'        => null,
-                    'localeEnabled' => null,
-                ));
+				$criteria = craft()->elements->getCriteria($params['type'], array(
+					'id'            => $params['id'],
+					'status'        => null,
+					'localeEnabled' => null,
+				));
 
-                foreach ($localeIds as $localeId)
-                {
-                    $criteria->locale = $localeId;
-                    $element          = $criteria->first();
+				foreach ($localeIds as $localeId)
+				{
+					$criteria->locale = $localeId;
+					$element = $criteria->first();
 
-                    if ($element)
-                    {
-                        craft()->search->indexElementAttributes($element);
+					if ($element)
+					{
+						craft()->search->indexElementAttributes($element);
 
-                        if ($elementType->hasContent())
-                        {
-                            $fieldLayout = $element->getFieldLayout();
-                            $keywords    = array();
+						if ($elementType->hasContent())
+						{
+							$fieldLayout = $element->getFieldLayout();
+							$keywords = array();
 
-                            foreach ($fieldLayout->getFields() as $fieldLayoutField)
-                            {
-                                $field = $fieldLayoutField->getField();
+							foreach ($fieldLayout->getFields() as $fieldLayoutField)
+							{
+								$field = $fieldLayoutField->getField();
 
-                                if ($field)
-                                {
-                                    $fieldType = $field->getFieldType();
+								if ($field)
+								{
+									$fieldType = $field->getFieldType();
 
-                                    if ($fieldType)
-                                    {
-                                        $fieldType->element = $element;
+									if ($fieldType)
+									{
+										$fieldType->element = $element;
 
-                                        $handle = $field->handle;
+										$handle = $field->handle;
 
-                                        // Set the keywords for the content's locale
-                                        $fieldSearchKeywords  = $fieldType->getSearchKeywords($element->getFieldValue($handle));
-                                        $keywords[$field->id] = $fieldSearchKeywords;
-                                    }
-                                }
-                            }
+										// Set the keywords for the content's locale
+										$fieldSearchKeywords = $fieldType->getSearchKeywords($element->getFieldValue($handle));
+										$keywords[$field->id] = $fieldSearchKeywords;
+									}
+								}
+							}
 
-                            craft()->search->indexElementFields($element->id, $localeId, $keywords);
-                        }
-                    }
-                }
-            }
-        }
-    }
+							craft()->search->indexElementFields($element->id, $localeId, $keywords);
+						}
+					}
+				}
+			}
+		}
+	}
 }

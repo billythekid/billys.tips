@@ -29,6 +29,7 @@ interface ManipulatorInterface
      * Copies current source image into a new ImageInterface instance
      *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function copy();
@@ -39,8 +40,10 @@ interface ManipulatorInterface
      *
      * @param PointInterface $start
      * @param BoxInterface   $size
+     *
      * @throws OutOfBoundsException
      * @throws RuntimeException
+     *
      * @return static
      */
     public function crop(PointInterface $start, BoxInterface $size);
@@ -50,7 +53,9 @@ interface ManipulatorInterface
      *
      * @param BoxInterface $size
      * @param string       $filter
+     *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function resize(BoxInterface $size, $filter = ImageInterface::FILTER_UNDEFINED);
@@ -62,7 +67,9 @@ interface ManipulatorInterface
      *
      * @param integer        $angle
      * @param ColorInterface $background
+     *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function rotate($angle, ColorInterface $background = null);
@@ -71,13 +78,16 @@ interface ManipulatorInterface
      * Pastes an image into a parent image
      * Throws exceptions if image exceeds parent image borders or if paste
      * operation fails
+     *
      * Returns source image
      *
      * @param ImageInterface $image
      * @param PointInterface $start
+     *
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
      * @throws RuntimeException
+     *
      * @return static
      */
     public function paste(ImageInterface $image, PointInterface $start);
@@ -89,7 +99,9 @@ interface ManipulatorInterface
      *
      * @param string $path
      * @param array  $options
+     *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function save($path = null, array $options = array());
@@ -99,7 +111,9 @@ interface ManipulatorInterface
      *
      * @param string $format
      * @param array  $options
+     *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function show($format, array $options = array());
@@ -108,6 +122,7 @@ interface ManipulatorInterface
      * Flips current image using horizontal axis
      *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function flipHorizontally();
@@ -116,6 +131,7 @@ interface ManipulatorInterface
      * Flips current image using vertical axis
      *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function flipVertically();
@@ -124,6 +140,7 @@ interface ManipulatorInterface
      * Remove all profiles and comments
      *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function strip();
@@ -135,7 +152,9 @@ interface ManipulatorInterface
      * @param BoxInterface $size
      * @param string       $mode
      * @param string       $filter The filter to use for resizing, one of ImageInterface::FILTER_*
+     *
      * @throws RuntimeException
+     *
      * @return static
      */
     public function thumbnail(BoxInterface $size, $mode = self::THUMBNAIL_INSET, $filter = ImageInterface::FILTER_UNDEFINED);
@@ -144,6 +163,7 @@ interface ManipulatorInterface
      * Applies a given mask to current image's alpha channel
      *
      * @param ImageInterface $mask
+     *
      * @return static
      */
     public function applyMask(ImageInterface $mask);
@@ -154,6 +174,7 @@ interface ManipulatorInterface
      * returns modified image
      *
      * @param FillInterface $fill
+     *
      * @return static
      */
     public function fill(FillInterface $fill);

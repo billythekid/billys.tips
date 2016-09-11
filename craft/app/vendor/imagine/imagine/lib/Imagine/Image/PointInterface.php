@@ -34,6 +34,7 @@ interface PointInterface
      * Checks if current coordinate is inside a given bo
      *
      * @param BoxInterface $box
+     *
      * @return Boolean
      */
     public function in(BoxInterface $box);
@@ -41,7 +42,7 @@ interface PointInterface
     /**
      * Returns another point, moved by a given amount from current coordinates
      *
-     * @param  integer $amount
+     * @param  integer        $amount
      * @return ImageInterface
      */
     public function move($amount);

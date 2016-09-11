@@ -10,7 +10,7 @@ class MemoizingInflector implements InflectorInterface
     /** @var array Array of cached inflections */
     protected $cache = array(
         'snake' => array(),
-        'camel' => array(),
+        'camel' => array()
     );
 
     /** @var int Max entries per cache */
@@ -26,13 +26,12 @@ class MemoizingInflector implements InflectorInterface
     public function __construct(InflectorInterface $inflector, $maxCacheSize = 500)
     {
         $this->decoratedInflector = $inflector;
-        $this->maxCacheSize       = $maxCacheSize;
+        $this->maxCacheSize = $maxCacheSize;
     }
 
     public function snake($word)
     {
-        if (!isset($this->cache['snake'][$word]))
-        {
+        if (!isset($this->cache['snake'][$word])) {
             $this->pruneCache('snake');
             $this->cache['snake'][$word] = $this->decoratedInflector->snake($word);
         }
@@ -44,12 +43,12 @@ class MemoizingInflector implements InflectorInterface
      * Converts strings from snake_case to upper CamelCase
      *
      * @param string $word Value to convert into upper CamelCase
+     *
      * @return string
      */
     public function camel($word)
     {
-        if (!isset($this->cache['camel'][$word]))
-        {
+        if (!isset($this->cache['camel'][$word])) {
             $this->pruneCache('camel');
             $this->cache['camel'][$word] = $this->decoratedInflector->camel($word);
         }
@@ -64,8 +63,7 @@ class MemoizingInflector implements InflectorInterface
      */
     protected function pruneCache($cache)
     {
-        if (count($this->cache[$cache]) == $this->maxCacheSize)
-        {
+        if (count($this->cache[$cache]) == $this->maxCacheSize) {
             $this->cache[$cache] = array_slice($this->cache[$cache], $this->maxCacheSize * 0.2);
         }
     }

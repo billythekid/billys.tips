@@ -13,9 +13,11 @@
 
 /**
  * Represents a template filter.
+ *
  * Use Twig_SimpleFilter instead.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @deprecated since 1.12 (to be removed in 2.0)
  */
 abstract class Twig_Filter implements Twig_FilterInterface, Twig_FilterCallableInterface
@@ -27,10 +29,10 @@ abstract class Twig_Filter implements Twig_FilterInterface, Twig_FilterCallableI
     {
         $this->options = array_merge(array(
             'needs_environment' => false,
-            'needs_context'     => false,
-            'pre_escape'        => null,
-            'preserves_safety'  => null,
-            'callable'          => null,
+            'needs_context' => false,
+            'pre_escape' => null,
+            'preserves_safety' => null,
+            'callable' => null,
         ), $options);
     }
 
@@ -56,13 +58,11 @@ abstract class Twig_Filter implements Twig_FilterInterface, Twig_FilterCallableI
 
     public function getSafe(Twig_Node $filterArgs)
     {
-        if (isset($this->options['is_safe']))
-        {
+        if (isset($this->options['is_safe'])) {
             return $this->options['is_safe'];
         }
 
-        if (isset($this->options['is_safe_callback']))
-        {
+        if (isset($this->options['is_safe_callback'])) {
             return call_user_func($this->options['is_safe_callback'], $filterArgs);
         }
     }

@@ -23,17 +23,17 @@ class Twig_SimpleFunction
 
     public function __construct($name, $callable, array $options = array())
     {
-        $this->name     = $name;
+        $this->name = $name;
         $this->callable = $callable;
-        $this->options  = array_merge(array(
+        $this->options = array_merge(array(
             'needs_environment' => false,
-            'needs_context'     => false,
-            'is_variadic'       => false,
-            'is_safe'           => null,
-            'is_safe_callback'  => null,
-            'node_class'        => 'Twig_Node_Expression_Function',
-            'deprecated'        => false,
-            'alternative'       => null,
+            'needs_context' => false,
+            'is_variadic' => false,
+            'is_safe' => null,
+            'is_safe_callback' => null,
+            'node_class' => 'Twig_Node_Expression_Function',
+            'deprecated' => false,
+            'alternative' => null,
         ), $options);
     }
 
@@ -74,13 +74,11 @@ class Twig_SimpleFunction
 
     public function getSafe(Twig_Node $functionArgs)
     {
-        if (null !== $this->options['is_safe'])
-        {
+        if (null !== $this->options['is_safe']) {
             return $this->options['is_safe'];
         }
 
-        if (null !== $this->options['is_safe_callback'])
-        {
+        if (null !== $this->options['is_safe_callback']) {
             return call_user_func($this->options['is_safe_callback'], $functionArgs);
         }
 
@@ -94,7 +92,7 @@ class Twig_SimpleFunction
 
     public function isDeprecated()
     {
-        return (bool)$this->options['deprecated'];
+        return (bool) $this->options['deprecated'];
     }
 
     public function getDeprecatedVersion()

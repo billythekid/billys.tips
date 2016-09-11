@@ -15,12 +15,12 @@ class NotifyingBatch extends AbstractBatchDecorator
     /**
      * @param BatchInterface $decoratedBatch Batch object to decorate
      * @param mixed          $callable       Callable to call
+     *
      * @throws InvalidArgumentException
      */
     public function __construct(BatchInterface $decoratedBatch, $callable)
     {
-        if (!is_callable($callable))
-        {
+        if (!is_callable($callable)) {
             throw new InvalidArgumentException('The passed argument is not callable');
         }
 

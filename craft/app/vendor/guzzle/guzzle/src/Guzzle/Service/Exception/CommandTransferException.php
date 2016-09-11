@@ -17,6 +17,7 @@ class CommandTransferException extends MultiTransferException
      * Creates a new CommandTransferException from a MultiTransferException
      *
      * @param MultiTransferException $e Exception to base a new exception on
+     *
      * @return self
      */
     public static function fromMultiTransferException(MultiTransferException $e)
@@ -25,25 +26,19 @@ class CommandTransferException extends MultiTransferException
         $ce->setSuccessfulRequests($e->getSuccessfulRequests());
 
         $alreadyAddedExceptions = array();
-        foreach ($e->getFailedRequests() as $request)
-        {
-            if ($re = $e->getExceptionForFailedRequest($request))
-            {
+        foreach ($e->getFailedRequests() as $request) {
+            if ($re = $e->getExceptionForFailedRequest($request)) {
                 $alreadyAddedExceptions[] = $re;
                 $ce->addFailedRequestWithException($request, $re);
-            } else
-            {
+            } else {
                 $ce->addFailedRequest($request);
             }
         }
 
         // Add any exceptions that did not map to a request
-        if (count($alreadyAddedExceptions) < count($e))
-        {
-            foreach ($e as $ex)
-            {
-                if (!in_array($ex, $alreadyAddedExceptions))
-                {
+        if (count($alreadyAddedExceptions) < count($e)) {
+            foreach ($e as $ex) {
+                if (!in_array($ex, $alreadyAddedExceptions)) {
                     $ce->add($ex);
                 }
             }
@@ -66,6 +61,7 @@ class CommandTransferException extends MultiTransferException
      * Add to the array of successful commands
      *
      * @param CommandInterface $command Successful command
+     *
      * @return self
      */
     public function addSuccessfulCommand(CommandInterface $command)
@@ -79,6 +75,7 @@ class CommandTransferException extends MultiTransferException
      * Add to the array of failed commands
      *
      * @param CommandInterface $command Failed command
+     *
      * @return self
      */
     public function addFailedCommand(CommandInterface $command)
@@ -112,6 +109,7 @@ class CommandTransferException extends MultiTransferException
      * Get the Exception that caused the given $command to fail
      *
      * @param CommandInterface $command Failed command
+     *
      * @return \Exception|null
      */
     public function getExceptionForFailedCommand(CommandInterface $command)

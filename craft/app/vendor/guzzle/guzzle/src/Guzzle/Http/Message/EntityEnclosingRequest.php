@@ -37,9 +37,8 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
     public function __toString()
     {
         // Only attempt to include the POST data if it's only fields
-        if (count($this->postFields) && empty($this->postFiles))
-        {
-            return parent::__toString() . (string)$this->postFields;
+        if (count($this->postFields) && empty($this->postFiles)) {
+            return parent::__toString() . (string) $this->postFields;
         }
 
         return parent::__toString() . $this->body;
@@ -48,8 +47,7 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
     public function setState($state, array $context = array())
     {
         parent::setState($state, $context);
-        if ($state == self::STATE_TRANSFER && !$this->body && !count($this->postFields) && !count($this->postFiles))
-        {
+        if ($state == self::STATE_TRANSFER && !$this->body && !count($this->postFields) && !count($this->postFiles)) {
             $this->setHeader('Content-Length', 0)->removeHeader('Transfer-Encoding');
         }
 
@@ -61,38 +59,30 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
         $this->body = EntityBody::factory($body);
 
         // Auto detect the Content-Type from the path of the request if possible
-        if ($contentType === null && !$this->hasHeader('Content-Type'))
-        {
+        if ($contentType === null && !$this->hasHeader('Content-Type')) {
             $contentType = $this->body->getContentType();
         }
 
-        if ($contentType)
-        {
+        if ($contentType) {
             $this->setHeader('Content-Type', $contentType);
         }
 
         // Always add the Expect 100-Continue header if the body cannot be rewound. This helps with redirects.
-        if (!$this->body->isSeekable() && $this->expectCutoff !== false)
-        {
+        if (!$this->body->isSeekable() && $this->expectCutoff !== false) {
             $this->setHeader('Expect', '100-Continue');
         }
 
         // Set the Content-Length header if it can be determined
         $size = $this->body->getContentLength();
-        if ($size !== null && $size !== false)
-        {
+        if ($size !== null && $size !== false) {
             $this->setHeader('Content-Length', $size);
-            if ($size > $this->expectCutoff)
-            {
+            if ($size > $this->expectCutoff) {
                 $this->setHeader('Expect', '100-Continue');
             }
-        } elseif (!$this->hasHeader('Content-Length'))
-        {
-            if ('1.1' == $this->protocolVersion)
-            {
+        } elseif (!$this->hasHeader('Content-Length')) {
+            if ('1.1' == $this->protocolVersion) {
                 $this->setHeader('Transfer-Encoding', 'chunked');
-            } else
-            {
+            } else {
                 throw new RequestException(
                     'Cannot determine Content-Length and cannot use chunked Transfer-Encoding when using HTTP/1.0'
                 );
@@ -111,16 +101,15 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
      * Set the size that the entity body of the request must exceed before adding the Expect: 100-Continue header.
      *
      * @param int|bool $size Cutoff in bytes. Set to false to never send the expect header (even with non-seekable data)
+     *
      * @return self
      */
     public function setExpectHeaderCutoff($size)
     {
         $this->expectCutoff = $size;
-        if ($size === false || !$this->body)
-        {
+        if ($size === false || !$this->body) {
             $this->removeHeader('Expect');
-        } elseif ($this->body && $this->body->getSize() && $this->body->getSize() > $size)
-        {
+        } elseif ($this->body && $this->body->getSize() && $this->body->getSize() > $size) {
             $this->setHeader('Expect', '100-Continue');
         }
 
@@ -130,11 +119,9 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
     public function configureRedirects($strict = false, $maxRedirects = 5)
     {
         $this->getParams()->set(RedirectPlugin::STRICT_REDIRECTS, $strict);
-        if ($maxRedirects == 0)
-        {
+        if ($maxRedirects == 0) {
             $this->getParams()->set(RedirectPlugin::DISABLE, true);
-        } else
-        {
+        } else {
             $this->getParams()->set(RedirectPlugin::MAX_REDIRECTS, $maxRedirects);
         }
 
@@ -197,34 +184,25 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
     {
         $data = null;
 
-        if ($field instanceof PostFileInterface)
-        {
+        if ($field instanceof PostFileInterface) {
             $data = $field;
-        } elseif (is_array($filename))
-        {
+        } elseif (is_array($filename)) {
             // Allow multiple values to be set in a single key
-            foreach ($filename as $file)
-            {
+            foreach ($filename as $file) {
                 $this->addPostFile($field, $file, $contentType);
             }
-
             return $this;
-        } elseif (!is_string($filename))
-        {
+        } elseif (!is_string($filename)) {
             throw new RequestException('The path to a file must be a string');
-        } elseif (!empty($filename))
-        {
+        } elseif (!empty($filename)) {
             // Adding an empty file will cause cURL to error out
             $data = new PostFile($field, $filename, $contentType, $postname);
         }
 
-        if ($data)
-        {
-            if (!isset($this->postFiles[$data->getFieldName()]))
-            {
+        if ($data) {
+            if (!isset($this->postFiles[$data->getFieldName()])) {
                 $this->postFiles[$data->getFieldName()] = array($data);
-            } else
-            {
+            } else {
                 $this->postFiles[$data->getFieldName()][] = $data;
             }
             $this->processPostFields();
@@ -235,21 +213,16 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
 
     public function addPostFiles(array $files)
     {
-        foreach ($files as $key => $file)
-        {
-            if ($file instanceof PostFileInterface)
-            {
+        foreach ($files as $key => $file) {
+            if ($file instanceof PostFileInterface) {
                 $this->addPostFile($file, null, null, false);
-            } elseif (is_string($file))
-            {
+            } elseif (is_string($file)) {
                 // Convert non-associative array keys into 'file'
-                if (is_numeric($key))
-                {
+                if (is_numeric($key)) {
                     $key = 'file';
                 }
                 $this->addPostFile($key, $file, null, false);
-            } else
-            {
+            } else {
                 throw new RequestException('File must be a string or instance of PostFileInterface');
             }
         }
@@ -262,14 +235,11 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
      */
     protected function processPostFields()
     {
-        if (!$this->postFiles)
-        {
+        if (!$this->postFiles) {
             $this->removeHeader('Expect')->setHeader('Content-Type', self::URL_ENCODED);
-        } else
-        {
+        } else {
             $this->setHeader('Content-Type', self::MULTIPART);
-            if ($this->expectCutoff !== false)
-            {
+            if ($this->expectCutoff !== false) {
                 $this->setHeader('Expect', '100-Continue');
             }
         }

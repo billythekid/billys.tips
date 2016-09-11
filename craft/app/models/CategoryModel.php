@@ -13,113 +13,119 @@ namespace Craft;
  */
 class CategoryModel extends BaseElementModel
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var string
-     */
-    protected $elementType = ElementType::Category;
+	/**
+	 * @var string
+	 */
+	protected $elementType = ElementType::Category;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseElementModel::getFieldLayout()
-     * @return FieldLayoutModel|null
-     */
-    public function getFieldLayout()
-    {
-        $group = $this->getGroup();
+	/**
+	 * @inheritDoc BaseElementModel::getFieldLayout()
+	 *
+	 * @return FieldLayoutModel|null
+	 */
+	public function getFieldLayout()
+	{
+		$group = $this->getGroup();
 
-        if ($group)
-        {
-            return $group->getFieldLayout();
-        }
-    }
+		if ($group)
+		{
+			return $group->getFieldLayout();
+		}
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getUrlFormat()
-     * @return string|null
-     */
-    public function getUrlFormat()
-    {
-        $group = $this->getGroup();
+	/**
+	 * @inheritDoc BaseElementModel::getUrlFormat()
+	 *
+	 * @return string|null
+	 */
+	public function getUrlFormat()
+	{
+		$group = $this->getGroup();
 
-        if ($group && $group->hasUrls)
-        {
-            $groupLocales = $group->getLocales();
+		if ($group && $group->hasUrls)
+		{
+			$groupLocales = $group->getLocales();
 
-            if (isset($groupLocales[$this->locale]))
-            {
-                if ($this->level > 1)
-                {
-                    return $groupLocales[$this->locale]->nestedUrlFormat;
-                } else
-                {
-                    return $groupLocales[$this->locale]->urlFormat;
-                }
-            }
-        }
-    }
+			if (isset($groupLocales[$this->locale]))
+			{
+				if ($this->level > 1)
+				{
+					return $groupLocales[$this->locale]->nestedUrlFormat;
+				}
+				else
+				{
+					return $groupLocales[$this->locale]->urlFormat;
+				}
+			}
+		}
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::isEditable()
-     * @return bool
-     */
-    public function isEditable()
-    {
-        return craft()->userSession->checkPermission('editCategories:' . $this->groupId);
-    }
+	/**
+	 * @inheritDoc BaseElementModel::isEditable()
+	 *
+	 * @return bool
+	 */
+	public function isEditable()
+	{
+		return craft()->userSession->checkPermission('editCategories:'.$this->groupId);
+	}
 
-    /**
-     * @inheritDoc BaseElementModel::getCpEditUrl()
-     * @return string|false
-     */
-    public function getCpEditUrl()
-    {
-        $group = $this->getGroup();
+	/**
+	 * @inheritDoc BaseElementModel::getCpEditUrl()
+	 *
+	 * @return string|false
+	 */
+	public function getCpEditUrl()
+	{
+		$group = $this->getGroup();
 
-        if ($group)
-        {
-            $url = UrlHelper::getCpUrl('categories/' . $group->handle . '/' . $this->id . ($this->slug ? '-' . $this->slug : ''));
+		if ($group)
+		{
+			$url = UrlHelper::getCpUrl('categories/'.$group->handle.'/'.$this->id.($this->slug ? '-'.$this->slug : ''));
 
-            if (craft()->isLocalized() && $this->locale != craft()->language)
-            {
-                $url .= '/' . $this->locale;
-            }
+			if (craft()->isLocalized() && $this->locale != craft()->language)
+			{
+				$url .= '/'.$this->locale;
+			}
 
-            return $url;
-        }
-    }
+			return $url;
+		}
+	}
 
-    /**
-     * Returns the category's group.
-     *
-     * @return CategoryGroupModel|null
-     */
-    public function getGroup()
-    {
-        if ($this->groupId)
-        {
-            return craft()->categories->getGroupById($this->groupId);
-        }
-    }
+	/**
+	 * Returns the category's group.
+	 *
+	 * @return CategoryGroupModel|null
+	 */
+	public function getGroup()
+	{
+		if ($this->groupId)
+		{
+			return craft()->categories->getGroupById($this->groupId);
+		}
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array_merge(parent::defineAttributes(), array(
-            'groupId'     => AttributeType::Number,
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array_merge(parent::defineAttributes(), array(
+			'groupId' => AttributeType::Number,
 
-            // Just used for saving categories
-            'newParentId' => AttributeType::Number,
-        ));
-    }
+			// Just used for saving categories
+			'newParentId'      => AttributeType::Number,
+		));
+	}
 }

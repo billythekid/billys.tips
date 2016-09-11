@@ -13,25 +13,27 @@ namespace Craft;
  */
 class EditElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getParams()->label;
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->getParams()->label;
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $js = <<<EOT
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -64,20 +66,21 @@ class EditElementAction extends BaseElementAction
 })();
 EOT;
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseElementAction::defineParams()
-     * @return array
-     */
-    protected function defineParams()
-    {
-        return array(
-            'label' => array(AttributeType::String, 'default' => Craft::t('Edit')),
-        );
-    }
+	/**
+	 * @inheritDoc BaseElementAction::defineParams()
+	 *
+	 * @return array
+	 */
+	protected function defineParams()
+	{
+		return array(
+			'label' => array(AttributeType::String, 'default' => Craft::t('Edit')),
+		);
+	}
 }

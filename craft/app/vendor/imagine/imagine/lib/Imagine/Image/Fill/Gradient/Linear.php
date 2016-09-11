@@ -57,13 +57,11 @@ abstract class Linear implements FillInterface
     {
         $l = $this->getDistance($position);
 
-        if ($l >= $this->length)
-        {
+        if ($l >= $this->length) {
             return $this->end;
         }
 
-        if ($l < 0)
-        {
+        if ($l < 0) {
             return $this->start;
         }
 
@@ -90,6 +88,7 @@ abstract class Linear implements FillInterface
      * Get the distance of the position relative to the beginning of the gradient
      *
      * @param PointInterface $position
+     *
      * @return integer
      */
     abstract protected function getDistance(PointInterface $position);

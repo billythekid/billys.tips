@@ -12,6 +12,7 @@
 
 /**
  * Includes a template.
+ *
  * <pre>
  *   {% include 'header.html' %}
  *     Body
@@ -34,22 +35,19 @@ class Twig_TokenParser_Include extends Twig_TokenParser
         $stream = $this->parser->getStream();
 
         $ignoreMissing = false;
-        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'ignore'))
-        {
+        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'ignore')) {
             $stream->expect(Twig_Token::NAME_TYPE, 'missing');
 
             $ignoreMissing = true;
         }
 
         $variables = null;
-        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'with'))
-        {
+        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'with')) {
             $variables = $this->parser->getExpressionParser()->parseExpression();
         }
 
         $only = false;
-        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'only'))
-        {
+        if ($stream->nextIf(Twig_Token::NAME_TYPE, 'only')) {
             $only = true;
         }
 

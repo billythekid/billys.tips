@@ -15,14 +15,14 @@ class Link extends Header
      * @param string $url    Link URL
      * @param string $rel    Link rel
      * @param array  $params Other link parameters
+     *
      * @return self
      */
     public function addLink($url, $rel, array $params = array())
     {
         $values = array("<{$url}>", "rel=\"{$rel}\"");
 
-        foreach ($params as $k => $v)
-        {
+        foreach ($params as $k => $v) {
             $values[] = "{$k}=\"{$v}\"";
         }
 
@@ -33,6 +33,7 @@ class Link extends Header
      * Check if a specific link exists for a given rel attribute
      *
      * @param string $rel rel value
+     *
      * @return bool
      */
     public function hasLink($rel)
@@ -44,14 +45,13 @@ class Link extends Header
      * Get a specific link for a given rel attribute
      *
      * @param string $rel Rel value
+     *
      * @return array|null
      */
     public function getLink($rel)
     {
-        foreach ($this->getLinks() as $link)
-        {
-            if (isset($link['rel']) && $link['rel'] == $rel)
-            {
+        foreach ($this->getLinks() as $link) {
+            if (isset($link['rel']) && $link['rel'] == $rel) {
                 return $link;
             }
         }
@@ -61,8 +61,10 @@ class Link extends Header
 
     /**
      * Get an associative array of links
+     *
      * For example:
      * Link: <http:/.../front.jpeg>; rel=front; type="image/jpeg", <http://.../back.jpeg>; rel=back; type="image/jpeg"
+     *
      * <code>
      * var_export($response->getLinks());
      * array(
@@ -80,8 +82,7 @@ class Link extends Header
     {
         $links = $this->parseParams();
 
-        foreach ($links as &$link)
-        {
+        foreach ($links as &$link) {
             $key = key($link);
             unset($link[$key]);
             $link['url'] = trim($key, '<> ');

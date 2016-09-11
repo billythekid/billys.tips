@@ -13,14 +13,11 @@ class PhpAggregator implements QueryAggregatorInterface
     {
         $ret = array();
 
-        foreach ($value as $k => $v)
-        {
+        foreach ($value as $k => $v) {
             $k = "{$key}[{$k}]";
-            if (is_array($v))
-            {
+            if (is_array($v)) {
                 $ret = array_merge($ret, self::aggregate($k, $v, $query));
-            } else
-            {
+            } else {
                 $ret[$query->encodeValue($k)] = $query->encodeValue($v);
             }
         }

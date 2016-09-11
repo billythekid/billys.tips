@@ -13,38 +13,40 @@ namespace Craft;
  */
 class Model extends BaseModel
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var array
-     */
-    private $_attributeDefs;
+	/**
+	 * @var array
+	 */
+	private $_attributeDefs;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Constructor
-     *
-     * @param array $attributeDefs
-     * @return Model
-     */
-    public function __construct($attributeDefs)
-    {
-        $this->_attributeDefs = $attributeDefs;
-        parent::__construct();
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param array $attributeDefs
+	 *
+	 * @return Model
+	 */
+	public function __construct($attributeDefs)
+	{
+		$this->_attributeDefs = $attributeDefs;
+		parent::__construct();
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return $this->_attributeDefs;
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return $this->_attributeDefs;
+	}
 }

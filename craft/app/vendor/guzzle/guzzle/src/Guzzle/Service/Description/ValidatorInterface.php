@@ -14,6 +14,7 @@ interface ValidatorInterface
      *
      * @param Parameter $param Schema that is being validated against the value
      * @param mixed     $value Value to validate and process. The value may change during this process.
+     *
      * @return bool  Returns true if the input data is valid for the schema
      */
     public function validate(Parameter $param, &$value);

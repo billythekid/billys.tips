@@ -13,31 +13,32 @@ namespace Craft;
  */
 class StructureModel extends BaseModel
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns whether elements in this structure can be sorted by the current user.
-     *
-     * @return bool
-     */
-    public function isSortable()
-    {
-        return craft()->userSession->checkAuthorization('editStructure:' . $this->id);
-    }
+	/**
+	 * Returns whether elements in this structure can be sorted by the current user.
+	 *
+	 * @return bool
+	 */
+	public function isSortable()
+	{
+		return craft()->userSession->checkAuthorization('editStructure:'.$this->id);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'id'        => AttributeType::Number,
-            'maxLevels' => AttributeType::Number,
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'id'        => AttributeType::Number,
+			'maxLevels' => AttributeType::Number,
+		);
+	}
 }

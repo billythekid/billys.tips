@@ -13,56 +13,59 @@ namespace Craft;
  */
 class EntryVersionModel extends BaseEntryRevisionModel
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::populateModel()
-     * @param mixed $attributes
-     * @return EntryVersionModel
-     */
-    public static function populateModel($attributes)
-    {
-        if ($attributes instanceof \CModel)
-        {
-            $attributes = $attributes->getAttributes();
-        }
+	/**
+	 * @inheritDoc BaseModel::populateModel()
+	 *
+	 * @param mixed $attributes
+	 *
+	 * @return EntryVersionModel
+	 */
+	public static function populateModel($attributes)
+	{
+		if ($attributes instanceof \CModel)
+		{
+			$attributes = $attributes->getAttributes();
+		}
 
-        // Merge the version and entry data
-        $entryData                   = $attributes['data'];
-        $fieldContent                = isset($entryData['fields']) ? $entryData['fields'] : null;
-        $attributes['versionId']     = $attributes['id'];
-        $attributes['id']            = $attributes['entryId'];
-        $attributes['revisionNotes'] = $attributes['notes'];
-        $title                       = $entryData['title'];
-        unset($attributes['data'], $entryData['fields'], $attributes['entryId'], $attributes['notes'], $entryData['title']);
+		// Merge the version and entry data
+		$entryData = $attributes['data'];
+		$fieldContent = isset($entryData['fields']) ? $entryData['fields'] : null;
+		$attributes['versionId'] = $attributes['id'];
+		$attributes['id'] = $attributes['entryId'];
+		$attributes['revisionNotes'] = $attributes['notes'];
+		$title = $entryData['title'];
+		unset($attributes['data'], $entryData['fields'], $attributes['entryId'], $attributes['notes'], $entryData['title']);
 
-        $attributes = array_merge($attributes, $entryData);
+		$attributes = array_merge($attributes, $entryData);
 
-        // Initialize the version
-        $version                      = parent::populateModel($attributes);
-        $version->getContent()->title = $title;
+		// Initialize the version
+		$version = parent::populateModel($attributes);
+		$version->getContent()->title = $title;
 
-        if ($fieldContent)
-        {
-            $version->setContentFromRevision($fieldContent);
-        }
+		if ($fieldContent)
+		{
+			$version->setContentFromRevision($fieldContent);
+		}
 
-        return $version;
-    }
+		return $version;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array_merge(parent::defineAttributes(), array(
-            'versionId' => AttributeType::Number,
-            'num'       => AttributeType::Number,
-        ));
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array_merge(parent::defineAttributes(), array(
+			'versionId'   => AttributeType::Number,
+			'num'         => AttributeType::Number,
+		));
+	}
 }

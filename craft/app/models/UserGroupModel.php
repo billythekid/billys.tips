@@ -15,49 +15,52 @@ craft()->requireEdition(Craft::Pro);
  */
 class UserGroupModel extends BaseModel
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Use the translated group name as the string representation.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return Craft::t($this->name);
-    }
+	/**
+	 * Use the translated group name as the string representation.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return Craft::t($this->name);
+	}
 
-    /**
-     * Returns whether the group has permission to perform a given action.
-     *
-     * @param string $permission
-     * @return bool
-     */
-    public function can($permission)
-    {
-        if ($this->id)
-        {
-            return craft()->userPermissions->doesGroupHavePermission($this->id, $permission);
-        } else
-        {
-            return false;
-        }
-    }
+	/**
+	 * Returns whether the group has permission to perform a given action.
+	 *
+	 * @param string $permission
+	 *
+	 * @return bool
+	 */
+	public function can($permission)
+	{
+		if ($this->id)
+		{
+			return craft()->userPermissions->doesGroupHavePermission($this->id, $permission);
+		}
+		else
+		{
+			return false;
+		}
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        $attributes['id']     = AttributeType::Number;
-        $attributes['name']   = AttributeType::String;
-        $attributes['handle'] = AttributeType::String;
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		$attributes['id'] = AttributeType::Number;
+		$attributes['name'] = AttributeType::String;
+		$attributes['handle'] = AttributeType::String;
 
-        return $attributes;
-    }
+		return $attributes;
+	}
 }

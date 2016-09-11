@@ -13,28 +13,30 @@ namespace Craft;
  */
 class Exit_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles a Exit_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $compiler->addDebugInfo($this);
+	/**
+	 * Compiles a Exit_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler->addDebugInfo($this);
 
-        if ($status = $this->getNode('status'))
-        {
-            $compiler
-                ->write('throw new \Craft\HttpException(')
-                ->subcompile($status)
-                ->raw(");\n");
-        } else
-        {
-            $compiler->write("\Craft\craft()->end();\n");
-        }
-    }
+		if ($status = $this->getNode('status'))
+		{
+			$compiler
+				->write('throw new \Craft\HttpException(')
+				->subcompile($status)
+				->raw(");\n");
+		}
+		else
+		{
+			$compiler->write("\Craft\craft()->end();\n");
+		}
+	}
 }

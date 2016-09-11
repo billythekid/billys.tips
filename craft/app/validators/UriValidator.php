@@ -13,30 +13,31 @@ namespace Craft;
  */
 class UriValidator extends \CValidator
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var string
-     */
-    public $pattern = '/^[^\s]+$/u';
+	/**
+	 * @var string
+	 */
+	public $pattern = '/^[^\s]+$/u';
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @param $object
-     * @param $attribute
-     * @return null
-     */
-    protected function validateAttribute($object, $attribute)
-    {
-        $uri = $object->$attribute;
+	/**
+	 * @param $object
+	 * @param $attribute
+	 *
+	 * @return null
+	 */
+	protected function validateAttribute($object, $attribute)
+	{
+		$uri = $object->$attribute;
 
-        if ($uri && !preg_match($this->pattern, $uri))
-        {
-            $message = Craft::t('{attribute} is not a valid URI');
-            $this->addError($object, $attribute, $message);
-        }
-    }
+		if ($uri && !preg_match($this->pattern, $uri))
+		{
+			$message = Craft::t('{attribute} is not a valid URI');
+			$this->addError($object, $attribute, $message);
+		}
+	}
 }

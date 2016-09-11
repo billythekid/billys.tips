@@ -33,11 +33,9 @@ class RequestFactory implements RequestFactoryInterface
     public static function getInstance()
     {
         // @codeCoverageIgnoreStart
-        if (!static::$instance)
-        {
+        if (!static::$instance) {
             static::$instance = new static();
         }
-
         // @codeCoverageIgnoreEnd
 
         return static::$instance;
@@ -52,8 +50,7 @@ class RequestFactory implements RequestFactoryInterface
     {
         $parsed = ParserRegistry::getInstance()->getParser('message')->parseRequest($message);
 
-        if (!$parsed)
-        {
+        if (!$parsed) {
             return false;
         }
 
@@ -64,8 +61,7 @@ class RequestFactory implements RequestFactoryInterface
         // EntityEnclosingRequest adds an "Expect: 100-Continue" header when using a raw request body for PUT or POST
         // requests. This factory method should accurately reflect the message, so here we are removing the Expect
         // header if one was not supplied in the message.
-        if (!isset($parsed['headers']['Expect']) && !isset($parsed['headers']['expect']))
-        {
+        if (!isset($parsed['headers']['Expect']) && !isset($parsed['headers']['expect'])) {
             $request->removeHeader('Expect');
         }
 
@@ -79,63 +75,51 @@ class RequestFactory implements RequestFactoryInterface
         $body = null,
         $protocol = 'HTTP',
         $protocolVersion = '1.1'
-    )
-    {
+    ) {
         return $this->create($method, Url::buildUrl($urlParts), $headers, $body)
-            ->setProtocolVersion($protocolVersion);
+                    ->setProtocolVersion($protocolVersion);
     }
 
     public function create($method, $url, $headers = null, $body = null, array $options = array())
     {
         $method = strtoupper($method);
 
-        if ($method == 'GET' || $method == 'HEAD' || $method == 'TRACE')
-        {
+        if ($method == 'GET' || $method == 'HEAD' || $method == 'TRACE') {
             // Handle non-entity-enclosing request methods
             $request = new $this->requestClass($method, $url, $headers);
-            if ($body)
-            {
+            if ($body) {
                 // The body is where the response body will be stored
                 $type = gettype($body);
-                if ($type == 'string' || $type == 'resource' || $type == 'object')
-                {
+                if ($type == 'string' || $type == 'resource' || $type == 'object') {
                     $request->setResponseBody($body);
                 }
             }
-        } else
-        {
+        } else {
             // Create an entity enclosing request by default
             $request = new $this->entityEnclosingRequestClass($method, $url, $headers);
-            if ($body || $body === '0')
-            {
+            if ($body || $body === '0') {
                 // Add POST fields and files to an entity enclosing request if an array is used
-                if (is_array($body) || $body instanceof Collection)
-                {
+                if (is_array($body) || $body instanceof Collection) {
                     // Normalize PHP style cURL uploads with a leading '@' symbol
-                    foreach ($body as $key => $value)
-                    {
-                        if (is_string($value) && substr($value, 0, 1) == '@')
-                        {
+                    foreach ($body as $key => $value) {
+                        if (is_string($value) && substr($value, 0, 1) == '@') {
                             $request->addPostFile($key, $value);
                             unset($body[$key]);
                         }
                     }
                     // Add the fields if they are still present and not all files
                     $request->addPostFields($body);
-                } else
-                {
+                } else {
                     // Add a raw entity body body to the request
-                    $request->setBody($body, (string)$request->getHeader('Content-Type'));
-                    if ((string)$request->getHeader('Transfer-Encoding') == 'chunked')
-                    {
+                    $request->setBody($body, (string) $request->getHeader('Content-Type'));
+                    if ((string) $request->getHeader('Transfer-Encoding') == 'chunked') {
                         $request->removeHeader('Content-Length');
                     }
                 }
             }
         }
 
-        if ($options)
-        {
+        if ($options) {
             $this->applyOptions($request, $options);
         }
 
@@ -148,27 +132,24 @@ class RequestFactory implements RequestFactoryInterface
      *
      * @param RequestInterface $request Request to clone
      * @param string           $method  Method to set
+     *
      * @return RequestInterface
      */
     public function cloneRequestWithMethod(RequestInterface $request, $method)
     {
         // Create the request with the same client if possible
-        if ($request->getClient())
-        {
+        if ($request->getClient()) {
             $cloned = $request->getClient()->createRequest($method, $request->getUrl(), $request->getHeaders());
-        } else
-        {
+        } else {
             $cloned = $this->create($method, $request->getUrl(), $request->getHeaders());
         }
 
         $cloned->getCurlOptions()->replace($request->getCurlOptions()->toArray());
         $cloned->setEventDispatcher(clone $request->getEventDispatcher());
         // Ensure that that the Content-Length header is not copied if changing to GET or HEAD
-        if (!($cloned instanceof EntityEnclosingRequestInterface))
-        {
+        if (!($cloned instanceof EntityEnclosingRequestInterface)) {
             $cloned->removeHeader('Content-Length');
-        } elseif ($request instanceof EntityEnclosingRequestInterface)
-        {
+        } elseif ($request instanceof EntityEnclosingRequestInterface) {
             $cloned->setBody($request->getBody());
         }
         $cloned->getParams()->replace($request->getParams()->toArray());
@@ -180,11 +161,9 @@ class RequestFactory implements RequestFactoryInterface
     public function applyOptions(RequestInterface $request, array $options = array(), $flags = self::OPTIONS_NONE)
     {
         // Iterate over each key value pair and attempt to apply a config using function visitors
-        foreach ($options as $key => $value)
-        {
+        foreach ($options as $key => $value) {
             $method = "visit_{$key}";
-            if (isset($this->methods[$method]))
-            {
+            if (isset($this->methods[$method])) {
                 $this->{$method}($request, $value, $flags);
             }
         }
@@ -192,50 +171,41 @@ class RequestFactory implements RequestFactoryInterface
 
     protected function visit_headers(RequestInterface $request, $value, $flags)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('headers value must be an array');
         }
 
-        if ($flags & self::OPTIONS_AS_DEFAULTS)
-        {
+        if ($flags & self::OPTIONS_AS_DEFAULTS) {
             // Merge headers in but do not overwrite existing values
-            foreach ($value as $key => $header)
-            {
-                if (!$request->hasHeader($key))
-                {
+            foreach ($value as $key => $header) {
+                if (!$request->hasHeader($key)) {
                     $request->setHeader($key, $header);
                 }
             }
-        } else
-        {
+        } else {
             $request->addHeaders($value);
         }
     }
 
     protected function visit_body(RequestInterface $request, $value, $flags)
     {
-        if ($request instanceof EntityEnclosingRequestInterface)
-        {
+        if ($request instanceof EntityEnclosingRequestInterface) {
             $request->setBody($value);
-        } else
-        {
+        } else {
             throw new InvalidArgumentException('Attempting to set a body on a non-entity-enclosing request');
         }
     }
 
     protected function visit_allow_redirects(RequestInterface $request, $value, $flags)
     {
-        if ($value === false)
-        {
+        if ($value === false) {
             $request->getParams()->set(RedirectPlugin::DISABLE, true);
         }
     }
 
     protected function visit_auth(RequestInterface $request, $value, $flags)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('auth value must be an array');
         }
 
@@ -244,49 +214,40 @@ class RequestFactory implements RequestFactoryInterface
 
     protected function visit_query(RequestInterface $request, $value, $flags)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('query value must be an array');
         }
 
-        if ($flags & self::OPTIONS_AS_DEFAULTS)
-        {
+        if ($flags & self::OPTIONS_AS_DEFAULTS) {
             // Merge query string values in but do not overwrite existing values
             $query = $request->getQuery();
             $query->overwriteWith(array_diff_key($value, $query->toArray()));
-        } else
-        {
+        } else {
             $request->getQuery()->overwriteWith($value);
         }
     }
 
     protected function visit_cookies(RequestInterface $request, $value, $flags)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('cookies value must be an array');
         }
 
-        foreach ($value as $name => $v)
-        {
+        foreach ($value as $name => $v) {
             $request->addCookie($name, $v);
         }
     }
 
     protected function visit_events(RequestInterface $request, $value, $flags)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('events value must be an array');
         }
 
-        foreach ($value as $name => $method)
-        {
-            if (is_array($method))
-            {
+        foreach ($value as $name => $method) {
+            if (is_array($method)) {
                 $request->getEventDispatcher()->addListener($name, $method[0], $method[1]);
-            } else
-            {
+            } else {
                 $request->getEventDispatcher()->addListener($name, $method);
             }
         }
@@ -294,26 +255,21 @@ class RequestFactory implements RequestFactoryInterface
 
     protected function visit_plugins(RequestInterface $request, $value, $flags)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('plugins value must be an array');
         }
 
-        foreach ($value as $plugin)
-        {
+        foreach ($value as $plugin) {
             $request->addSubscriber($plugin);
         }
     }
 
     protected function visit_exceptions(RequestInterface $request, $value, $flags)
     {
-        if ($value === false || $value === 0)
-        {
+        if ($value === false || $value === 0) {
             $dispatcher = $request->getEventDispatcher();
-            foreach ($dispatcher->getListeners('request.error') as $listener)
-            {
-                if (is_array($listener) && $listener[0] == 'Guzzle\Http\Message\Request' && $listener[1] = 'onRequestError')
-                {
+            foreach ($dispatcher->getListeners('request.error') as $listener) {
+                if (is_array($listener) && $listener[0] == 'Guzzle\Http\Message\Request' && $listener[1] = 'onRequestError') {
                     $dispatcher->removeListener('request.error', $listener);
                     break;
                 }
@@ -328,8 +284,7 @@ class RequestFactory implements RequestFactoryInterface
 
     protected function visit_params(RequestInterface $request, $value, $flags)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('params value must be an array');
         }
 
@@ -338,30 +293,25 @@ class RequestFactory implements RequestFactoryInterface
 
     protected function visit_timeout(RequestInterface $request, $value, $flags)
     {
-        if (defined('CURLOPT_TIMEOUT_MS'))
-        {
+        if (defined('CURLOPT_TIMEOUT_MS')) {
             $request->getCurlOptions()->set(CURLOPT_TIMEOUT_MS, $value * 1000);
-        } else
-        {
+        } else {
             $request->getCurlOptions()->set(CURLOPT_TIMEOUT, $value);
         }
     }
 
     protected function visit_connect_timeout(RequestInterface $request, $value, $flags)
     {
-        if (defined('CURLOPT_CONNECTTIMEOUT_MS'))
-        {
+        if (defined('CURLOPT_CONNECTTIMEOUT_MS')) {
             $request->getCurlOptions()->set(CURLOPT_CONNECTTIMEOUT_MS, $value * 1000);
-        } else
-        {
+        } else {
             $request->getCurlOptions()->set(CURLOPT_CONNECTTIMEOUT, $value);
         }
     }
 
     protected function visit_debug(RequestInterface $request, $value, $flags)
     {
-        if ($value)
-        {
+        if ($value) {
             $request->getCurlOptions()->set(CURLOPT_VERBOSE, true);
         }
     }
@@ -369,16 +319,13 @@ class RequestFactory implements RequestFactoryInterface
     protected function visit_verify(RequestInterface $request, $value, $flags)
     {
         $curl = $request->getCurlOptions();
-        if ($value === true || is_string($value))
-        {
+        if ($value === true || is_string($value)) {
             $curl[CURLOPT_SSL_VERIFYHOST] = 2;
             $curl[CURLOPT_SSL_VERIFYPEER] = true;
-            if ($value !== true)
-            {
+            if ($value !== true) {
                 $curl[CURLOPT_CAINFO] = $value;
             }
-        } elseif ($value === false)
-        {
+        } elseif ($value === false) {
             unset($curl[CURLOPT_CAINFO]);
             $curl[CURLOPT_SSL_VERIFYHOST] = 0;
             $curl[CURLOPT_SSL_VERIFYPEER] = false;
@@ -392,24 +339,20 @@ class RequestFactory implements RequestFactoryInterface
 
     protected function visit_cert(RequestInterface $request, $value, $flags)
     {
-        if (is_array($value))
-        {
+        if (is_array($value)) {
             $request->getCurlOptions()->set(CURLOPT_SSLCERT, $value[0]);
             $request->getCurlOptions()->set(CURLOPT_SSLCERTPASSWD, $value[1]);
-        } else
-        {
+        } else {
             $request->getCurlOptions()->set(CURLOPT_SSLCERT, $value);
         }
     }
 
     protected function visit_ssl_key(RequestInterface $request, $value, $flags)
     {
-        if (is_array($value))
-        {
+        if (is_array($value)) {
             $request->getCurlOptions()->set(CURLOPT_SSLKEY, $value[0]);
             $request->getCurlOptions()->set(CURLOPT_SSLKEYPASSWD, $value[1]);
-        } else
-        {
+        } else {
             $request->getCurlOptions()->set(CURLOPT_SSLKEY, $value);
         }
     }

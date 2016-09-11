@@ -29,7 +29,7 @@ class Twig_TokenStream
      */
     public function __construct(array $tokens, $filename = null)
     {
-        $this->tokens   = $tokens;
+        $this->tokens = $tokens;
         $this->filename = $filename;
     }
 
@@ -55,8 +55,7 @@ class Twig_TokenStream
      */
     public function next()
     {
-        if (!isset($this->tokens[++$this->current]))
-        {
+        if (!isset($this->tokens[++$this->current])) {
             throw new Twig_Error_Syntax('Unexpected end of template.', $this->tokens[$this->current - 1]->getLine(), $this->filename);
         }
 
@@ -70,8 +69,7 @@ class Twig_TokenStream
      */
     public function nextIf($primary, $secondary = null)
     {
-        if ($this->tokens[$this->current]->test($primary, $secondary))
-        {
+        if ($this->tokens[$this->current]->test($primary, $secondary)) {
             return $this->next();
         }
     }
@@ -84,11 +82,10 @@ class Twig_TokenStream
     public function expect($type, $value = null, $message = null)
     {
         $token = $this->tokens[$this->current];
-        if (!$token->test($type, $value))
-        {
+        if (!$token->test($type, $value)) {
             $line = $token->getLine();
             throw new Twig_Error_Syntax(sprintf('%sUnexpected token "%s" of value "%s" ("%s" expected%s).',
-                $message ? $message . '. ' : '',
+                $message ? $message.'. ' : '',
                 Twig_Token::typeToEnglish($token->getType()), $token->getValue(),
                 Twig_Token::typeToEnglish($type), $value ? sprintf(' with value "%s"', $value) : ''),
                 $line,
@@ -104,12 +101,12 @@ class Twig_TokenStream
      * Looks at the next token.
      *
      * @param int $number
+     *
      * @return Twig_Token
      */
     public function look($number = 1)
     {
-        if (!isset($this->tokens[$this->current + $number]))
-        {
+        if (!isset($this->tokens[$this->current + $number])) {
             throw new Twig_Error_Syntax('Unexpected end of template.', $this->tokens[$this->current + $number - 1]->getLine(), $this->filename);
         }
 

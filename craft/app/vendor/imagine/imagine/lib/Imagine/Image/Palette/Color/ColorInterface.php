@@ -15,13 +15,13 @@ use Imagine\Image\Palette\PaletteInterface;
 
 interface ColorInterface
 {
-    const COLOR_RED   = 'red';
+    const COLOR_RED = 'red';
     const COLOR_GREEN = 'green';
-    const COLOR_BLUE  = 'blue';
+    const COLOR_BLUE = 'blue';
 
-    const COLOR_CYAN    = 'cyan';
+    const COLOR_CYAN = 'cyan';
     const COLOR_MAGENTA = 'magenta';
-    const COLOR_YELLOW  = 'yellow';
+    const COLOR_YELLOW = 'yellow';
     const COLOR_KEYLINE = 'keyline';
 
     const COLOR_GRAY = 'gray';
@@ -30,6 +30,7 @@ interface ColorInterface
      * Return the value of one of the component.
      *
      * @param string $component One of the ColorInterface::COLOR_* component
+     *
      * @return Integer
      */
     public function getValue($component);
@@ -53,6 +54,7 @@ interface ColorInterface
      * given amount
      *
      * @param integer $alpha
+     *
      * @return ColorInterface
      */
     public function dissolve($alpha);
@@ -62,6 +64,7 @@ interface ColorInterface
      * of shades
      *
      * @param integer $shade
+     *
      * @return ColorInterface
      */
     public function lighten($shade);
@@ -71,6 +74,7 @@ interface ColorInterface
      * shades
      *
      * @param integer $shade
+     *
      * @return ColorInterface
      */
     public function darken($shade);

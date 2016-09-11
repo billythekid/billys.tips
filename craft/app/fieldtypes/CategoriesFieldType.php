@@ -13,98 +13,102 @@ namespace Craft;
  */
 class CategoriesFieldType extends BaseElementFieldType
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * The element type this field deals with.
-     *
-     * @var string $elementType
-     */
-    protected $elementType = 'Category';
+	/**
+	 * The element type this field deals with.
+	 *
+	 * @var string $elementType
+	 */
+	protected $elementType = 'Category';
 
-    /**
-     * Whether to allow multiple source selection in the settings.
-     *
-     * @var bool $allowMultipleSources
-     */
-    protected $allowMultipleSources = false;
+	/**
+	 * Whether to allow multiple source selection in the settings.
+	 *
+	 * @var bool $allowMultipleSources
+	 */
+	protected $allowMultipleSources = false;
 
-    /**
-     * Template to use for field rendering
-     *
-     * @var string
-     */
-    protected $inputTemplate = '_components/fieldtypes/Categories/input';
+	/**
+	 * Template to use for field rendering
+	 *
+	 * @var string
+	 */
+	protected $inputTemplate = '_components/fieldtypes/Categories/input';
 
-    /**
-     * The JS class that should be initialized for the input.
-     *
-     * @var string|null $inputJsClass
-     */
-    protected $inputJsClass = 'Craft.CategorySelectInput';
+	/**
+	 * The JS class that should be initialized for the input.
+	 *
+	 * @var string|null $inputJsClass
+	 */
+	protected $inputJsClass = 'Craft.CategorySelectInput';
 
-    /**
-     * Whether the elements have a custom sort order.
-     *
-     * @var bool $sortable
-     */
-    protected $sortable = false;
+	/**
+	 * Whether the elements have a custom sort order.
+	 *
+	 * @var bool $sortable
+	 */
+	protected $sortable = false;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IFieldType::getInputHtml()
-     * @param string $name
-     * @param mixed  $criteria
-     * @return string
-     */
-    public function getInputHtml($name, $criteria)
-    {
-        // Make sure the field is set to a valid category group
-        $sourceKey = $this->getSettings()->source;
+	/**
+	 * @inheritDoc IFieldType::getInputHtml()
+	 *
+	 * @param string $name
+	 * @param mixed  $criteria
+	 *
+	 * @return string
+	 */
+	public function getInputHtml($name, $criteria)
+	{
+		// Make sure the field is set to a valid category group
+		$sourceKey = $this->getSettings()->source;
 
-        if ($sourceKey)
-        {
-            $source = $this->getElementType()->getSource($sourceKey, 'field');
-        }
+		if ($sourceKey)
+		{
+			$source = $this->getElementType()->getSource($sourceKey, 'field');
+		}
 
-        if (empty($source))
-        {
-            return '<p class="error">' . Craft::t('This field is not set to a valid category group.') . '</p>';
-        }
+		if (empty($source))
+		{
+			return '<p class="error">'.Craft::t('This field is not set to a valid category group.').'</p>';
+		}
 
-        return parent::getInputHtml($name, $criteria);
-    }
+		return parent::getInputHtml($name, $criteria);
+	}
 
-    /**
-     * @inheritDoc IFieldType::onAfterElementSave()
-     * @return null
-     */
-    public function onAfterElementSave()
-    {
-        $categoryIds = $this->element->getContent()->getAttribute($this->model->handle);
+	/**
+	 * @inheritDoc IFieldType::onAfterElementSave()
+	 *
+	 * @return null
+	 */
+	public function onAfterElementSave()
+	{
+		$categoryIds = $this->element->getContent()->getAttribute($this->model->handle);
 
-        // Make sure something was actually posted
-        if ($categoryIds !== null)
-        {
-            // Fill in any gaps
-            $categoryIds = craft()->categories->fillGapsInCategoryIds($categoryIds);
+		// Make sure something was actually posted
+		if ($categoryIds !== null)
+		{
+			// Fill in any gaps
+			$categoryIds = craft()->categories->fillGapsInCategoryIds($categoryIds);
 
-            craft()->relations->saveRelations($this->model, $this->element, $categoryIds);
-        }
-    }
+			craft()->relations->saveRelations($this->model, $this->element, $categoryIds);
+		}
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseElementFieldType::getAddButtonLabel()
-     * @return string
-     */
-    protected function getAddButtonLabel()
-    {
-        return Craft::t('Add a category');
-    }
+	/**
+	 * @inheritDoc BaseElementFieldType::getAddButtonLabel()
+	 *
+	 * @return string
+	 */
+	protected function getAddButtonLabel()
+	{
+		return Craft::t('Add a category');
+	}
 }

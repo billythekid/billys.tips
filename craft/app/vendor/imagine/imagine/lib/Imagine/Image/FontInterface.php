@@ -44,6 +44,7 @@ interface FontInterface
      *
      * @param string  $string
      * @param integer $angle
+     *
      * @return BoxInterface
      */
     public function box($string, $angle = 0);

@@ -48,9 +48,9 @@ class Layers extends AbstractLayers
 
     public function __construct(Image $image, PaletteInterface $palette, \Gmagick $resource)
     {
-        $this->image    = $image;
+        $this->image = $image;
         $this->resource = $resource;
-        $this->palette  = $palette;
+        $this->palette = $palette;
     }
 
     /**
@@ -58,14 +58,11 @@ class Layers extends AbstractLayers
      */
     public function merge()
     {
-        foreach ($this->layers as $offset => $image)
-        {
-            try
-            {
+        foreach ($this->layers as $offset => $image) {
+            try {
                 $this->resource->setimageindex($offset);
                 $this->resource->setimage($image->getGmagick());
-            } catch (\GmagickException $e)
-            {
+            } catch (\GmagickException $e) {
                 throw new RuntimeException('Failed to substitute layer', $e->getCode(), $e);
             }
         }
@@ -84,37 +81,30 @@ class Layers extends AbstractLayers
      */
     public function animate($format, $delay, $loops)
     {
-        if ('gif' !== strtolower($format))
-        {
+        if ('gif' !== strtolower($format)) {
             throw new NotSupportedException('Animated picture is currently only supported on gif');
         }
 
-        if (!is_int($loops) || $loops < 0)
-        {
+        if (!is_int($loops) || $loops < 0) {
             throw new InvalidArgumentException('Loops must be a positive integer.');
         }
 
-        if (null !== $delay && (!is_int($delay) || $delay < 0))
-        {
+        if (null !== $delay && (!is_int($delay) || $delay < 0)) {
             throw new InvalidArgumentException('Delay must be either null or a positive integer.');
         }
 
-        try
-        {
-            foreach ($this as $offset => $layer)
-            {
+        try {
+            foreach ($this as $offset => $layer) {
                 $this->resource->setimageindex($offset);
                 $this->resource->setimageformat($format);
 
-                if (null !== $delay)
-                {
+                if (null !== $delay) {
                     $this->resource->setimagedelay($delay / 10);
                 }
 
                 $this->resource->setimageiterations($loops);
             }
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Failed to animate layers', $e->getCode(), $e);
         }
 
@@ -132,20 +122,17 @@ class Layers extends AbstractLayers
     /**
      * Tries to extract layer at given offset
      *
-     * @param  integer $offset
+     * @param  integer          $offset
      * @return Image
      * @throws RuntimeException
      */
     private function extractAt($offset)
     {
-        if (!isset($this->layers[$offset]))
-        {
-            try
-            {
+        if (!isset($this->layers[$offset])) {
+            try {
                 $this->resource->setimageindex($offset);
                 $this->layers[$offset] = new Image($this->resource->getimage(), $this->palette, new MetadataBag());
-            } catch (\GmagickException $e)
-            {
+            } catch (\GmagickException $e) {
                 throw new RuntimeException(sprintf('Failed to extract layer %d', $offset), $e->getCode(), $e);
             }
         }
@@ -190,11 +177,9 @@ class Layers extends AbstractLayers
      */
     public function count()
     {
-        try
-        {
+        try {
             return $this->resource->getnumberimages();
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Failed to count the number of layers', $e->getCode(), $e);
         }
     }
@@ -220,28 +205,22 @@ class Layers extends AbstractLayers
      */
     public function offsetSet($offset, $image)
     {
-        if (!$image instanceof Image)
-        {
+        if (!$image instanceof Image) {
             throw new InvalidArgumentException('Only a Gmagick Image can be used as layer');
         }
 
-        if (null === $offset)
-        {
+        if (null === $offset) {
             $offset = count($this) - 1;
-        } else
-        {
-            if (!is_int($offset))
-            {
+        } else {
+            if (!is_int($offset)) {
                 throw new InvalidArgumentException('Invalid offset for layer, it must be an integer');
             }
 
-            if (count($this) < $offset || 0 > $offset)
-            {
+            if (count($this) < $offset || 0 > $offset) {
                 throw new OutOfBoundsException(sprintf('Invalid offset for layer, it must be a value between 0 and %d, %d given', count($this), $offset));
             }
 
-            if (isset($this[$offset]))
-            {
+            if (isset($this[$offset])) {
                 unset($this[$offset]);
                 $offset = $offset - 1;
             }
@@ -249,10 +228,8 @@ class Layers extends AbstractLayers
 
         $frame = $image->getGmagick();
 
-        try
-        {
-            if (count($this) > 0)
-            {
+        try {
+            if (count($this) > 0) {
                 $this->resource->setimageindex($offset);
                 $this->resource->nextimage();
             }
@@ -261,15 +238,13 @@ class Layers extends AbstractLayers
             /**
              * ugly hack to bypass issue https://bugs.php.net/bug.php?id=64623
              */
-            if (count($this) == 2)
-            {
-                $this->resource->setimageindex($offset + 1);
+            if (count($this) == 2) {
+                $this->resource->setimageindex($offset+1);
                 $this->resource->nextimage();
                 $this->resource->addimage($frame);
                 unset($this[0]);
             }
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Unable to set the layer', $e->getCode(), $e);
         }
 
@@ -281,20 +256,16 @@ class Layers extends AbstractLayers
      */
     public function offsetUnset($offset)
     {
-        try
-        {
+        try {
             $this->extractAt($offset);
-        } catch (RuntimeException $e)
-        {
+        } catch (RuntimeException $e) {
             return;
         }
 
-        try
-        {
+        try {
             $this->resource->setimageindex($offset);
             $this->resource->removeimage();
-        } catch (\GmagickException $e)
-        {
+        } catch (\GmagickException $e) {
             throw new RuntimeException('Unable to remove layer', $e->getCode(), $e);
         }
     }

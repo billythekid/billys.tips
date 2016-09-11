@@ -10,7 +10,7 @@ class PreComputedInflector implements InflectorInterface
     /** @var array Array of pre-computed inflections */
     protected $mapping = array(
         'snake' => array(),
-        'camel' => array(),
+        'camel' => array()
     );
 
     /** @var InflectorInterface Decorated inflector */
@@ -24,16 +24,15 @@ class PreComputedInflector implements InflectorInterface
      */
     public function __construct(InflectorInterface $inflector, array $snake = array(), array $camel = array(), $mirror = false)
     {
-        if ($mirror)
-        {
+        if ($mirror) {
             $camel = array_merge(array_flip($snake), $camel);
             $snake = array_merge(array_flip($camel), $snake);
         }
 
         $this->decoratedInflector = $inflector;
-        $this->mapping            = array(
+        $this->mapping = array(
             'snake' => $snake,
-            'camel' => $camel,
+            'camel' => $camel
         );
     }
 
@@ -48,6 +47,7 @@ class PreComputedInflector implements InflectorInterface
      * Converts strings from snake_case to upper CamelCase
      *
      * @param string $word Value to convert into upper CamelCase
+     *
      * @return string
      */
     public function camel($word)

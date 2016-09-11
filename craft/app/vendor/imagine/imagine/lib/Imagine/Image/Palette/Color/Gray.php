@@ -27,6 +27,7 @@ final class Gray implements ColorInterface
     private $alpha;
 
     /**
+     *
      * @var Grayscale
      */
     private $palette;
@@ -43,8 +44,7 @@ final class Gray implements ColorInterface
      */
     public function getValue($component)
     {
-        switch ($component)
-        {
+        switch ($component) {
             case ColorInterface::COLOR_GRAY:
                 return $this->getGray();
             default:
@@ -134,12 +134,12 @@ final class Gray implements ColorInterface
      * Performs checks for validity of given alpha value and sets it
      *
      * @param integer $alpha
+     *
      * @throws InvalidArgumentException
      */
     private function setAlpha($alpha)
     {
-        if (!is_int($alpha) || $alpha < 0 || $alpha > 100)
-        {
+        if (!is_int($alpha) || $alpha < 0 || $alpha > 100) {
             throw new InvalidArgumentException(sprintf('Alpha must be an integer between 0 and 100, %s given', $alpha));
         }
 
@@ -150,12 +150,12 @@ final class Gray implements ColorInterface
      * Performs checks for color validity (array of array(gray))
      *
      * @param array $color
+     *
      * @throws InvalidArgumentException
      */
     private function setColor(array $color)
     {
-        if (count($color) !== 1)
-        {
+        if (count($color) !== 1) {
             throw new InvalidArgumentException('Color argument must look like array(gray), where gray is the integer value between 0 and 255 for the grayscale');
         }
 

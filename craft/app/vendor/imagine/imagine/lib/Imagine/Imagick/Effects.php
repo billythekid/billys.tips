@@ -32,11 +32,9 @@ class Effects implements EffectsInterface
      */
     public function gamma($correction)
     {
-        try
-        {
+        try {
             $this->imagick->gammaImage($correction, Imagick::CHANNEL_ALL);
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to apply gamma correction to the image');
         }
 
@@ -48,11 +46,9 @@ class Effects implements EffectsInterface
      */
     public function negative()
     {
-        try
-        {
+        try {
             $this->imagick->negateImage(false, Imagick::CHANNEL_ALL);
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to negate the image');
         }
 
@@ -64,11 +60,9 @@ class Effects implements EffectsInterface
      */
     public function grayscale()
     {
-        try
-        {
+        try {
             $this->imagick->setImageType(Imagick::IMGTYPE_GRAYSCALE);
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to grayscale the image');
         }
 
@@ -80,11 +74,9 @@ class Effects implements EffectsInterface
      */
     public function colorize(ColorInterface $color)
     {
-        try
-        {
-            $this->imagick->colorizeImage((string)$color, 1);
-        } catch (\ImagickException $e)
-        {
+        try {
+            $this->imagick->colorizeImage((string) $color, 1);
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to colorize the image');
         }
 
@@ -96,11 +88,9 @@ class Effects implements EffectsInterface
      */
     public function sharpen()
     {
-        try
-        {
+        try {
             $this->imagick->sharpenImage(2, 1);
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to sharpen the image');
         }
 
@@ -112,11 +102,9 @@ class Effects implements EffectsInterface
      */
     public function blur($sigma = 1)
     {
-        try
-        {
+        try {
             $this->imagick->gaussianBlurImage(0, $sigma);
-        } catch (\ImagickException $e)
-        {
+        } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to blur the image', $e->getCode(), $e);
         }
 

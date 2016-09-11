@@ -9,7 +9,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 class Twig_Node_Expression_GetAttr extends Twig_Node_Expression
 {
     public function __construct(Twig_Node_Expression $node, Twig_Node_Expression $attribute, Twig_Node_Expression $arguments = null, $type, $lineno)
@@ -19,16 +18,13 @@ class Twig_Node_Expression_GetAttr extends Twig_Node_Expression
 
     public function compile(Twig_Compiler $compiler)
     {
-        if (function_exists('twig_template_get_attributes') && !$this->getAttribute('disable_c_ext'))
-        {
+        if (function_exists('twig_template_get_attributes') && !$this->getAttribute('disable_c_ext')) {
             $compiler->raw('twig_template_get_attributes($this, ');
-        } else
-        {
+        } else {
             $compiler->raw('$this->getAttribute(');
         }
 
-        if ($this->getAttribute('ignore_strict_check'))
-        {
+        if ($this->getAttribute('ignore_strict_check')) {
             $this->getNode('node')->setAttribute('ignore_strict_check', true);
         }
 
@@ -38,33 +34,27 @@ class Twig_Node_Expression_GetAttr extends Twig_Node_Expression
 
         // only generate optional arguments when needed (to make generated code more readable)
         $needFourth = $this->getAttribute('ignore_strict_check');
-        $needThird  = $needFourth || $this->getAttribute('is_defined_test');
+        $needThird = $needFourth || $this->getAttribute('is_defined_test');
         $needSecond = $needThird || Twig_Template::ANY_CALL !== $this->getAttribute('type');
-        $needFirst  = $needSecond || null !== $this->getNode('arguments');
+        $needFirst = $needSecond || null !== $this->getNode('arguments');
 
-        if ($needFirst)
-        {
-            if (null !== $this->getNode('arguments'))
-            {
+        if ($needFirst) {
+            if (null !== $this->getNode('arguments')) {
                 $compiler->raw(', ')->subcompile($this->getNode('arguments'));
-            } else
-            {
+            } else {
                 $compiler->raw(', array()');
             }
         }
 
-        if ($needSecond)
-        {
+        if ($needSecond) {
             $compiler->raw(', ')->repr($this->getAttribute('type'));
         }
 
-        if ($needThird)
-        {
+        if ($needThird) {
             $compiler->raw(', ')->repr($this->getAttribute('is_defined_test'));
         }
 
-        if ($needFourth)
-        {
+        if ($needFourth) {
             $compiler->raw(', ')->repr($this->getAttribute('ignore_strict_check'));
         }
 

@@ -13,72 +13,74 @@ namespace Craft;
  */
 class BaseEntryRevisionModel extends EntryModel
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Sets the revision content.
-     *
-     * @param array $content
-     * @return null
-     */
-    public function setContentFromRevision($content)
-    {
-        // Swap the field IDs with handles
-        $contentByFieldHandles = array();
+	/**
+	 * Sets the revision content.
+	 *
+	 * @param array $content
+	 *
+	 * @return null
+	 */
+	public function setContentFromRevision($content)
+	{
+		// Swap the field IDs with handles
+		$contentByFieldHandles = array();
 
-        foreach ($content as $fieldId => $value)
-        {
-            $field = craft()->fields->getFieldById($fieldId);
+		foreach ($content as $fieldId => $value)
+		{
+			$field = craft()->fields->getFieldById($fieldId);
 
-            if ($field)
-            {
-                $contentByFieldHandles[$field->handle] = $value;
-            }
-        }
+			if ($field)
+			{
+				$contentByFieldHandles[$field->handle] = $value;
+			}
+		}
 
-        // Set the values and prep them
-        $this->setContentFromPost($contentByFieldHandles);
-    }
+		// Set the values and prep them
+		$this->setContentFromPost($contentByFieldHandles);
+	}
 
-    /**
-     * Returns the draft's creator.
-     *
-     * @return UserModel|null
-     */
-    public function getCreator()
-    {
-        return craft()->users->getUserById($this->creatorId);
-    }
+	/**
+	 * Returns the draft's creator.
+	 *
+	 * @return UserModel|null
+	 */
+	public function getCreator()
+	{
+		return craft()->users->getUserById($this->creatorId);
+	}
 
-    /**
-     * Returns the element's full URL.
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        if ($this->uri === null)
-        {
-            ElementHelper::setUniqueUri($this);
-        }
+	/**
+	 * Returns the element's full URL.
+	 *
+	 * @return string
+	 */
+	public function getUrl()
+	{
+		if ($this->uri === null)
+		{
+			ElementHelper::setUniqueUri($this);
+		}
 
-        return parent::getUrl();
-    }
+		return parent::getUrl();
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array_merge(parent::defineAttributes(), array(
-            'creatorId'   => AttributeType::Number,
-            'dateUpdated' => AttributeType::DateTime,
-            'dateCreated' => AttributeType::DateTime,
-        ));
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array_merge(parent::defineAttributes(), array(
+			'creatorId'   => AttributeType::Number,
+			'dateUpdated' => AttributeType::DateTime,
+			'dateCreated' => AttributeType::DateTime,
+		));
+	}
 }

@@ -13,11 +13,11 @@ namespace Craft;
  */
 class ElementActionEvent extends Event
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var bool The message that should be displayed in the Control Panel if {@link $performAction} is false
-     */
-    public $message;
+	/**
+	 * @var bool The message that should be displayed in the Control Panel if {@link $performAction} is false
+	 */
+	public $message;
 }

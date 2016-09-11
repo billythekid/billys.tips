@@ -6,37 +6,37 @@ namespace Craft;
  */
 class m141103_000001_tag_titles extends BaseMigration
 {
-    /**
-     * Any migration code in here is wrapped inside of a transaction.
-     *
-     * @return bool
-     */
-    public function safeUp()
-    {
-        Craft::log('Making tag titles translatable...', LogLevel::Info, true);
+	/**
+	 * Any migration code in here is wrapped inside of a transaction.
+	 *
+	 * @return bool
+	 */
+	public function safeUp()
+	{
+		Craft::log('Making tag titles translatable...', LogLevel::Info, true);
 
-        // Select all of the tag names
-        $tags = craft()->db->createCommand()
-            ->select('id, name')
-            ->from('tags')
-            ->queryAll();
+		// Select all of the tag names
+		$tags = craft()->db->createCommand()
+			->select('id, name')
+			->from('tags')
+			->queryAll();
 
-        foreach ($tags as $tag)
-        {
-            $this->update('content', array(
-                'title' => $tag['name'],
-            ), array(
-                'elementId' => $tag['id'],
-            ));
-        }
+		foreach ($tags as $tag)
+		{
+			$this->update('content', array(
+				'title' => $tag['name']
+			), array(
+				'elementId' => $tag['id']
+			));
+		}
 
-        $this->createIndex('tags', 'groupId');
-        MigrationHelper::dropIndexIfExists('tags', array('name', 'groupId'), true);
-        MigrationHelper::dropIndexIfExists('tags', array('groupId', 'name'), true);
-        $this->dropColumn('tags', 'name');
+		$this->createIndex('tags', 'groupId');
+		MigrationHelper::dropIndexIfExists('tags', array('name', 'groupId'), true);
+		MigrationHelper::dropIndexIfExists('tags', array('groupId', 'name'), true);
+		$this->dropColumn('tags', 'name');
 
-        Craft::log('Done making tag titles translatable.', LogLevel::Info, true);
+		Craft::log('Done making tag titles translatable.', LogLevel::Info, true);
 
-        return true;
-    }
+		return true;
+	}
 }

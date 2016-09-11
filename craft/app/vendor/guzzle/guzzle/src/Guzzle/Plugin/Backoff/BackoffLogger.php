@@ -9,8 +9,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Logs backoff retries triggered from the BackoffPlugin
+ *
  * Format your log messages using a template that can contain template substitutions found in {@see MessageFormatter}.
  * In addition to the default template substitutions, there is also:
+ *
  * - retries: The number of times the request has been retried
  * - delay:   The amount of time the request is being delayed
  */
@@ -31,7 +33,7 @@ class BackoffLogger implements EventSubscriberInterface
      */
     public function __construct(LogAdapterInterface $logger, MessageFormatter $formatter = null)
     {
-        $this->logger    = $logger;
+        $this->logger = $logger;
         $this->formatter = $formatter ?: new MessageFormatter(self::DEFAULT_FORMAT);
     }
 
@@ -44,6 +46,7 @@ class BackoffLogger implements EventSubscriberInterface
      * Set the template to use for logging
      *
      * @param string $template Log message template
+     *
      * @return self
      */
     public function setTemplate($template)
@@ -66,7 +69,7 @@ class BackoffLogger implements EventSubscriberInterface
             $event['handle'],
             array(
                 'retries' => $event['retries'],
-                'delay'   => $event['delay'],
+                'delay'   => $event['delay']
             )
         ));
     }

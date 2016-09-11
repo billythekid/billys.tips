@@ -25,8 +25,7 @@ class Twig_Error_Syntax extends Twig_Error
      */
     public function addSuggestions($name, array $items)
     {
-        if (!$alternatives = self::computeAlternatives($name, $items))
-        {
+        if (!$alternatives = self::computeAlternatives($name, $items)) {
             return;
         }
 
@@ -35,16 +34,15 @@ class Twig_Error_Syntax extends Twig_Error
 
     /**
      * @internal
+     *
      * To be merged with the addSuggestions() method in 2.0.
      */
     public static function computeAlternatives($name, $items)
     {
         $alternatives = array();
-        foreach ($items as $item)
-        {
+        foreach ($items as $item) {
             $lev = levenshtein($name, $item);
-            if ($lev <= strlen($name) / 3 || false !== strpos($item, $name))
-            {
+            if ($lev <= strlen($name) / 3 || false !== strpos($item, $name)) {
                 $alternatives[$item] = $lev;
             }
         }

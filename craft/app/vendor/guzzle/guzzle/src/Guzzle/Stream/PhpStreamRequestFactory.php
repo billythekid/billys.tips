@@ -10,6 +10,7 @@ use Guzzle\Http\Url;
 
 /**
  * Factory used to create fopen streams using PHP's http and https stream wrappers
+ *
  * Note: PHP's http stream wrapper only supports streaming downloads. It does not support streaming uploads.
  */
 class PhpStreamRequestFactory implements StreamRequestFactoryInterface
@@ -28,21 +29,19 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
 
     /**
      * {@inheritdoc}
+     *
      * The $params array can contain the following custom keys specific to the PhpStreamRequestFactory:
      * - stream_class: The name of a class to create instead of a Guzzle\Stream\Stream object
      */
     public function fromRequest(RequestInterface $request, $context = array(), array $params = array())
     {
-        if (is_resource($context))
-        {
+        if (is_resource($context)) {
             $this->contextOptions = stream_context_get_options($context);
-            $this->context        = $context;
-        } elseif (is_array($context) || !$context)
-        {
+            $this->context = $context;
+        } elseif (is_array($context) || !$context) {
             $this->contextOptions = $context;
             $this->createContext($params);
-        } elseif ($context)
-        {
+        } elseif ($context) {
             throw new InvalidArgumentException('$context must be an array or resource');
         }
 
@@ -50,7 +49,7 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
         $request->dispatch('request.before_send', array(
             'request'         => $request,
             'context'         => $this->context,
-            'context_options' => $this->contextOptions,
+            'context_options' => $this->contextOptions
         ));
 
         $this->setUrl($request);
@@ -75,11 +74,9 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
      */
     protected function setContextValue($wrapper, $name, $value, $overwrite = false)
     {
-        if (!isset($this->contextOptions[$wrapper]))
-        {
+        if (!isset($this->contextOptions[$wrapper])) {
             $this->contextOptions[$wrapper] = array($name => $value);
-        } elseif (!$overwrite && isset($this->contextOptions[$wrapper][$name]))
-        {
+        } elseif (!$overwrite && isset($this->contextOptions[$wrapper][$name])) {
             return;
         }
         $this->contextOptions[$wrapper][$name] = $value;
@@ -93,9 +90,8 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
      */
     protected function createContext(array $params)
     {
-        $options       = $this->contextOptions;
-        $this->context = $this->createResource(function () use ($params, $options)
-        {
+        $options = $this->contextOptions;
+        $this->context = $this->createResource(function () use ($params, $options) {
             return stream_context_create($options, $params);
         });
     }
@@ -121,8 +117,7 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
         $headers = $request->getHeaderLines();
 
         // "Connection: close" is required to get streams to work in HTTP 1.1
-        if (!$request->hasHeader('Connection'))
-        {
+        if (!$request->hasHeader('Connection')) {
             $headers[] = 'Connection: close';
         }
 
@@ -141,14 +136,12 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
         $this->url = $request->getUrl(true);
 
         // Check for basic Auth username
-        if ($request->getUsername())
-        {
+        if ($request->getUsername()) {
             $this->url->setUsername($request->getUsername());
         }
 
         // Check for basic Auth password
-        if ($request->getPassword())
-        {
+        if ($request->getPassword()) {
             $this->url->setPassword($request->getPassword());
         }
     }
@@ -160,15 +153,12 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
      */
     protected function addSslOptions(RequestInterface $request)
     {
-        if ($request->getCurlOptions()->get(CURLOPT_SSL_VERIFYPEER))
-        {
+        if ($request->getCurlOptions()->get(CURLOPT_SSL_VERIFYPEER)) {
             $this->setContextValue('ssl', 'verify_peer', true, true);
-            if ($cafile = $request->getCurlOptions()->get(CURLOPT_CAINFO))
-            {
+            if ($cafile = $request->getCurlOptions()->get(CURLOPT_CAINFO)) {
                 $this->setContextValue('ssl', 'cafile', $cafile, true);
             }
-        } else
-        {
+        } else {
             $this->setContextValue('ssl', 'verify_peer', false, true);
         }
     }
@@ -181,23 +171,19 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
     protected function addBodyOptions(RequestInterface $request)
     {
         // Add the content for the request if needed
-        if (!($request instanceof EntityEnclosingRequestInterface))
-        {
+        if (!($request instanceof EntityEnclosingRequestInterface)) {
             return;
         }
 
-        if (count($request->getPostFields()))
-        {
-            $this->setContextValue('http', 'content', (string)$request->getPostFields(), true);
-        } elseif ($request->getBody())
-        {
-            $this->setContextValue('http', 'content', (string)$request->getBody(), true);
+        if (count($request->getPostFields())) {
+            $this->setContextValue('http', 'content', (string) $request->getPostFields(), true);
+        } elseif ($request->getBody()) {
+            $this->setContextValue('http', 'content', (string) $request->getBody(), true);
         }
 
         // Always ensure a content-length header is sent
-        if (isset($this->contextOptions['http']['content']))
-        {
-            $headers   = isset($this->contextOptions['http']['header']) ? $this->contextOptions['http']['header'] : array();
+        if (isset($this->contextOptions['http']['content'])) {
+            $headers = isset($this->contextOptions['http']['header']) ? $this->contextOptions['http']['header'] : array();
             $headers[] = 'Content-Length: ' . strlen($this->contextOptions['http']['content']);
             $this->setContextValue('http', 'header', $headers, true);
         }
@@ -210,8 +196,7 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
      */
     protected function addProxyOptions(RequestInterface $request)
     {
-        if ($proxy = $request->getCurlOptions()->get(CURLOPT_PROXY))
-        {
+        if ($proxy = $request->getCurlOptions()->get(CURLOPT_PROXY)) {
             $this->setContextValue('http', 'proxy', $proxy);
         }
     }
@@ -220,16 +205,16 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
      * Create the stream for the request with the context options
      *
      * @param array $params Parameters of the stream
+     *
      * @return StreamInterface
      */
     protected function createStream(array $params)
     {
         $http_response_header = null;
-        $url                  = $this->url;
-        $context              = $this->context;
-        $fp                   = $this->createResource(function () use ($context, $url, &$http_response_header)
-        {
-            return fopen((string)$url, 'r', false, $context);
+        $url = $this->url;
+        $context = $this->context;
+        $fp = $this->createResource(function () use ($context, $url, &$http_response_header) {
+            return fopen((string) $url, 'r', false, $context);
         });
 
         // Determine the class to instantiate
@@ -239,8 +224,7 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
         $stream = new $className($fp);
 
         // Track the response headers of the request
-        if (isset($http_response_header))
-        {
+        if (isset($http_response_header)) {
             $this->lastResponseHeaders = $http_response_header;
             $this->processResponseHeaders($stream);
         }
@@ -256,10 +240,8 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
     protected function processResponseHeaders(StreamInterface $stream)
     {
         // Set the size on the stream if it was returned in the response
-        foreach ($this->lastResponseHeaders as $header)
-        {
-            if ((stripos($header, 'Content-Length:')) === 0)
-            {
+        foreach ($this->lastResponseHeaders as $header) {
+            if ((stripos($header, 'Content-Length:')) === 0) {
                 $stream->setSize(trim(substr($header, 15)));
             }
         }
@@ -269,32 +251,28 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
      * Create a resource and check to ensure it was created successfully
      *
      * @param callable $callback Closure to invoke that must return a valid resource
+     *
      * @return resource
      * @throws RuntimeException on error
      */
     protected function createResource($callback)
     {
         $errors = null;
-        set_error_handler(function ($_, $msg, $file, $line) use (&$errors)
-        {
+        set_error_handler(function ($_, $msg, $file, $line) use (&$errors) {
             $errors[] = array(
                 'message' => $msg,
                 'file'    => $file,
-                'line'    => $line,
+                'line'    => $line
             );
-
             return true;
         });
         $resource = call_user_func($callback);
         restore_error_handler();
 
-        if (!$resource)
-        {
+        if (!$resource) {
             $message = 'Error creating resource. ';
-            foreach ($errors as $err)
-            {
-                foreach ($err as $key => $value)
-                {
+            foreach ($errors as $err) {
+                foreach ($err as $key => $value) {
                     $message .= "[$key] $value" . PHP_EOL;
                 }
             }

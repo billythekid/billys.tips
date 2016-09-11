@@ -13,13 +13,13 @@ class Twig_Tests_Node_ModuleTest extends Twig_Test_NodeTestCase
 {
     public function testConstructor()
     {
-        $body     = new Twig_Node_Text('foo', 1);
-        $parent   = new Twig_Node_Expression_Constant('layout.twig', 1);
-        $blocks   = new Twig_Node();
-        $macros   = new Twig_Node();
-        $traits   = new Twig_Node();
+        $body = new Twig_Node_Text('foo', 1);
+        $parent = new Twig_Node_Expression_Constant('layout.twig', 1);
+        $blocks = new Twig_Node();
+        $macros = new Twig_Node();
+        $traits = new Twig_Node();
         $filename = 'foo.twig';
-        $node     = new Twig_Node_Module($body, $parent, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
+        $node = new Twig_Node_Module($body, $parent, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
 
         $this->assertEquals($body, $node->getNode('body'));
         $this->assertEquals($blocks, $node->getNode('blocks'));
@@ -34,14 +34,14 @@ class Twig_Tests_Node_ModuleTest extends Twig_Test_NodeTestCase
 
         $tests = array();
 
-        $body     = new Twig_Node_Text('foo', 1);
-        $extends  = null;
-        $blocks   = new Twig_Node();
-        $macros   = new Twig_Node();
-        $traits   = new Twig_Node();
+        $body = new Twig_Node_Text('foo', 1);
+        $extends = null;
+        $blocks = new Twig_Node();
+        $macros = new Twig_Node();
+        $traits = new Twig_Node();
         $filename = 'foo.twig';
 
-        $node    = new Twig_Node_Module($body, $extends, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
+        $node = new Twig_Node_Module($body, $extends, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
         $tests[] = array($node, <<<EOF
 <?php
 
@@ -79,10 +79,10 @@ EOF
 
         $import = new Twig_Node_Import(new Twig_Node_Expression_Constant('foo.twig', 1), new Twig_Node_Expression_AssignName('macro', 1), 2);
 
-        $body    = new Twig_Node(array($import));
+        $body = new Twig_Node(array($import));
         $extends = new Twig_Node_Expression_Constant('layout.twig', 1);
 
-        $node    = new Twig_Node_Module($body, $extends, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
+        $node = new Twig_Node_Module($body, $extends, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
         $tests[] = array($node, <<<EOF
 <?php
 
@@ -130,16 +130,16 @@ class __TwigTemplate_%x extends Twig_Template
 EOF
         , $twig, true);
 
-        $set     = new Twig_Node_Set(false, new Twig_Node(array(new Twig_Node_Expression_AssignName('foo', 4))), new Twig_Node(array(new Twig_Node_Expression_Constant('foo', 4))), 4);
-        $body    = new Twig_Node(array($set));
+        $set = new Twig_Node_Set(false, new Twig_Node(array(new Twig_Node_Expression_AssignName('foo', 4))), new Twig_Node(array(new Twig_Node_Expression_Constant('foo', 4))), 4);
+        $body = new Twig_Node(array($set));
         $extends = new Twig_Node_Expression_Conditional(
-            new Twig_Node_Expression_Constant(true, 2),
-            new Twig_Node_Expression_Constant('foo', 2),
-            new Twig_Node_Expression_Constant('foo', 2),
-            2
-        );
+                        new Twig_Node_Expression_Constant(true, 2),
+                        new Twig_Node_Expression_Constant('foo', 2),
+                        new Twig_Node_Expression_Constant('foo', 2),
+                        2
+                    );
 
-        $node    = new Twig_Node_Module($body, $extends, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
+        $node = new Twig_Node_Module($body, $extends, $blocks, $macros, $traits, new Twig_Node(array()), $filename);
         $tests[] = array($node, <<<EOF
 <?php
 

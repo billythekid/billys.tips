@@ -18,29 +18,27 @@ class BadResponseException extends RequestException
      *
      * @param RequestInterface $request  Request
      * @param Response         $response Response received
+     *
      * @return BadResponseException
      */
     public static function factory(RequestInterface $request, Response $response)
     {
-        if ($response->isClientError())
-        {
+        if ($response->isClientError()) {
             $label = 'Client error response';
             $class = __NAMESPACE__ . '\\ClientErrorResponseException';
-        } elseif ($response->isServerError())
-        {
+        } elseif ($response->isServerError()) {
             $label = 'Server error response';
             $class = __NAMESPACE__ . '\\ServerErrorResponseException';
-        } else
-        {
+        } else {
             $label = 'Unsuccessful response';
             $class = __CLASS__;
         }
 
         $message = $label . PHP_EOL . implode(PHP_EOL, array(
-                '[status code] ' . $response->getStatusCode(),
-                '[reason phrase] ' . $response->getReasonPhrase(),
-                '[url] ' . $request->getUrl(),
-            ));
+            '[status code] ' . $response->getStatusCode(),
+            '[reason phrase] ' . $response->getReasonPhrase(),
+            '[url] ' . $request->getUrl(),
+        ));
 
         $e = new $class($message);
         $e->setResponse($response);

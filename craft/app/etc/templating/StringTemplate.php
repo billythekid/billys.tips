@@ -13,42 +13,43 @@ namespace Craft;
  */
 class StringTemplate
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var null|string
-     */
-    public $cacheKey;
+	/**
+	 * @var null|string
+	 */
+	public $cacheKey;
 
-    /**
-     * @var null|string
-     */
-    public $template;
+	/**
+	 * @var null|string
+	 */
+	public $template;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Constructor
-     *
-     * @param string $cacheKey
-     * @param string $template
-     * @return StringTemplate
-     */
-    public function __construct($cacheKey = null, $template = null)
-    {
-        $this->cacheKey = $cacheKey;
-        $this->template = $template;
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param string $cacheKey
+	 * @param string $template
+	 *
+	 * @return StringTemplate
+	 */
+	public function __construct($cacheKey = null, $template = null)
+	{
+		$this->cacheKey = $cacheKey;
+		$this->template = $template;
+	}
 
-    /**
-     * Use the cache key as the string representation.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->cacheKey;
-    }
+	/**
+	 * Use the cache key as the string representation.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->cacheKey;
+	}
 }

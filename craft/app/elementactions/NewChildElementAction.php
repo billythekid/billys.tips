@@ -13,28 +13,30 @@ namespace Craft;
  */
 class NewChildElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getParams()->label;
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->getParams()->label;
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $maxLevels   = JsonHelper::encode($this->getParams()->maxLevels);
-        $newChildUrl = JsonHelper::encode($this->getParams()->newChildUrl);
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$maxLevels = JsonHelper::encode($this->getParams()->maxLevels);
+		$newChildUrl = JsonHelper::encode($this->getParams()->newChildUrl);
 
-        $js = <<<EOT
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -57,22 +59,23 @@ class NewChildElementAction extends BaseElementAction
 })();
 EOT;
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseElementAction::defineParams()
-     * @return array
-     */
-    protected function defineParams()
-    {
-        return array(
-            'label'       => array(AttributeType::String, 'default' => Craft::t('New child')),
-            'maxLevels'   => AttributeType::Number,
-            'newChildUrl' => AttributeType::String,
-        );
-    }
+	/**
+	 * @inheritDoc BaseElementAction::defineParams()
+	 *
+	 * @return array
+	 */
+	protected function defineParams()
+	{
+		return array(
+			'label'       => array(AttributeType::String, 'default' => Craft::t('New child')),
+			'maxLevels'   => AttributeType::Number,
+			'newChildUrl' => AttributeType::String,
+		);
+	}
 }

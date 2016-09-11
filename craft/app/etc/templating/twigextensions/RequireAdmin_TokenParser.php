@@ -13,30 +13,31 @@ namespace Craft;
  */
 class RequireAdmin_TokenParser extends \Twig_TokenParser
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Parses {% requireAdmin %} tags.
-     *
-     * @param \Twig_Token $token
-     * @return RequireAdmin_Node
-     */
-    public function parse(\Twig_Token $token)
-    {
-        $lineno = $token->getLine();
-        $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+	/**
+	 * Parses {% requireAdmin %} tags.
+	 *
+	 * @param \Twig_Token $token
+	 *
+	 * @return RequireAdmin_Node
+	 */
+	public function parse(\Twig_Token $token)
+	{
+		$lineno = $token->getLine();
+		$this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new RequireAdmin_Node(array(), array(), $lineno, $this->getTag());
-    }
+		return new RequireAdmin_Node(array(), array(), $lineno, $this->getTag());
+	}
 
-    /**
-     * Defines the tag name.
-     *
-     * @return string
-     */
-    public function getTag()
-    {
-        return 'requireAdmin';
-    }
+	/**
+	 * Defines the tag name.
+	 *
+	 * @return string
+	 */
+	public function getTag()
+	{
+		return 'requireAdmin';
+	}
 }

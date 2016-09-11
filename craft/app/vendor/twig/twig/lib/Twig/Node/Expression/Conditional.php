@@ -9,7 +9,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 class Twig_Node_Expression_Conditional extends Twig_Node_Expression
 {
     public function __construct(Twig_Node_Expression $expr1, Twig_Node_Expression $expr2, Twig_Node_Expression $expr3, $lineno)
@@ -26,6 +25,7 @@ class Twig_Node_Expression_Conditional extends Twig_Node_Expression
             ->subcompile($this->getNode('expr2'))
             ->raw(') : (')
             ->subcompile($this->getNode('expr3'))
-            ->raw('))');
+            ->raw('))')
+        ;
     }
 }

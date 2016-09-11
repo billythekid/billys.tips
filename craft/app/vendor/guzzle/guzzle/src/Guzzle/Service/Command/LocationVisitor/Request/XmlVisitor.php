@@ -27,6 +27,7 @@ class XmlVisitor extends AbstractRequestVisitor
      * Change the content-type header that is added when XML is found
      *
      * @param string $header Header to set when XML is found
+     *
      * @return self
      */
     public function setContentTypeHeader($header)
@@ -51,26 +52,21 @@ class XmlVisitor extends AbstractRequestVisitor
         $xml = null;
 
         // If data was found that needs to be serialized, then do so
-        if (isset($this->data[$command]))
-        {
+        if (isset($this->data[$command])) {
             $xml = $this->finishDocument($this->data[$command]);
             unset($this->data[$command]);
-        } else
-        {
+        } else {
             // Check if XML should always be sent for the command
             $operation = $command->getOperation();
-            if ($operation->getData('xmlAllowEmpty'))
-            {
+            if ($operation->getData('xmlAllowEmpty')) {
                 $xmlWriter = $this->createRootElement($operation);
-                $xml       = $this->finishDocument($xmlWriter);
+                $xml = $this->finishDocument($xmlWriter);
             }
         }
 
-        if ($xml)
-        {
+        if ($xml) {
             // Don't overwrite the Content-Type if one is set
-            if ($this->contentType && !$request->hasHeader('Content-Type'))
-            {
+            if ($this->contentType && !$request->hasHeader('Content-Type')) {
                 $request->setHeader('Content-Type', $this->contentType);
             }
             $request->setBody($xml);
@@ -81,6 +77,7 @@ class XmlVisitor extends AbstractRequestVisitor
      * Create the root XML element to use with a request
      *
      * @param Operation $operation Operation object
+     *
      * @return \XMLWriter
      */
     protected function createRootElement(Operation $operation)
@@ -95,20 +92,16 @@ class XmlVisitor extends AbstractRequestVisitor
 
         $xmlWriter->startElement($root['name']);
         // Create the wrapping element with no namespaces if no namespaces were present
-        if (!empty($root['namespaces']))
-        {
+        if (!empty($root['namespaces'])) {
             // Create the wrapping element with an array of one or more namespaces
-            foreach ((array)$root['namespaces'] as $prefix => $uri)
-            {
+            foreach ((array) $root['namespaces'] as $prefix => $uri) {
                 $nsLabel = 'xmlns';
-                if (!is_numeric($prefix))
-                {
-                    $nsLabel .= ':' . $prefix;
+                if (!is_numeric($prefix)) {
+                    $nsLabel .= ':'.$prefix;
                 }
                 $xmlWriter->writeAttribute($nsLabel, $uri);
             }
         }
-
         return $xmlWriter;
     }
 
@@ -121,46 +114,36 @@ class XmlVisitor extends AbstractRequestVisitor
      */
     protected function addXml(\XMLWriter $xmlWriter, Parameter $param, $value)
     {
-        if ($value === null)
-        {
+        if ($value === null) {
             return;
         }
 
-        $value     = $param->filter($value);
-        $type      = $param->getType();
-        $name      = $param->getWireName();
-        $prefix    = null;
+        $value = $param->filter($value);
+        $type = $param->getType();
+        $name = $param->getWireName();
+        $prefix = null;
         $namespace = $param->getData('xmlNamespace');
-        if (false !== strpos($name, ':'))
-        {
+        if (false !== strpos($name, ':')) {
             list($prefix, $name) = explode(':', $name, 2);
         }
 
-        if ($type == 'object' || $type == 'array')
-        {
-            if (!$param->getData('xmlFlattened'))
-            {
+        if ($type == 'object' || $type == 'array') {
+            if (!$param->getData('xmlFlattened')) {
                 $xmlWriter->startElementNS(null, $name, $namespace);
             }
-            if ($param->getType() == 'array')
-            {
+            if ($param->getType() == 'array') {
                 $this->addXmlArray($xmlWriter, $param, $value);
-            } elseif ($param->getType() == 'object')
-            {
+            } elseif ($param->getType() == 'object') {
                 $this->addXmlObject($xmlWriter, $param, $value);
             }
-            if (!$param->getData('xmlFlattened'))
-            {
+            if (!$param->getData('xmlFlattened')) {
                 $xmlWriter->endElement();
             }
-
             return;
         }
-        if ($param->getData('xmlAttribute'))
-        {
+        if ($param->getData('xmlAttribute')) {
             $this->writeAttribute($xmlWriter, $prefix, $name, $namespace, $value);
-        } else
-        {
+        } else {
             $this->writeElement($xmlWriter, $prefix, $name, $namespace, $value);
         }
     }
@@ -176,11 +159,9 @@ class XmlVisitor extends AbstractRequestVisitor
      */
     protected function writeAttribute($xmlWriter, $prefix, $name, $namespace, $value)
     {
-        if (empty($namespace))
-        {
+        if (empty($namespace)) {
             $xmlWriter->writeAttribute($name, $value);
-        } else
-        {
+        } else {
             $xmlWriter->writeAttributeNS($prefix, $name, $namespace, $value);
         }
     }
@@ -197,11 +178,9 @@ class XmlVisitor extends AbstractRequestVisitor
     protected function writeElement(\XMLWriter $xmlWriter, $prefix, $name, $namespace, $value)
     {
         $xmlWriter->startElementNS($prefix, $name, $namespace);
-        if (strpbrk($value, '<>&'))
-        {
+        if (strpbrk($value, '<>&')) {
             $xmlWriter->writeCData($value);
-        } else
-        {
+        } else {
             $xmlWriter->writeRaw($value);
         }
         $xmlWriter->endElement();
@@ -211,6 +190,7 @@ class XmlVisitor extends AbstractRequestVisitor
      * Create a new xml writer and start a document
      *
      * @param  string $encoding document encoding
+     *
      * @return \XMLWriter the writer resource
      */
     protected function startDocument($encoding)
@@ -226,6 +206,7 @@ class XmlVisitor extends AbstractRequestVisitor
      * End the document and return the output
      *
      * @param \XMLWriter $xmlWriter
+     *
      * @return \string the writer resource
      */
     protected function finishDocument($xmlWriter)
@@ -240,10 +221,8 @@ class XmlVisitor extends AbstractRequestVisitor
      */
     protected function addXmlArray(\XMLWriter $xmlWriter, Parameter $param, &$value)
     {
-        if ($items = $param->getItems())
-        {
-            foreach ($value as $v)
-            {
+        if ($items = $param->getItems()) {
+            foreach ($value as $v) {
                 $this->addXml($xmlWriter, $items, $v);
             }
         }
@@ -256,22 +235,17 @@ class XmlVisitor extends AbstractRequestVisitor
     {
         $noAttributes = array();
         // add values which have attributes
-        foreach ($value as $name => $v)
-        {
-            if ($property = $param->getProperty($name))
-            {
-                if ($property->getData('xmlAttribute'))
-                {
+        foreach ($value as $name => $v) {
+            if ($property = $param->getProperty($name)) {
+                if ($property->getData('xmlAttribute')) {
                     $this->addXml($xmlWriter, $property, $v);
-                } else
-                {
+                } else {
                     $noAttributes[] = array('value' => $v, 'property' => $property);
                 }
             }
         }
         // now add values with no attributes
-        foreach ($noAttributes as $element)
-        {
+        foreach ($noAttributes as $element) {
             $this->addXml($xmlWriter, $element['property'], $element['value']);
         }
     }

@@ -13,87 +13,90 @@ namespace Craft;
  */
 class CategoryGroupModel extends BaseModel
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var
-     */
-    private $_locales;
+	/**
+	 * @var
+	 */
+	private $_locales;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Use the translated category group's name as the string representation.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return Craft::t($this->name);
-    }
+	/**
+	 * Use the translated category group's name as the string representation.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return Craft::t($this->name);
+	}
 
-    /**
-     * @return array
-     */
-    public function behaviors()
-    {
-        return array(
-            'fieldLayout' => new FieldLayoutBehavior(ElementType::Category),
-        );
-    }
+	/**
+	 * @return array
+	 */
+	public function behaviors()
+	{
+		return array(
+			'fieldLayout' => new FieldLayoutBehavior(ElementType::Category),
+		);
+	}
 
-    /**
-     * Returns the category's locale models.
-     *
-     * @return array
-     */
-    public function getLocales()
-    {
-        if (!isset($this->_locales))
-        {
-            if ($this->id)
-            {
-                $this->_locales = craft()->categories->getGroupLocales($this->id, 'locale');
-            } else
-            {
-                $this->_locales = array();
-            }
-        }
+	/**
+	 * Returns the category's locale models.
+	 *
+	 * @return array
+	 */
+	public function getLocales()
+	{
+		if (!isset($this->_locales))
+		{
+			if ($this->id)
+			{
+				$this->_locales = craft()->categories->getGroupLocales($this->id, 'locale');
+			}
+			else
+			{
+				$this->_locales = array();
+			}
+		}
 
-        return $this->_locales;
-    }
+		return $this->_locales;
+	}
 
-    /**
-     * Sets the section's locale models.
-     *
-     * @param array $locales
-     * @return null
-     */
-    public function setLocales($locales)
-    {
-        $this->_locales = $locales;
-    }
+	/**
+	 * Sets the section's locale models.
+	 *
+	 * @param array $locales
+	 *
+	 * @return null
+	 */
+	public function setLocales($locales)
+	{
+		$this->_locales = $locales;
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseModel::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'id'            => AttributeType::Number,
-            'structureId'   => AttributeType::Number,
-            'fieldLayoutId' => AttributeType::Number,
-            'name'          => AttributeType::String,
-            'handle'        => AttributeType::String,
-            'hasUrls'       => array(AttributeType::Bool, 'default' => true),
-            'template'      => AttributeType::String,
-            'maxLevels'     => AttributeType::Number,
-        );
-    }
+	/**
+	 * @inheritDoc BaseModel::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'id'            => AttributeType::Number,
+			'structureId'   => AttributeType::Number,
+			'fieldLayoutId' => AttributeType::Number,
+			'name'          => AttributeType::String,
+			'handle'        => AttributeType::String,
+			'hasUrls'       => array(AttributeType::Bool, 'default' => true),
+			'template'      => AttributeType::String,
+			'maxLevels'     => AttributeType::Number,
+		);
+	}
 }

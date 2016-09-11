@@ -7,6 +7,7 @@ use Guzzle\Batch\Exception\BatchTransferException;
 /**
  * Default batch implementation used to convert queued items into smaller chunks of batches using a
  * {@see BatchDivisorIterface} and transfers each batch using a {@see BatchTransferInterface}.
+ *
  * Any exception encountered during a flush operation will throw a {@see BatchTransferException} object containing the
  * batch that failed. After an exception is encountered, you can flush the batch again to attempt to finish transferring
  * any previously created batches or queued items.
@@ -33,7 +34,7 @@ class Batch implements BatchInterface
     {
         $this->transferStrategy = $transferStrategy;
         $this->divisionStrategy = $divisionStrategy;
-        $this->queue            = new \SplQueue();
+        $this->queue = new \SplQueue();
         $this->queue->setIteratorMode(\SplQueue::IT_MODE_DELETE);
         $this->dividedBatches = array();
     }
@@ -50,18 +51,14 @@ class Batch implements BatchInterface
         $this->createBatches();
 
         $items = array();
-        foreach ($this->dividedBatches as $batchIndex => $dividedBatch)
-        {
-            while ($dividedBatch->valid())
-            {
+        foreach ($this->dividedBatches as $batchIndex => $dividedBatch) {
+            while ($dividedBatch->valid()) {
                 $batch = $dividedBatch->current();
                 $dividedBatch->next();
-                try
-                {
+                try {
                     $this->transferStrategy->transfer($batch);
                     $items = array_merge($items, $batch);
-                } catch (\Exception $e)
-                {
+                } catch (\Exception $e) {
                     throw new BatchTransferException($batch, $items, $e, $this->transferStrategy, $this->divisionStrategy);
                 }
             }
@@ -82,13 +79,10 @@ class Batch implements BatchInterface
      */
     protected function createBatches()
     {
-        if (count($this->queue))
-        {
-            if ($batches = $this->divisionStrategy->createBatches($this->queue))
-            {
+        if (count($this->queue)) {
+            if ($batches = $this->divisionStrategy->createBatches($this->queue)) {
                 // Convert arrays into iterators
-                if (is_array($batches))
-                {
+                if (is_array($batches)) {
                     $batches = new \ArrayIterator($batches);
                 }
                 $this->dividedBatches[] = $batches;

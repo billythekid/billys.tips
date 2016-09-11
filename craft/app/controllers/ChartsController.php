@@ -23,12 +23,12 @@ class ChartsController extends BaseController
      */
     public function actionGetNewUsersData()
     {
-        $userGroupId    = craft()->request->getRequiredPost('userGroupId');
+        $userGroupId = craft()->request->getRequiredPost('userGroupId');
         $startDateParam = craft()->request->getRequiredPost('startDate');
-        $endDateParam   = craft()->request->getRequiredPost('endDate');
+        $endDateParam = craft()->request->getRequiredPost('endDate');
 
         $startDate = DateTime::createFromString($startDateParam, craft()->timezone);
-        $endDate   = DateTime::createFromString($endDateParam, craft()->timezone);
+        $endDate = DateTime::createFromString($endDateParam, craft()->timezone);
         $endDate->modify('+1 day');
 
         $intervalUnit = 'day';
@@ -47,13 +47,13 @@ class ChartsController extends BaseController
         // Get the chart data table
         $dataTable = ChartHelper::getRunChartDataFromQuery($query, $startDate, $endDate, 'users.dateCreated', array(
             'intervalUnit' => $intervalUnit,
-            'valueLabel'   => Craft::t('New Users'),
+            'valueLabel' => Craft::t('New Users'),
         ));
 
         // Get the total number of new users
         $total = 0;
 
-        foreach ($dataTable['rows'] as $row)
+        foreach($dataTable['rows'] as $row)
         {
             $total = $total + $row[1];
         }
@@ -61,11 +61,11 @@ class ChartsController extends BaseController
         // Return everything
         $this->returnJson(array(
             'dataTable' => $dataTable,
-            'total'     => $total,
+            'total' => $total,
 
-            'formats'     => ChartHelper::getFormats(),
+            'formats' => ChartHelper::getFormats(),
             'orientation' => craft()->locale->getOrientation(),
-            'scale'       => $intervalUnit,
+            'scale' => $intervalUnit,
         ));
     }
 }

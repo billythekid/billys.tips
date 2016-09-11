@@ -13,11 +13,11 @@ namespace Craft;
  */
 class Event extends \CEvent
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var bool Whether the caller should go through with the action.
-     */
-    public $performAction = true;
+	/**
+	 * @var bool Whether the caller should go through with the action.
+	 */
+	public $performAction = true;
 }

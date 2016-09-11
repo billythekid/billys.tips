@@ -3,6 +3,7 @@ namespace Craft;
 
 /**
  * ApcCache provides APC caching in terms of an application component.
+ *
  * The caching is based on [APC](http://www.php.net/apc). To use this application component, the APC PHP extension
  * must be loaded.
  *

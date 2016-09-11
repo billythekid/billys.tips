@@ -13,26 +13,27 @@ namespace Craft;
  */
 class TemplateLoaderException extends \Twig_Error_Loader
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var string
-     */
-    public $template;
+	/**
+	 * @var string
+	 */
+	public $template;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @param string $template
-     * @return TemplateLoaderException
-     */
-    public function __construct($template)
-    {
-        $this->template = $template;
-        $message        = Craft::t('Unable to find the template “{template}”.', array('template' => $this->template));
+	/**
+	 * @param string $template
+	 *
+	 * @return TemplateLoaderException
+	 */
+	public function __construct($template)
+	{
+		$this->template = $template;
+		$message = Craft::t('Unable to find the template “{template}”.', array('template' => $this->template));
 
-        parent::__construct($message);
-    }
+		parent::__construct($message);
+	}
 }

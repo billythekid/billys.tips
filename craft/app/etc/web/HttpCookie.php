@@ -14,33 +14,33 @@ namespace Craft;
  */
 class HttpCookie extends \CHttpCookie
 {
-    /**
-     * Creates a new HttpCookie instance.
-     *
-     * @param string $name    The name of this cookie.
-     * @param string $value   The cookie's value.
-     * @param array  $options The configuration array consisting of name-value pairs that are used to configure this
-     *                        cookie.
-     * @return HttpCookie
-     */
-    public function __construct($name, $value, $options = array())
-    {
-        // Set the default cookie domain. A user can always override it, if they want.
-        if (($defaultCookieDomain = craft()->config->get('defaultCookieDomain')) !== '')
-        {
-            $this->domain = $defaultCookieDomain;
-        }
+	/**
+	 * Creates a new HttpCookie instance.
+	 *
+	 * @param string $name    The name of this cookie.
+	 * @param string $value   The cookie's value.
+	 * @param array  $options The configuration array consisting of name-value pairs that are used to configure this cookie.
+	 *
+	 * @return HttpCookie
+	 */
+	public function __construct($name, $value, $options = array())
+	{
+		// Set the default cookie domain. A user can always override it, if they want.
+		if (($defaultCookieDomain = craft()->config->get('defaultCookieDomain')) !== '')
+		{
+			$this->domain = $defaultCookieDomain;
+		}
 
-        $this->httpOnly = true;
+		$this->httpOnly = true;
 
-        $secureCookies = craft()->config->get('useSecureCookies');
+		$secureCookies = craft()->config->get('useSecureCookies');
 
-        // If it's set to auto and a secure connection or it's set to true, set the secure flag.
-        if (($secureCookies === 'auto' && craft()->request->isSecureConnection()) || $secureCookies === true)
-        {
-            $this->secure = true;
-        }
+		// If it's set to auto and a secure connection or it's set to true, set the secure flag.
+		if (($secureCookies === 'auto' && craft()->request->isSecureConnection()) || $secureCookies === true)
+		{
+			$this->secure = true;
+		}
 
-        parent::__construct($name, $value, $options);
-    }
+		parent::__construct($name, $value, $options);
+	}
 }

@@ -7,33 +7,28 @@
 class HTMLPurifier_ConfigSchema_Builder_ConfigSchema
 {
 
-    public function build($interchange)
-    {
+    public function build($interchange) {
         $schema = new HTMLPurifier_ConfigSchema();
-        foreach ($interchange->directives as $d)
-        {
+        foreach ($interchange->directives as $d) {
             $schema->add(
                 $d->id->key,
                 $d->default,
                 $d->type,
                 $d->typeAllowsNull
             );
-            if ($d->allowed !== null)
-            {
+            if ($d->allowed !== null) {
                 $schema->addAllowedValues(
                     $d->id->key,
                     $d->allowed
                 );
             }
-            foreach ($d->aliases as $alias)
-            {
+            foreach ($d->aliases as $alias) {
                 $schema->addAlias(
                     $alias->key,
                     $d->id->key
                 );
             }
-            if ($d->valueAliases !== null)
-            {
+            if ($d->valueAliases !== null) {
                 $schema->addValueAliases(
                     $d->id->key,
                     $d->valueAliases
@@ -41,7 +36,6 @@ class HTMLPurifier_ConfigSchema_Builder_ConfigSchema
             }
         }
         $schema->postProcess();
-
         return $schema;
     }
 

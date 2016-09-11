@@ -12,19 +12,21 @@
 /**
  * Interface implemented by all compiled templates.
  *
- * @author     Fabien Potencier <fabien@symfony.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
  * @deprecated since 1.12 (to be removed in 3.0)
  */
 interface Twig_TemplateInterface
 {
-    const ANY_CALL    = 'any';
-    const ARRAY_CALL  = 'array';
+    const ANY_CALL = 'any';
+    const ARRAY_CALL = 'array';
     const METHOD_CALL = 'method';
 
     /**
      * Renders the template with the given context and returns it as string.
      *
      * @param array $context An array of parameters to pass to the template
+     *
      * @return string The rendered template
      */
     public function render(array $context);

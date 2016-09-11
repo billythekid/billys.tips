@@ -63,12 +63,12 @@ class ContainerAwareEventDispatcher extends EventDispatcher
      * @param int    $priority  The higher this value, the earlier an event listener
      *                          will be triggered in the chain.
      *                          Defaults to 0.
+     *
      * @throws \InvalidArgumentException
      */
     public function addListenerService($eventName, $callback, $priority = 0)
     {
-        if (!is_array($callback) || 2 !== count($callback))
-        {
+        if (!is_array($callback) || 2 !== count($callback)) {
             throw new \InvalidArgumentException('Expected an array("service", "method") argument');
         }
 
@@ -79,22 +79,17 @@ class ContainerAwareEventDispatcher extends EventDispatcher
     {
         $this->lazyLoad($eventName);
 
-        if (isset($this->listenerIds[$eventName]))
-        {
-            foreach ($this->listenerIds[$eventName] as $i => $args)
-            {
+        if (isset($this->listenerIds[$eventName])) {
+            foreach ($this->listenerIds[$eventName] as $i => $args) {
                 list($serviceId, $method, $priority) = $args;
-                $key = $serviceId . '.' . $method;
-                if (isset($this->listeners[$eventName][$key]) && $listener === array($this->listeners[$eventName][$key], $method))
-                {
+                $key = $serviceId.'.'.$method;
+                if (isset($this->listeners[$eventName][$key]) && $listener === array($this->listeners[$eventName][$key], $method)) {
                     unset($this->listeners[$eventName][$key]);
-                    if (empty($this->listeners[$eventName]))
-                    {
+                    if (empty($this->listeners[$eventName])) {
                         unset($this->listeners[$eventName]);
                     }
                     unset($this->listenerIds[$eventName][$i]);
-                    if (empty($this->listenerIds[$eventName]))
-                    {
+                    if (empty($this->listenerIds[$eventName])) {
                         unset($this->listenerIds[$eventName]);
                     }
                 }
@@ -109,13 +104,11 @@ class ContainerAwareEventDispatcher extends EventDispatcher
      */
     public function hasListeners($eventName = null)
     {
-        if (null === $eventName)
-        {
-            return (bool)count($this->listenerIds) || (bool)count($this->listeners);
+        if (null === $eventName) {
+            return (bool) count($this->listenerIds) || (bool) count($this->listeners);
         }
 
-        if (isset($this->listenerIds[$eventName]))
-        {
+        if (isset($this->listenerIds[$eventName])) {
             return true;
         }
 
@@ -127,14 +120,11 @@ class ContainerAwareEventDispatcher extends EventDispatcher
      */
     public function getListeners($eventName = null)
     {
-        if (null === $eventName)
-        {
-            foreach ($this->listenerIds as $serviceEventName => $args)
-            {
+        if (null === $eventName) {
+            foreach ($this->listenerIds as $serviceEventName => $args) {
                 $this->lazyLoad($serviceEventName);
             }
-        } else
-        {
+        } else {
             $this->lazyLoad($eventName);
         }
 
@@ -159,18 +149,13 @@ class ContainerAwareEventDispatcher extends EventDispatcher
      */
     public function addSubscriberService($serviceId, $class)
     {
-        foreach ($class::getSubscribedEvents() as $eventName => $params)
-        {
-            if (is_string($params))
-            {
+        foreach ($class::getSubscribedEvents() as $eventName => $params) {
+            if (is_string($params)) {
                 $this->listenerIds[$eventName][] = array($serviceId, $params, 0);
-            } elseif (is_string($params[0]))
-            {
+            } elseif (is_string($params[0])) {
                 $this->listenerIds[$eventName][] = array($serviceId, $params[0], isset($params[1]) ? $params[1] : 0);
-            } else
-            {
-                foreach ($params as $listener)
-                {
+            } else {
+                foreach ($params as $listener) {
                     $this->listenerIds[$eventName][] = array($serviceId, $listener[0], isset($listener[1]) ? $listener[1] : 0);
                 }
             }
@@ -192,19 +177,15 @@ class ContainerAwareEventDispatcher extends EventDispatcher
      */
     protected function lazyLoad($eventName)
     {
-        if (isset($this->listenerIds[$eventName]))
-        {
-            foreach ($this->listenerIds[$eventName] as $args)
-            {
+        if (isset($this->listenerIds[$eventName])) {
+            foreach ($this->listenerIds[$eventName] as $args) {
                 list($serviceId, $method, $priority) = $args;
                 $listener = $this->container->get($serviceId);
 
-                $key = $serviceId . '.' . $method;
-                if (!isset($this->listeners[$eventName][$key]))
-                {
+                $key = $serviceId.'.'.$method;
+                if (!isset($this->listeners[$eventName][$key])) {
                     $this->addListener($eventName, array($listener, $method), $priority);
-                } elseif ($listener !== $this->listeners[$eventName][$key])
-                {
+                } elseif ($listener !== $this->listeners[$eventName][$key]) {
                     parent::removeListener($eventName, array($this->listeners[$eventName][$key], $method));
                     $this->addListener($eventName, array($listener, $method), $priority);
                 }

@@ -13,49 +13,52 @@ namespace Craft;
  */
 class LocaleRecord extends BaseRecord
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::getTableName()
-     * @return string
-     */
-    public function getTableName()
-    {
-        return 'locales';
-    }
+	/**
+	 * @inheritDoc BaseRecord::getTableName()
+	 *
+	 * @return string
+	 */
+	public function getTableName()
+	{
+		return 'locales';
+	}
 
-    /**
-     * @return string
-     */
-    public function primaryKey()
-    {
-        return 'locale';
-    }
+	/**
+	 * @return string
+	 */
+	public function primaryKey()
+	{
+		return 'locale';
+	}
 
-    /**
-     * @inheritDoc BaseRecord::defineIndexes()
-     * @return array
-     */
-    public function defineIndexes()
-    {
-        return array(
-            array('columns' => array('sortOrder')),
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineIndexes()
+	 *
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('sortOrder')),
+		);
+	}
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseRecord::defineAttributes()
-     * @return array
-     */
-    protected function defineAttributes()
-    {
-        return array(
-            'locale'    => array(AttributeType::Locale, 'required' => true, 'primaryKey' => true),
-            'sortOrder' => AttributeType::SortOrder,
-        );
-    }
+	/**
+	 * @inheritDoc BaseRecord::defineAttributes()
+	 *
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'locale'    => array(AttributeType::Locale, 'required' => true, 'primaryKey' => true),
+			'sortOrder' => AttributeType::SortOrder,
+		);
+	}
 }

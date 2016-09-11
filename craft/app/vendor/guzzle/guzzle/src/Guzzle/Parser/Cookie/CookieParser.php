@@ -19,7 +19,7 @@ class CookieParser implements CookieParserInterface
         'discard'     => 'Discard',
         'comment'     => 'Comment',
         'comment_url' => 'Comment-Url',
-        'http_only'   => 'HttpOnly',
+        'http_only'   => 'HttpOnly'
     );
 
     public function parseCookie($cookie, $host = null, $path = null, $decode = false)
@@ -28,50 +28,42 @@ class CookieParser implements CookieParserInterface
         $pieces = array_filter(array_map('trim', explode(';', $cookie)));
 
         // The name of the cookie (first kvp) must include an equal sign.
-        if (empty($pieces) || !strpos($pieces[0], '='))
-        {
+        if (empty($pieces) || !strpos($pieces[0], '=')) {
             return false;
         }
 
         // Create the default return array
-        $data            = array_merge(array_fill_keys(array_keys(self::$cookieParts), null), array(
+        $data = array_merge(array_fill_keys(array_keys(self::$cookieParts), null), array(
             'cookies'   => array(),
             'data'      => array(),
             'path'      => null,
             'http_only' => false,
             'discard'   => false,
-            'domain'    => $host,
+            'domain'    => $host
         ));
         $foundNonCookies = 0;
 
         // Add the cookie pieces into the parsed data array
-        foreach ($pieces as $part)
-        {
+        foreach ($pieces as $part) {
 
             $cookieParts = explode('=', $part, 2);
-            $key         = trim($cookieParts[0]);
+            $key = trim($cookieParts[0]);
 
-            if (count($cookieParts) == 1)
-            {
+            if (count($cookieParts) == 1) {
                 // Can be a single value (e.g. secure, httpOnly)
                 $value = true;
-            } else
-            {
+            } else {
                 // Be sure to strip wrapping quotes
                 $value = trim($cookieParts[1], " \n\r\t\0\x0B\"");
-                if ($decode)
-                {
+                if ($decode) {
                     $value = urldecode($value);
                 }
             }
 
             // Only check for non-cookies when cookies have been found
-            if (!empty($data['cookies']))
-            {
-                foreach (self::$cookieParts as $mapValue => $search)
-                {
-                    if (!strcasecmp($search, $key))
-                    {
+            if (!empty($data['cookies'])) {
+                foreach (self::$cookieParts as $mapValue => $search) {
+                    if (!strcasecmp($search, $key)) {
                         $data[$mapValue] = $mapValue == 'port' ? array_map('trim', explode(',', $value)) : $value;
                         $foundNonCookies++;
                         continue 2;
@@ -85,9 +77,8 @@ class CookieParser implements CookieParserInterface
         }
 
         // Calculate the expires date
-        if (!$data['expires'] && $data['max_age'])
-        {
-            $data['expires'] = time() + (int)$data['max_age'];
+        if (!$data['expires'] && $data['max_age']) {
+            $data['expires'] = time() + (int) $data['max_age'];
         }
 
         // Check path attribute according RFC6265 http://tools.ietf.org/search/rfc6265#section-5.2.4
@@ -96,8 +87,7 @@ class CookieParser implements CookieParserInterface
         //   Let cookie-path be the default-path.
         // Otherwise:
         //   Let cookie-path be the attribute-value."
-        if (!$data['path'] || substr($data['path'], 0, 1) !== '/')
-        {
+        if (!$data['path'] || substr($data['path'], 0, 1) !== '/') {
             $data['path'] = $this->getDefaultPath($path);
         }
 
@@ -109,30 +99,27 @@ class CookieParser implements CookieParserInterface
      * http://tools.ietf.org/search/rfc6265#section-5.1.4 Paths and Path-Match
      *
      * @param string $path Request uri-path
+     *
      * @return string
      */
-    protected function getDefaultPath($path)
-    {
+    protected function getDefaultPath($path) {
         // "The user agent MUST use an algorithm equivalent to the following algorithm
         // to compute the default-path of a cookie:"
 
         // "2. If the uri-path is empty or if the first character of the uri-path is not
         // a %x2F ("/") character, output %x2F ("/") and skip the remaining steps.
-        if (empty($path) || substr($path, 0, 1) !== '/')
-        {
+        if (empty($path) || substr($path, 0, 1) !== '/') {
             return '/';
         }
 
         // "3. If the uri-path contains no more than one %x2F ("/") character, output
         // %x2F ("/") and skip the remaining step."
-        if ($path === "/")
-        {
+        if ($path === "/") {
             return $path;
         }
 
         $rightSlashPos = strrpos($path, '/');
-        if ($rightSlashPos === 0)
-        {
+        if ($rightSlashPos === 0) {
             return "/";
         }
 

@@ -13,20 +13,21 @@ namespace Craft;
  */
 class Header_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles a Header_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $compiler
-            ->write('\Craft\HeaderHelper::setHeader(')
-            ->subcompile($this->getNode('header'))
-            ->raw(");\n");
-    }
+	/**
+	 * Compiles a Header_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler
+			->write('\Craft\HeaderHelper::setHeader(')
+			->subcompile($this->getNode('header'))
+			->raw(");\n");
+	}
 }

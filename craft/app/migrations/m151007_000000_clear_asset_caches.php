@@ -6,20 +6,20 @@ namespace Craft;
  */
 class m151007_000000_clear_asset_caches extends BaseMigration
 {
-    /**
-     * Any migration code in here is wrapped inside of a transaction.
-     *
-     * @return bool
-     */
-    public function safeUp()
-    {
-        Craft::log('Clearing asset caches', LogLevel::Info, true);
+	/**
+	 * Any migration code in here is wrapped inside of a transaction.
+	 *
+	 * @return bool
+	 */
+	public function safeUp()
+	{
+		Craft::log('Clearing asset caches', LogLevel::Info, true);
 
-        $path = craft()->path->getRuntimePath() . 'assets';
-        IOHelper::clearFolder($path);
+		$path = craft()->path->getRuntimePath().'assets';
+		IOHelper::clearFolder($path);
 
-        Craft::log('Done clearing asset caches', LogLevel::Info, true);
+		Craft::log('Done clearing asset caches', LogLevel::Info, true);
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -15,11 +15,9 @@ class HeaderVisitor extends AbstractRequestVisitor
     public function visit(CommandInterface $command, RequestInterface $request, Parameter $param, $value)
     {
         $value = $param->filter($value);
-        if ($param->getType() == 'object' && $param->getAdditionalProperties() instanceof Parameter)
-        {
+        if ($param->getType() == 'object' && $param->getAdditionalProperties() instanceof Parameter) {
             $this->addPrefixedHeaders($request, $param, $value);
-        } else
-        {
+        } else {
             $request->setHeader($param->getWireName(), $value);
         }
     }
@@ -30,17 +28,16 @@ class HeaderVisitor extends AbstractRequestVisitor
      * @param RequestInterface $request Request to update
      * @param Parameter        $param   Parameter object
      * @param array            $value   Header array to add
+     *
      * @throws InvalidArgumentException
      */
     protected function addPrefixedHeaders(RequestInterface $request, Parameter $param, $value)
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             throw new InvalidArgumentException('An array of mapped headers expected, but received a single value');
         }
         $prefix = $param->getSentAs();
-        foreach ($value as $headerName => $headerValue)
-        {
+        foreach ($value as $headerName => $headerValue) {
             $request->setHeader($prefix . $headerName, $headerValue);
         }
     }

@@ -16,11 +16,11 @@ class TruncatedBackoffStrategy extends AbstractBackoffStrategy
 
     /**
      * @param int                      $maxRetries Maximum number of retries per request
-     * @param BackoffStrategyInterface $next       The optional next strategy
+     * @param BackoffStrategyInterface $next The optional next strategy
      */
     public function __construct($maxRetries, BackoffStrategyInterface $next = null)
     {
-        $this->max  = $maxRetries;
+        $this->max = $maxRetries;
         $this->next = $next;
     }
 

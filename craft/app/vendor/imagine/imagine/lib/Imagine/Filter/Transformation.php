@@ -71,15 +71,14 @@ final class Transformation implements FilterInterface, ManipulatorInterface
      *
      * @param ImageInterface  $image
      * @param FilterInterface $filter
+     *
      * @return ImageInterface
      * @throws InvalidArgumentException
      */
     public function applyFilter(ImageInterface $image, FilterInterface $filter)
     {
-        if ($filter instanceof ImagineAware)
-        {
-            if ($this->imagine === null)
-            {
+        if ($filter instanceof ImagineAware) {
+            if ($this->imagine === null) {
                 throw new InvalidArgumentException(sprintf('In order to use %s pass an Imagine\Image\ImagineInterface instance to Transformation constructor', get_class($filter)));
             }
             $filter->setImagine($this->imagine);
@@ -89,21 +88,17 @@ final class Transformation implements FilterInterface, ManipulatorInterface
     }
 
     /**
-     * Returns a list of filters sorted by their priority. Filters with same priority will be returned in the order
-     * they were added.
+     * Returns a list of filters sorted by their priority. Filters with same priority will be returned in the order they were added.
      *
      * @return array
      */
     public function getFilters()
     {
-        if (null === $this->sorted)
-        {
-            if (!empty($this->filters))
-            {
+        if (null === $this->sorted) {
+            if (!empty($this->filters)) {
                 ksort($this->filters);
                 $this->sorted = call_user_func_array('array_merge', $this->filters);
-            } else
-            {
+            } else {
                 $this->sorted = array();
             }
         }
@@ -238,7 +233,7 @@ final class Transformation implements FilterInterface, ManipulatorInterface
     public function add(FilterInterface $filter, $priority = 0)
     {
         $this->filters[$priority][] = $filter;
-        $this->sorted               = null;
+        $this->sorted = null;
 
         return $this;
     }

@@ -13,6 +13,7 @@ interface PostFileInterface
      * Set the name of the field
      *
      * @param string $name Field name
+     *
      * @return self
      */
     public function setFieldName($name);
@@ -28,6 +29,7 @@ interface PostFileInterface
      * Set the path to the file
      *
      * @param string $path Full path to the file
+     *
      * @return self
      * @throws InvalidArgumentException if the file cannot be read
      */
@@ -37,6 +39,7 @@ interface PostFileInterface
      * Set the post name of the file
      *
      * @param string $name The new name of the file
+     *
      * @return self
      */
     public function setPostname($name);
@@ -59,6 +62,7 @@ interface PostFileInterface
      * Set the Content-Type of the file
      *
      * @param string $type Content type
+     *
      * @return self
      */
     public function setContentType($type);

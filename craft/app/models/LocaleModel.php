@@ -13,111 +13,116 @@ namespace Craft;
  */
 class LocaleModel extends BaseApplicationComponent
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var
-     */
-    private $_id;
+	/**
+	 * @var
+	 */
+	private $_id;
 
-    /**
-     * @var
-     */
-    private $_nameInLanguage;
+	/**
+	 * @var
+	 */
+	private $_nameInLanguage;
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Constructor
-     *
-     * @param $id
-     * @return LocaleModel
-     */
-    public function __construct($id)
-    {
-        $this->_id = $id;
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param $id
+	 *
+	 * @return LocaleModel
+	 */
+	public function __construct($id)
+	{
+		$this->_id = $id;
+	}
 
-    /**
-     * Use the ID as the string representation of locales.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->_id;
-    }
+	/**
+	 * Use the ID as the string representation of locales.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->_id;
+	}
 
-    public function getId()
-    {
-        return $this->_id;
-    }
+	public function getId()
+	{
+		return $this->_id;
+	}
 
-    /**
-     * Returns the locale name in a given language.
-     *
-     * @param string|null $targetLocaleId
-     * @return string|null
-     */
-    public function getName($targetLocaleId = null)
-    {
-        // If no language is specified, default to the user's language
-        if (!$targetLocaleId)
-        {
-            $targetLocaleId = craft()->language;
-        }
+	/**
+	 * Returns the locale name in a given language.
+	 *
+	 * @param string|null $targetLocaleId
+	 *
+	 * @return string|null
+	 */
+	public function getName($targetLocaleId = null)
+	{
+		// If no language is specified, default to the user's language
+		if (!$targetLocaleId)
+		{
+			$targetLocaleId = craft()->language;
+		}
 
-        if (!isset($this->_nameInLanguage) || !array_key_exists($targetLocaleId, $this->_nameInLanguage))
-        {
-            $localeData = craft()->i18n->getLocaleData($targetLocaleId);
+		if (!isset($this->_nameInLanguage) || !array_key_exists($targetLocaleId, $this->_nameInLanguage))
+		{
+			$localeData = craft()->i18n->getLocaleData($targetLocaleId);
 
-            if ($localeData)
-            {
-                $name = $localeData->getLocaleDisplayName($this->_id);
+			if ($localeData)
+			{
+				$name = $localeData->getLocaleDisplayName($this->_id);
 
-                if (!$name)
-                {
-                    // Try grabbing the language and territory separately...
-                    $name = $localeData->getLanguage($this->_id);
+				if (!$name)
+				{
+					// Try grabbing the language and territory separately...
+					$name = $localeData->getLanguage($this->_id);
 
-                    if ($name)
-                    {
-                        $territory = $localeData->getTerritory($this->_id);
+					if ($name)
+					{
+						$territory = $localeData->getTerritory($this->_id);
 
-                        if ($territory)
-                        {
-                            $name .= ' - ' . $territory;
-                        }
-                    } else if ($targetLocaleId != 'en')
-                    {
-                        // Fall back on English
-                        return $this->getName('en');
-                    } else
-                    {
-                        // Use the locale ID as a last result
-                        return $this->_id;
-                    }
-                }
-            } else
-            {
-                $name = null;
-            }
+						if ($territory)
+						{
+							$name .= ' - '.$territory;
+						}
+					}
+					else if ($targetLocaleId != 'en')
+					{
+						// Fall back on English
+						return $this->getName('en');
+					}
+					else
+					{
+						// Use the locale ID as a last result
+						return $this->_id;
+					}
+				}
+			}
+			else
+			{
+				$name = null;
+			}
 
-            $this->_nameInLanguage[$targetLocaleId] = $name;
-        }
+			$this->_nameInLanguage[$targetLocaleId] = $name;
+		}
 
-        return $this->_nameInLanguage[$targetLocaleId];
-    }
+		return $this->_nameInLanguage[$targetLocaleId];
+	}
 
-    /**
-     * Returns the locale name in its own language.
-     *
-     * @return string|false
-     */
-    public function getNativeName()
-    {
-        return $this->getName($this->_id);
-    }
+	/**
+	 * Returns the locale name in its own language.
+	 *
+	 * @return string|false
+	 */
+	public function getNativeName()
+	{
+		return $this->getName($this->_id);
+	}
 }

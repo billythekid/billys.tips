@@ -22,8 +22,9 @@ interface EffectsInterface
     /**
      * Apply gamma correction
      *
-     * @param  float $correction
+     * @param  float            $correction
      * @return EffectsInterface
+     *
      * @throws RuntimeException
      */
     public function gamma($correction);
@@ -32,6 +33,7 @@ interface EffectsInterface
      * Invert the colors of the image
      *
      * @return EffectsInterface
+     *
      * @throws RuntimeException
      */
     public function negative();
@@ -40,6 +42,7 @@ interface EffectsInterface
      * Grayscale the image
      *
      * @return EffectsInterface
+     *
      * @throws RuntimeException
      */
     public function grayscale();
@@ -48,7 +51,9 @@ interface EffectsInterface
      * Colorize the image
      *
      * @param ColorInterface $color
+     *
      * @return EffectsInterface
+     *
      * @throws RuntimeException
      */
     public function colorize(ColorInterface $color);
@@ -57,6 +62,7 @@ interface EffectsInterface
      * Sharpens the image
      *
      * @return EffectsInterface
+     *
      * @throws RuntimeException
      */
     public function sharpen();
@@ -65,7 +71,9 @@ interface EffectsInterface
      * Blur the image
      *
      * @param float|int $sigma
+     *
      * @return EffectsInterface
+     *
      * @throws RuntimeException
      */
     public function blur($sigma);

@@ -4,9 +4,10 @@ namespace Craft;
 craft()->requireEdition(Craft::Pro);
 
 /**
- * The UserSettingsController class is a controller that handles various user group and user settings related tasks
- * such as creating, editing and deleting user groups and saving Craft user settings. Note that all actions in this
- * controller require administrator access in order to execute.
+ * The UserSettingsController class is a controller that handles various user group and user settings related tasks such as
+ * creating, editing and deleting user groups and saving Craft user settings.
+ *
+ * Note that all actions in this controller require administrator access in order to execute.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
  * @copyright Copyright (c) 2014, Pixel & Tonic, Inc.
@@ -17,124 +18,128 @@ craft()->requireEdition(Craft::Pro);
  */
 class UserSettingsController extends BaseController
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc BaseController::init()
-     * @throws HttpException
-     * @return null
-     */
-    public function init()
-    {
-        // All user settings actions require an admin
-        craft()->userSession->requireAdmin();
-    }
+	/**
+	 * @inheritDoc BaseController::init()
+	 *
+	 * @throws HttpException
+	 * @return null
+	 */
+	public function init()
+	{
+		// All user settings actions require an admin
+		craft()->userSession->requireAdmin();
+	}
 
-    /**
-     * Saves a user group.
-     *
-     * @return null
-     */
-    public function actionSaveGroup()
-    {
-        $this->requirePostRequest();
+	/**
+	 * Saves a user group.
+	 *
+	 * @return null
+	 */
+	public function actionSaveGroup()
+	{
+		$this->requirePostRequest();
 
-        $groupId = craft()->request->getPost('groupId');
+		$groupId = craft()->request->getPost('groupId');
 
-        if ($groupId)
-        {
-            $group = craft()->userGroups->getGroupById($groupId);
+		if ($groupId)
+		{
+			$group = craft()->userGroups->getGroupById($groupId);
 
-            if (!$group)
-            {
-                throw new Exception(Craft::t('No group exists with the ID “{id}”.', array('id' => $groupId)));
-            }
-        } else
-        {
-            $group = new UserGroupModel();
-        }
+			if (!$group)
+			{
+				throw new Exception(Craft::t('No group exists with the ID “{id}”.', array('id' => $groupId)));
+			}
+		}
+		else
+		{
+			$group = new UserGroupModel();
+		}
 
-        $group->name   = craft()->request->getPost('name');
-        $group->handle = craft()->request->getPost('handle');
+		$group->name = craft()->request->getPost('name');
+		$group->handle = craft()->request->getPost('handle');
 
-        // Did it save?
-        if (craft()->userGroups->saveGroup($group))
-        {
-            // Save the new permissions
-            $permissions = craft()->request->getPost('permissions', array());
+		// Did it save?
+		if (craft()->userGroups->saveGroup($group))
+		{
+			// Save the new permissions
+			$permissions = craft()->request->getPost('permissions', array());
 
-            // See if there are any new permissions in here
-            if ($groupId && is_array($permissions))
-            {
-                foreach ($permissions as $permission)
-                {
-                    if (!$group->can($permission))
-                    {
-                        // Yep. This will require an elevated session
-                        $this->requireElevatedSession();
-                        break;
-                    }
-                }
-            }
+			// See if there are any new permissions in here
+			if ($groupId && is_array($permissions))
+			{
+				foreach ($permissions as $permission)
+				{
+					if (!$group->can($permission))
+					{
+						// Yep. This will require an elevated session
+						$this->requireElevatedSession();
+						break;
+					}
+				}
+			}
 
-            craft()->userPermissions->saveGroupPermissions($group->id, $permissions);
+			craft()->userPermissions->saveGroupPermissions($group->id, $permissions);
 
-            craft()->userSession->setNotice(Craft::t('Group saved.'));
-            $this->redirectToPostedUrl();
-        } else
-        {
-            craft()->userSession->setError(Craft::t('Couldn’t save group.'));
-        }
+			craft()->userSession->setNotice(Craft::t('Group saved.'));
+			$this->redirectToPostedUrl();
+		}
+		else
+		{
+			craft()->userSession->setError(Craft::t('Couldn’t save group.'));
+		}
 
-        // Send the group back to the template
-        craft()->urlManager->setRouteVariables(array(
-            'group' => $group,
-        ));
-    }
+		// Send the group back to the template
+		craft()->urlManager->setRouteVariables(array(
+			'group' => $group
+		));
+	}
 
-    /**
-     * Deletes a user group.
-     *
-     * @return null
-     */
-    public function actionDeleteGroup()
-    {
-        $this->requirePostRequest();
-        $this->requireAjaxRequest();
+	/**
+	 * Deletes a user group.
+	 *
+	 * @return null
+	 */
+	public function actionDeleteGroup()
+	{
+		$this->requirePostRequest();
+		$this->requireAjaxRequest();
 
-        $groupId = craft()->request->getRequiredPost('id');
+		$groupId = craft()->request->getRequiredPost('id');
 
-        craft()->userGroups->deleteGroupById($groupId);
+		craft()->userGroups->deleteGroupById($groupId);
 
-        $this->returnJson(array('success' => true));
-    }
+		$this->returnJson(array('success' => true));
+	}
 
-    /**
-     * Saves the system user settings.
-     *
-     * @return null
-     */
-    public function actionSaveUserSettings()
-    {
-        $this->requirePostRequest();
+	/**
+	 * Saves the system user settings.
+	 *
+	 * @return null
+	 */
+	public function actionSaveUserSettings()
+	{
+		$this->requirePostRequest();
 
-        $settings['requireEmailVerification'] = (bool)craft()->request->getPost('requireEmailVerification');
-        $settings['allowPublicRegistration']  = (bool)craft()->request->getPost('allowPublicRegistration');
-        $settings['defaultGroup']             = craft()->request->getPost('defaultGroup');
+		$settings['requireEmailVerification'] = (bool) craft()->request->getPost('requireEmailVerification');
+		$settings['allowPublicRegistration'] = (bool) craft()->request->getPost('allowPublicRegistration');
+		$settings['defaultGroup'] = craft()->request->getPost('defaultGroup');
 
-        if (craft()->systemSettings->saveSettings('users', $settings))
-        {
-            craft()->userSession->setNotice(Craft::t('User settings saved.'));
-            $this->redirectToPostedUrl();
-        } else
-        {
-            craft()->userSession->setError(Craft::t('Couldn’t save user settings.'));
+		if (craft()->systemSettings->saveSettings('users', $settings))
+		{
+			craft()->userSession->setNotice(Craft::t('User settings saved.'));
+			$this->redirectToPostedUrl();
+		}
+		else
+		{
+			craft()->userSession->setError(Craft::t('Couldn’t save user settings.'));
 
-            // Send the settings back to the template
-            craft()->urlManager->setRouteVariables(array(
-                'settings' => $settings,
-            ));
-        }
-    }
+			// Send the settings back to the template
+			craft()->urlManager->setRouteVariables(array(
+				'settings' => $settings
+			));
+		}
+	}
 }

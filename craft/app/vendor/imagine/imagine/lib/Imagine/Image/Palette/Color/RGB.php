@@ -37,6 +37,7 @@ final class RGB implements ColorInterface
     private $alpha;
 
     /**
+     *
      * @var RGBPalette
      */
     private $palette;
@@ -53,8 +54,7 @@ final class RGB implements ColorInterface
      */
     public function getValue($component)
     {
-        switch ($component)
-        {
+        switch ($component) {
             case ColorInterface::COLOR_RED:
                 return $this->getRed();
             case ColorInterface::COLOR_GREEN:
@@ -178,15 +178,16 @@ final class RGB implements ColorInterface
 
     /**
      * Internal
+     *
      * Performs checks for validity of given alpha value and sets it
      *
      * @param integer $alpha
+     *
      * @throws InvalidArgumentException
      */
     private function setAlpha($alpha)
     {
-        if (!is_int($alpha) || $alpha < 0 || $alpha > 100)
-        {
+        if (!is_int($alpha) || $alpha < 0 || $alpha > 100) {
             throw new InvalidArgumentException(sprintf('Alpha must be an integer between 0 and 100, %s given', $alpha));
         }
 
@@ -195,15 +196,16 @@ final class RGB implements ColorInterface
 
     /**
      * Internal
+     *
      * Performs checks for color validity (array of array(R, G, B))
      *
      * @param array $color
+     *
      * @throws InvalidArgumentException
      */
     private function setColor(array $color)
     {
-        if (count($color) !== 3)
-        {
+        if (count($color) !== 3) {
             throw new InvalidArgumentException('Color argument must look like array(R, G, B), where R, G, B are the integer values between 0 and 255 for red, green and blue color indexes accordingly');
         }
 

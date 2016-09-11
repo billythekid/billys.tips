@@ -13,52 +13,53 @@ namespace Craft;
  */
 class CompositeUniqueValidator extends \CValidator
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * @var
-     */
-    public $with;
+	/**
+	 * @var
+	 */
+	public $with;
 
-    // Protected Methods
-    // =========================================================================
+	// Protected Methods
+	// =========================================================================
 
-    /**
-     * @param \CModel $object
-     * @param string  $attribute
-     * @throws Exception
-     * @return null
-     */
-    protected function validateAttribute($object, $attribute)
-    {
-        $with = explode(',', $this->with);
+	/**
+	 * @param \CModel $object
+	 * @param string  $attribute
+	 *
+	 * @throws Exception
+	 * @return null
+	 */
+	protected function validateAttribute($object, $attribute)
+	{
+		$with = explode(',', $this->with);
 
-        if (count($with) < 1)
-        {
-            throw new Exception(Craft::t('Attribute “with” not set.'));
-        }
+		if (count($with) < 1)
+		{
+			throw new Exception(Craft::t('Attribute “with” not set.'));
+		}
 
-        $uniqueValidator             = new \CUniqueValidator();
-        $uniqueValidator->attributes = array($attribute);
-        $uniqueValidator->message    = $this->message;
-        $uniqueValidator->on         = $this->on;
+		$uniqueValidator = new \CUniqueValidator();
+		$uniqueValidator->attributes = array($attribute);
+		$uniqueValidator->message = $this->message;
+		$uniqueValidator->on = $this->on;
 
-        $conditionParams = array();
-        $params          = array();
+		$conditionParams = array();
+		$params = array();
 
-        foreach ($with as $column)
-        {
-            $conditionParams[]    = "`{$column}`=:{$column}";
-            $params[":{$column}"] = $object->$column;
-        }
+		foreach ($with as $column)
+		{
+			$conditionParams[] = "`{$column}`=:{$column}";
+			$params[":{$column}"] = $object->$column;
+		}
 
-        $condition                 = implode(' AND ', $conditionParams);
-        $uniqueValidator->criteria = array(
-            'condition' => $condition,
-            'params'    => $params,
-        );
+		$condition = implode(' AND ', $conditionParams);
+		$uniqueValidator->criteria = array(
+			'condition' => $condition,
+			'params' => $params
+		);
 
-        $uniqueValidator->validate($object);
-    }
+		$uniqueValidator->validate($object);
+	}
 }

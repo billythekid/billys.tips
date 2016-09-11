@@ -19,8 +19,7 @@ class ClosureCommand extends AbstractCommand
      */
     protected function init()
     {
-        if (!$this['closure'])
-        {
+        if (!$this['closure']) {
             throw new InvalidArgumentException('A closure must be passed in the parameters array');
         }
     }
@@ -35,8 +34,7 @@ class ClosureCommand extends AbstractCommand
         /** @var $closure \Closure */
         $this->request = $closure($this, $this->operation);
 
-        if (!$this->request || !$this->request instanceof RequestInterface)
-        {
+        if (!$this->request || !$this->request instanceof RequestInterface) {
             throw new UnexpectedValueException('Closure command did not return a RequestInterface object');
         }
     }

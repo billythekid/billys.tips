@@ -13,36 +13,36 @@ namespace Craft;
  */
 interface IWidget extends ISavableComponentType
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Returns the widget's title.
-     *
-     * @return string The widget’s title.
-     */
-    public function getTitle();
+	/**
+	 * Returns the widget's title.
+	 *
+	 * @return string The widget’s title.
+	 */
+	public function getTitle();
 
-    /**
-     * Returns the path to the widget’s SVG icon.
-     *
-     * @return string The path to the widget’s SVG icon
-     */
-    public function getIconPath();
+	/**
+	 * Returns the path to the widget’s SVG icon.
+	 *
+	 * @return string The path to the widget’s SVG icon
+	 */
+	public function getIconPath();
 
-    /**
-     * Returns the widget's body HTML.
-     *
-     * @return string|false The widget’s body HTML, or `false` if the widget
-     *                      should not be visible. (If you don’t want the widget
-     *                      to be selectable in the first place, use {@link isSelectable()}.)
-     */
-    public function getBodyHtml();
+	/**
+	 * Returns the widget's body HTML.
+	 *
+	 * @return string|false The widget’s body HTML, or `false` if the widget
+	 *                      should not be visible. (If you don’t want the widget
+	 *                      to be selectable in the first place, use {@link isSelectable()}.)
+	 */
+	public function getBodyHtml();
 
-    /**
-     * Returns the widget's maximum colspan.
-     *
-     * @return int The widget’s maximum colspan.
-     */
-    public function getMaxColspan();
+	/**
+	 * Returns the widget's maximum colspan.
+	 *
+	 * @return int The widget’s maximum colspan.
+	 */
+	public function getMaxColspan();
 }

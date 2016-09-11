@@ -19,6 +19,7 @@ interface MessageInterface
      *
      * @param string $header Header name to add
      * @param string $value  Value of the header
+     *
      * @return self
      */
     public function addHeader($header, $value);
@@ -27,6 +28,7 @@ interface MessageInterface
      * Add and merge in an array of HTTP headers.
      *
      * @param array $headers Associative array of header data.
+     *
      * @return self
      */
     public function addHeaders(array $headers);
@@ -35,6 +37,7 @@ interface MessageInterface
      * Retrieve an HTTP header by name. Performs a case-insensitive search of all headers.
      *
      * @param string $header Header to retrieve.
+     *
      * @return Header|null
      */
     public function getHeader($header);
@@ -50,6 +53,7 @@ interface MessageInterface
      * Check if the specified header is present.
      *
      * @param string $header The header to check.
+     *
      * @return bool
      */
     public function hasHeader($header);
@@ -58,6 +62,7 @@ interface MessageInterface
      * Remove a specific HTTP header.
      *
      * @param string $header HTTP header to remove.
+     *
      * @return self
      */
     public function removeHeader($header);
@@ -67,6 +72,7 @@ interface MessageInterface
      *
      * @param string $header Name of the header to set.
      * @param mixed  $value  Value to set.
+     *
      * @return self
      */
     public function setHeader($header, $value);
@@ -75,6 +81,7 @@ interface MessageInterface
      * Overwrite all HTTP headers with the supplied array of headers
      *
      * @param array $headers Associative array of header data.
+     *
      * @return self
      */
     public function setHeaders(array $headers);

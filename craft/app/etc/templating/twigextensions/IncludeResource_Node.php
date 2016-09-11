@@ -13,45 +13,50 @@ namespace Craft;
  */
 class IncludeResource_Node extends \Twig_Node
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * Compiles an IncludeResource_Node into PHP.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return null
-     */
-    public function compile(\Twig_Compiler $compiler)
-    {
-        $function = $this->getAttribute('function');
-        $value    = $this->getNode('value');
+	/**
+	 * Compiles an IncludeResource_Node into PHP.
+	 *
+	 * @param \Twig_Compiler $compiler
+	 *
+	 * @return null
+	 */
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$function = $this->getAttribute('function');
+		$value = $this->getNode('value');
 
-        $compiler
-            ->addDebugInfo($this);
+		$compiler
+			->addDebugInfo($this);
 
-        if ($this->getAttribute('capture'))
-        {
-            $compiler
-                ->write("ob_start();\n")
-                ->subcompile($value)
-                ->write("\$_js = ob_get_clean();\n");
-        } else
-        {
-            $compiler
-                ->write("\$_js = ")
-                ->subcompile($value)
-                ->raw(";\n");
-        }
+		if ($this->getAttribute('capture'))
+		{
+			$compiler
+				->write("ob_start();\n")
+				->subcompile($value)
+				->write("\$_js = ob_get_clean();\n")
+			;
+		}
+		else
+		{
+			$compiler
+				->write("\$_js = ")
+				->subcompile($value)
+				->raw(";\n")
+			;
+		}
 
-        $compiler
-            ->write("\\Craft\\craft()->templates->{$function}(\$_js");
+		$compiler
+			->write("\\Craft\\craft()->templates->{$function}(\$_js")
+		;
 
-        if ($this->getAttribute('first'))
-        {
-            $compiler->raw(', true');
-        }
+		if ($this->getAttribute('first'))
+		{
+			$compiler->raw(', true');
+		}
 
-        $compiler->raw(");\n");
-    }
+		$compiler->raw(");\n");
+	}
 }

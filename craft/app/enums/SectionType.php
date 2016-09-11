@@ -3,6 +3,7 @@ namespace Craft;
 
 /**
  * The SectionType class is an abstract class that defines the different section types available in Craft.
+ *
  * This class is a poor man's version of an enum, since PHP does not have support for native enumerations.
  *
  * @author    Pixel & Tonic, Inc. <support@pixelandtonic.com>
@@ -14,10 +15,10 @@ namespace Craft;
  */
 abstract class SectionType extends BaseEnum
 {
-    // Constants
-    // =========================================================================
+	// Constants
+	// =========================================================================
 
-    const Single    = 'single';
-    const Channel   = 'channel';
-    const Structure = 'structure';
+	const Single    = 'single';
+	const Channel   = 'channel';
+	const Structure = 'structure';
 }

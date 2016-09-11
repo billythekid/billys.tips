@@ -13,27 +13,29 @@ namespace Craft;
  */
 class SuspendUsersElementAction extends BaseElementAction
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc IComponentType::getName()
-     * @return string
-     */
-    public function getName()
-    {
-        return Craft::t('Suspend');
-    }
+	/**
+	 * @inheritDoc IComponentType::getName()
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return Craft::t('Suspend');
+	}
 
-    /**
-     * @inheritDoc IElementAction::getTriggerHtml()
-     * @return string|null
-     */
-    public function getTriggerHtml()
-    {
-        $userId = JsonHelper::encode(craft()->userSession->getUser()->id);
+	/**
+	 * @inheritDoc IElementAction::getTriggerHtml()
+	 *
+	 * @return string|null
+	 */
+	public function getTriggerHtml()
+	{
+		$userId = JsonHelper::encode(craft()->userSession->getUser()->id);
 
-        $js = <<<EOT
+		$js = <<<EOT
 (function()
 {
 	var trigger = new Craft.ElementActionTrigger({
@@ -55,34 +57,36 @@ class SuspendUsersElementAction extends BaseElementAction
 })();
 EOT;
 
-        craft()->templates->includeJs($js);
-    }
+		craft()->templates->includeJs($js);
+	}
 
-    /**
-     * @inheritDoc IElementAction::performAction()
-     * @param ElementCriteriaModel $criteria
-     * @return bool
-     */
-    public function performAction(ElementCriteriaModel $criteria)
-    {
-        // Get the users that aren't already suspended
-        $criteria->status = array(
-            UserStatus::Active,
-            UserStatus::Locked,
-            UserStatus::Pending,
-        );
-        $users            = $criteria->find();
+	/**
+	 * @inheritDoc IElementAction::performAction()
+	 *
+	 * @param ElementCriteriaModel $criteria
+	 *
+	 * @return bool
+	 */
+	public function performAction(ElementCriteriaModel $criteria)
+	{
+		// Get the users that aren't already suspended
+		$criteria->status = array(
+			UserStatus::Active,
+			UserStatus::Locked,
+			UserStatus::Pending,
+		);
+		$users = $criteria->find();
 
-        foreach ($users as $user)
-        {
-            if (!$user->isCurrent())
-            {
-                craft()->users->suspendUser($user);
-            }
-        }
+		foreach ($users as $user)
+		{
+			if (!$user->isCurrent())
+			{
+				craft()->users->suspendUser($user);
+			}
+		}
 
-        $this->setMessage(Craft::t('Users suspended.'));
+		$this->setMessage(Craft::t('Users suspended.'));
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -19,7 +19,7 @@ class Model extends Collection
      */
     public function __construct(array $data = array(), Parameter $structure = null)
     {
-        $this->data      = $data;
+        $this->data = $data;
         $this->structure = $structure;
     }
 
@@ -41,8 +41,7 @@ class Model extends Collection
     public function __toString()
     {
         $output = 'Debug output of ';
-        if ($this->structure)
-        {
+        if ($this->structure) {
             $output .= $this->structure->getName() . ' ';
         }
         $output .= 'model';
@@ -51,10 +50,9 @@ class Model extends Collection
         $output .= "This data can be retrieved from the model object using the get() method of the model "
             . "(e.g. \$model->get(\$key)) or accessing the model like an associative array (e.g. \$model['key']).\n\n";
         $lines = array_slice(explode("\n", trim(print_r($this->toArray(), true))), 2, -1);
-        $output .= implode("\n", $lines);
+        $output .=  implode("\n", $lines);
 
-        if ($this->structure)
-        {
+        if ($this->structure) {
             $output .= "\n\nModel structure\n---------------\n\n";
             $output .= "The following JSON document defines how the model was parsed from an HTTP response into the "
                 . "associative array structure you see above.\n\n";

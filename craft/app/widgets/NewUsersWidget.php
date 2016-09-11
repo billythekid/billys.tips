@@ -18,6 +18,7 @@ class NewUsersWidget extends BaseWidget
 
     /**
      * @inheritDoc IComponentType::getName()
+     *
      * @return string
      */
     public function getName()
@@ -27,6 +28,7 @@ class NewUsersWidget extends BaseWidget
 
     /**
      * @inheritDoc IComponentType::isSelectable()
+     *
      * @return bool
      */
     public function isSelectable()
@@ -37,6 +39,7 @@ class NewUsersWidget extends BaseWidget
 
     /**
      * @inheritDoc IWidget::getTitle()
+     *
      * @return string
      */
     public function getTitle()
@@ -47,7 +50,7 @@ class NewUsersWidget extends BaseWidget
 
             if ($userGroup)
             {
-                return Craft::t('New Users') . ' – ' . Craft::t($userGroup->name);
+                return Craft::t('New Users').' – '.Craft::t($userGroup->name);
             }
         }
 
@@ -56,6 +59,7 @@ class NewUsersWidget extends BaseWidget
 
     /**
      * @inheritDoc IWidget::getBodyHtml()
+     *
      * @return string|false
      */
     public function getBodyHtml()
@@ -67,19 +71,19 @@ class NewUsersWidget extends BaseWidget
 
         $settings = $this->getSettings();
 
-        $groupId   = $settings->userGroupId;
+        $groupId = $settings->userGroupId;
         $userGroup = craft()->userGroups->getGroupById($groupId);
 
-        $options                = $settings->getAttributes();
+        $options = $settings->getAttributes();
         $options['orientation'] = craft()->locale->getOrientation();
 
         craft()->templates->includeJsResource('js/NewUsersWidget.js');
-        craft()->templates->includeJs('new Craft.NewUsersWidget(' . $this->model->id . ', ' . JsonHelper::encode($options) . ');');
+        craft()->templates->includeJs('new Craft.NewUsersWidget('.$this->model->id.', '.JsonHelper::encode($options).');');
 
-        $dateRange  = false;
+        $dateRange = false;
         $dateRanges = ChartHelper::getDateRanges();
 
-        if (isset($dateRanges[$settings->dateRange]))
+        if(isset($dateRanges[$settings->dateRange]))
         {
             $dateRange = $dateRanges[$settings->dateRange];
         }
@@ -89,35 +93,38 @@ class NewUsersWidget extends BaseWidget
 
     /**
      * @inheritDoc ISavableComponentType::getSettingsHtml()
+     *
      * @return string
      */
     public function getSettingsHtml()
     {
         return craft()->templates->render('_components/widgets/NewUsers/settings', array(
-            'settings' => $this->getSettings(),
+            'settings' => $this->getSettings()
         ));
     }
 
-    /**
-     * @inheritDoc IWidget::getIconPath()
-     * @return string
-     */
-    public function getIconPath()
-    {
-        return craft()->path->getResourcesPath() . 'images/widgets/new-users.svg';
-    }
+	/**
+	 * @inheritDoc IWidget::getIconPath()
+	 *
+	 * @return string
+	 */
+	public function getIconPath()
+	{
+		return craft()->path->getResourcesPath().'images/widgets/new-users.svg';
+	}
 
     // Protected Methods
     // =========================================================================
 
     /**
      * @inheritDoc BaseSavableComponentType::defineSettings()
+     *
      * @return array
      */
     protected function defineSettings()
     {
         return array(
-            'userGroupId' => AttributeType::Number,
+            'userGroupId'   => AttributeType::Number,
             'dateRange'   => AttributeType::String,
         );
     }

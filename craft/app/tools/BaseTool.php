@@ -13,53 +13,58 @@ namespace Craft;
  */
 abstract class BaseTool extends BaseComponentType implements ITool
 {
-    // Properties
-    // =========================================================================
+	// Properties
+	// =========================================================================
 
-    /**
-     * The type of component, e.g. "Plugin", "Widget", "FieldType", etc. Defined by the component type's base class.
-     *
-     * @var string
-     */
-    protected $componentType = 'Tool';
+	/**
+	 * The type of component, e.g. "Plugin", "Widget", "FieldType", etc. Defined by the component type's base class.
+	 *
+	 * @var string
+	 */
+	protected $componentType = 'Tool';
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritDoc ITool::getIconValue()
-     * @return string
-     */
-    public function getIconValue()
-    {
-        return 'tool';
-    }
+	/**
+	 * @inheritDoc ITool::getIconValue()
+	 *
+	 * @return string
+	 */
+	public function getIconValue()
+	{
+		return 'tool';
+	}
 
-    /**
-     * @inheritDoc ITool::getOptionsHtml()
-     * @return string
-     */
-    public function getOptionsHtml()
-    {
-        return '';
-    }
+	/**
+	 * @inheritDoc ITool::getOptionsHtml()
+	 *
+	 * @return string
+	 */
+	public function getOptionsHtml()
+	{
+		return '';
+	}
 
-    /**
-     * @inheritDoc ITool::getButtonLabel()
-     * @return string
-     */
-    public function getButtonLabel()
-    {
-        return Craft::t('Go!');
-    }
+	/**
+	 * @inheritDoc ITool::getButtonLabel()
+	 *
+	 * @return string
+	 */
+	public function getButtonLabel()
+	{
+		return Craft::t('Go!');
+	}
 
-    /**
-     * @inheritDoc ITool::performAction()
-     * @param array $params
-     * @return array
-     */
-    public function performAction($params = array())
-    {
-        return array('complete' => true);
-    }
+	/**
+	 * @inheritDoc ITool::performAction()
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 */
+	public function performAction($params = array())
+	{
+		return array('complete' => true);
+	}
 }
