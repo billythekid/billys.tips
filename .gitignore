@@ -1,9 +1,5 @@
-# Created by .ignore support plugin (hsz.mobi)
-### CraftCMS template
-# Craft Storage (cache) [http://buildwithcraft.com/help/craft-storage-gitignore]
 /craft/storage/*
 !/craft/storage/logo/*
 !/craft/storage/.gitignore
 .idea/
 /craft/config/license.key
-/craft/app
