@@ -10,6 +10,10 @@
     {% switch block.type %}
     {% case "code" %}
     <pre {% if block.highlightLines is not empty %}data-line="{{ block.highlightLines }}"{% endif %}><code class="prism-code language-{{ block.language }} line-numbers">{{ block.body }}</code></pre>
+    {% case "image" %}
+    {% for image in block.images %}
+      <img src="{{ image.url }}" alt="{{ image }}">
+    {% endfor %}
     {% default %}
     {{ block.body }}
     {% endswitch %}
