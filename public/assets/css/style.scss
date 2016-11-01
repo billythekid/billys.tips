@@ -380,6 +380,11 @@ html {
         }
       }
     }
+
+    img {
+      max-width: 100%;
+    }
+
   }
   #footer {
     border-radius: 0 0 $cardRadius $cardRadius;
