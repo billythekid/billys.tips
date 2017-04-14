@@ -1,7 +1,7 @@
 <?php
 
 // Path to your craft/ folder
-$craftPath = '../craft';
+$craftPath = __DIR__ . '/../craft';
 
 // Do not edit below this line
 $path = rtrim($craftPath, '/') . '/app/index.php';
