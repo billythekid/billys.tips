@@ -10,24 +10,11 @@ return array(
 
     '*' => [
         'server'      => '212.71.255.242',
-        'tablePrefix' => 'craft',
-    ],
-
-    'ngrok.io' => [
-        'database' => 'tips',
-        'user'     => 'root',
-        'password' => '',
-    ],
-    
-    '.dev' => [
-        'database' => 'tips',
-        'user'     => 'root',
-        'password' => '',
-    ],
-    
-    '.tips' => [
         'database' => 'billys.tips',
         'user'     => 'billys.tips',
         'password' => 'YAizdt7trijn',
+        'tablePrefix' => 'craft',
     ],
+
+    '.dev' => [],
 );
