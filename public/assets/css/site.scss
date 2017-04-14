@@ -25,7 +25,7 @@ nav ul {
 /* Variables
 ------------------------------------------------  */
 
-$pink: rgb(246, 96, 118);
+/* $pink: rgb(246, 96, 118);
 $blue: rgb(107, 196, 234);
 $purple: rgb(140, 133, 203);
 $mushroom: rgb(194, 181, 155);
@@ -34,7 +34,7 @@ $dark: #6f6e6e;
 $primary-color-1: $pink;
 $primary-color-2: $purple;
 $primary-color-3: $blue;
-$text-color: $dark; 
+$text-color: $dark; */
 
 /* Utility
 ------------------------------------------------  */
@@ -96,7 +96,7 @@ body {
 p, ul, ol, table {
   font-size: 1rem;
   margin-bottom: 1rem;
-  color: $text-color
+  color: #000
 }
 
 a {
@@ -105,7 +105,7 @@ a {
 }
 
 a:hover {
-  color: $primary-color-1;
+  color: #000;
 }
 
 h1, h2, h3, h4, h5 {
