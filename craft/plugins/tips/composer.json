@@ -1,0 +1,14 @@
+{
+	"name": "/tips",
+	"description": "Site plugin for billys tips",
+	"type": "craft-plugin",
+	"authors": [
+		{
+			"name": "billythekid",
+			"homepage": "https://billys.tips"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0"
+	}
+}
