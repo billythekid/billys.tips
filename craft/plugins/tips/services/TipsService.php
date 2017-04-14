@@ -19,22 +19,22 @@ class TipsService extends BaseApplicationComponent
             'B', 'b', '\u{00DF}',
         ],
         'i' => [
-
+            'I', 'i',
         ],
         'l' => [
-
+            'L', 'l',
         ],
         'y' => [
-
+            'Y', 'y',
         ],
         's' => [
-
+            'S', 's',
         ],
         't' => [
-
+            'T', 't',
         ],
         'p' => [
-
+            'P', 'p',
         ],
     ];
 
@@ -43,11 +43,12 @@ class TipsService extends BaseApplicationComponent
     public function getWord($word)
     {
         $response = "";
-        $letters = str_split(strtolower($word));
+        $letters  = str_split(strtolower($word));
         foreach ($letters as $letter)
         {
-            $response .= (array_key_exists($letter,$this->letters)) ? $this->letters[$letter][array_rand($this->letters[$letter])] : $letter;
+            $response .= (array_key_exists($letter, $this->letters)) ? $this->letters[$letter][array_rand($this->letters[$letter])] : $letter;
         }
+
         return $response;
     }
 
