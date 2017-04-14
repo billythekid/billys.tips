@@ -105,11 +105,10 @@ a {
 }
 
 a:hover {
-  color: $primary-color-2;
+  color: $primary-color-1;
 }
 
 h1, h2, h3, h4, h5 {
-  color: $primary-color-3;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -128,18 +127,32 @@ h3 {
 
 .siteContainer {
   position: relative;
-  width: 90%;
-  max-width: 1096px;
-  margin: 0 auto;
+  margin: 3rem;
 }
 
 /* Header
 ------------------------------------------------  */
 
+.siteLogo{
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+
+.siteLogo a{
+  color: #000;
+}
+
+
 /* Content
 ------------------------------------------------  */
 
 .superlist p{
-  font-size: 4rem;
+  font-size: 3rem;
+  margin-bottom: 3rem;
+}
+
+.whatTheFuckIsBillysTips{
+  width:50%;
+  color: #000;
 }
 

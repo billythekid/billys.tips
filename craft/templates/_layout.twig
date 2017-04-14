@@ -10,10 +10,10 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="siteContainer">
 
       <header>
-        <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
+        <h1 class="siteLogo"><a href="{{ siteUrl }}">Ƃ</a></h1>
       </header>
 
       <div class="content">
@@ -21,6 +21,7 @@
           <p>If you see me, you haven’t set your <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
           <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.</p>
         {% endblock %}
+        <p class="whatTheFuckIsBillysTips">Each month at AberdeenPHP I give you a single piece of advice that won't cause you pain to read. No long winded explanations or massive code excerpts that you can't understand. It's easy to take it in, when it's just the tip…</p>
       </div>
 
       <footer>

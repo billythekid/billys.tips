@@ -3,7 +3,6 @@
 
 {% block content %}
   <h2>{{ entry.title|title }}</h2>
-  <hr class="heading-line">
   <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
   {#<p class="lead">{{ entry.intro|raw }}</p>#}
   {% for block in entry.blocks %}

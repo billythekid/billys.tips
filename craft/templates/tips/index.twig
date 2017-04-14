@@ -15,7 +15,6 @@
 
 {% block content %}
   <h2>Tips</h2>
-  <hr class="heading-line">
   {% paginate craft.entries.section('tips').limit(6) as pageInfo, tips %}
 
   <div class="articles row">
