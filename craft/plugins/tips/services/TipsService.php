@@ -16,7 +16,7 @@ class TipsService extends BaseApplicationComponent
 {
     private $letters = [
         'b' => [
-            'B', 'b', '\u{00DF}',
+            'B', 'b', "\u{00DF}",
         ],
         'i' => [
             'I', 'i',
