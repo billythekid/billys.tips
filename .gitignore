@@ -3,3 +3,4 @@
 !/craft/storage/.gitignore
 .idea/
 /craft/config/license.key
+/craft/app/

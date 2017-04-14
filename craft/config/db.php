@@ -9,7 +9,7 @@
 return array(
 
     '*' => [
-        'server'      => 'localhost',
+        'server'      => '212.71.255.242',
         'tablePrefix' => 'craft',
     ],
 
