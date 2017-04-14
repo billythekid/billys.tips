@@ -1,4 +1,3 @@
-{% spaceless %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,27 +11,18 @@
   <body>
     <div class="container">
 
-      <header id="header">
+      <header>
         <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
-        <nav>
-          <ul>
-            <li>
-              <a href="{{ url('tips') }}"{% if craft.request.firstSegment== 'tips' %} class="active"{% endif %}>See All Tips</a>
-            </li>
-          </ul>
-        </nav>
       </header>
 
-      <div id="content" class="{{ class ?? '' }}">
+      <div class="content">
         {% block content %}
-          <p>If you see me, you haven’t set your
-            <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
-          <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template
-              Inheritance</a> documentation for an explanation.</p>
+          <p>If you see me, you haven’t set your <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
+          <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.</p>
         {% endblock %}
       </div>
 
-      <footer id="footer">
+      <footer>
         © {{ now.year }} {{ siteName }}.
       </footer>
 
@@ -45,4 +35,3 @@
     {% endif %}
   </body>
 </html>
-{% endspaceless %}
