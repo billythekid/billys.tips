@@ -2,7 +2,7 @@
 {% set class='entry' %}
 
 {% block content %}
-  <h2>{{ entry.title|title }}</h2>
+  <h1>{{ entry.title|title }}</h1>
   <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
   {#<p class="lead">{{ entry.intro|raw }}</p>#}
   {% for block in entry.blocks %}
@@ -18,12 +18,11 @@
     {% endswitch %}
   {% endfor %}
 
-  {% if entry.bonusTip is not empty %}
+  {# {% if entry.bonusTip is not empty %}
     <div class="plumbing" id="bonus">
       <h3>Billy's bonus {{ entry.bonusType }} tip…</h3>
-
       {{ entry.bonusTip }}
     </div>
-  {% endif %}
+  {% endif %} #}
 
 {% endblock %}
