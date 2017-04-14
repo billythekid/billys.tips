@@ -156,6 +156,14 @@ h3 {
   position: relative;
 }
 
+.superlist a span{
+  position: absolute;
+  left:0.125rem;
+  top:-0.5rem;
+  font-size: 11px;
+  color: #000
+}
+
 .whatTheFuckIsBillysTips p{
   width:50%;
   color: #000;
