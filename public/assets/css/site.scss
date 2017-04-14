@@ -1,0 +1,152 @@
+/* Reset
+------------------------------------------------  */
+html, body, h1, h2, h3, h4, h5, h6, p, blockquote, address, pre, cite, code, dfn, abbr, acronym, kbd, a, samp, img, ins, i, b, u, strike, small, big, font, tt, q, dl, dt, dd, ul, ol, li, applet, object, iframe, form, fieldset, label, legend, th, td, th, tbody, tfoot, thead, tr, caption {
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: normal;
+  font-style: normal;
+}
+
+article, aside, details, figcaption, figure, footer, header, menu, nav, section, img {
+  display: block;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box; 
+}
+
+nav ul {
+  list-style: none;
+}
+
+/* Variables
+------------------------------------------------  */
+
+$pink: rgb(246, 96, 118);
+$blue: rgb(107, 196, 234);
+$purple: rgb(140, 133, 203);
+$mushroom: rgb(194, 181, 155);
+$dark: #6f6e6e; 
+
+$primary-color-1: $pink;
+$primary-color-2: $purple;
+$primary-color-3: $blue;
+$text-color: $dark;
+
+/* Utility
+------------------------------------------------  */
+
+/* Align text to center */
+
+.textCenter {
+  text-align: center;
+}
+
+/* Align text to left */
+
+.textLeft {
+  text-align: left;
+}
+
+/* Align text to right */
+
+.textRight {
+  text-align: right;
+}
+
+/* Make element display as block */
+
+.displayBlock {
+  display: block;
+}
+
+/* Clearfix */
+
+.clearfix:after {
+  content:    ".";
+  display:    block;
+  height:     0;
+  clear:      both;
+  visibility: hidden;
+}
+
+.clearfix {
+  zoom: 1
+}
+
+/* General
+------------------------------------------------  */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  line-height: 1.5;
+  color: $text-color;
+  background: #fff;
+  -webkit-text-size-adjust: none;
+  -webkit-font-smoothing: antialiased
+}
+
+p, ul, ol, table {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: $text-color
+}
+
+a {
+  color: $dark;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $primary-color-2;
+}
+
+h1, h2, h3, h4, h5 {
+  color: $primary-color-3;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: $primary-color-2;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.lead {
+  font-size: 1.5rem;
+}
+
+/* Site Container
+------------------------------------------------  */
+
+.siteContainer {
+  position: relative;
+  width: 90%;
+  max-width: 1096px;
+  margin: 0 auto;
+}
+
+/* Header
+------------------------------------------------  */
+
+/* Content
+------------------------------------------------  */
+
