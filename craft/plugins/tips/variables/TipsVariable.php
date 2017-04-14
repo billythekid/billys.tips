@@ -21,4 +21,9 @@ class TipsVariable
     {
         return "And away we go to the Twig template...";
     }
+
+    public function getWord(String $word)
+    {
+        return craft()->tips->getWord($word);
+    }
 }
