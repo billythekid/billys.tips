@@ -1,11 +1,11 @@
 {% spaceless %}
-  <!DOCTYPE html>
-  <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" class="{{ craft.request.getQuery('color') ?? 'red' }}">
+<!DOCTYPE html>
+  <html>
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <meta name=viewport content="width=device-width, initial-scale=1">
     <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
-    <link rel="home" href="{{ siteUrl }}"/>
+    <link rel="home" href="{{ siteUrl }}">
     <link rel="stylesheet" type="text/css" href="{{ url('assets/css/style.css') }}">
   </head>
   <body>
@@ -22,89 +22,23 @@
         </nav>
         <div class="clearfix"></div>
       </header>
-
-      <div class="colortab">
-        <ul>
-          <li class="pink"><a href="?color=pink" onclick="setBgColor('pink')"></a></li>
-          <li class="hotPink"><a href="?color=hotPink" onclick="setBgColor('hotPink')"></a></li>
-          <li class="violet"><a href="?color=violet" onclick="setBgColor('violet')"></a></li>
-          <li class="magenta"><a href="?color=magenta" onclick="setBgColor('magenta')"></a></li>
-          <li class="brown"><a href="?color=brown" onclick="setBgColor('brown')"></a></li>
-          <li class="red"><a href="?color=red" onclick="setBgColor('red')"></a></li>
-          <li class="orange"><a href="?color=orange" onclick="setBgColor('orange')"></a></li>
-          <li class="gold"><a href="?color=gold" onclick="setBgColor('gold')"></a></li>
-          <li class="yellow"><a href="?color=yellow" onclick="setBgColor('yellow')"></a></li>
-          <li class="lime"><a href="?color=lime" onclick="setBgColor('lime')"></a></li>
-          <li class="green"><a href="?color=green" onclick="setBgColor('green')"></a></li>
-          <li class="aquamarine"><a href="?color=aquamarine" onclick="setBgColor('aquamarine')"></a></li>
-          <li class="cyan"><a href="?color=cyan" onclick="setBgColor('cyan')"></a></li>
-          <li class="blue"><a href="?color=blue" onclick="setBgColor('blue')"></a></li>
-          <li class="darkBlue"><a href="?color=darkBlue" onclick="setBgColor('darkBlue')"></a></li>
-          <li class="indigo"><a href="?color=indigo" onclick="setBgColor('indigo')"></a></li>
-          <li class="purple"><a href="?color=purple" onclick="setBgColor('purple')"></a></li>
-          <li class="black"><a href="?color=black" onclick="setBgColor('black')"></a></li>
-          <li class="white"><a href="?color=white" onclick="setBgColor('white')"></a></li>
-        </ul>
-      </div>
-
-      <main id="content" class="{{ class ?? '' }}">
+      <div id="content" class="{{ class ?? '' }}">
         {% block content %}
           <p>If you see me, you haven’t set your
             <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
           <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template
               Inheritance</a> documentation for an explanation.</p>
         {% endblock %}
-      </main>
-
+      </div>
       <footer id="footer">© {{ now.year }} {{ siteName }}.</footer>
     </div>
+
+    {# Prism is used for code indenting, keeeeeeeep #}
     <script src="{{ url('assets/js/prism.js') }}"></script>
     {% if entry is defined and entry.konami is not empty %}
       <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
     {% endif %}
-    <script>
-      function createCookie(name, value, days) {
-        var expires;
-        if (days) {
-          var date = new Date();
-          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-          expires = "; expires=" + date.toGMTString();
-        } else {
-          expires = "";
-        }
-        document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
-      }
 
-      function readCookie(name) {
-        var nameEQ = encodeURIComponent(name) + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-          if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
-        }
-        return null;
-      }
-
-      function eraseCookie(name) {
-        createCookie(name, "", -1);
-      }
-
-      if ('{{ craft.request.getQuery('color') ?? '' }}' != '') {
-        createCookie('color', '{{ craft.request.getQuery('color') }}', 365);
-      }
-
-      if (readCookie('color')) {
-        document.getElementsByTagName('html')[0].className = readCookie('color');
-      }
-
-      function setBgColor(color) {
-        event.preventDefault();
-        document.getElementsByTagName('html')[0].className = color;
-        createCookie('color', color, 365);
-      }
-
-    </script>
   </body>
-  </html>
+</html>
 {% endspaceless %}
