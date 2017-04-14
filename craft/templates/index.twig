@@ -4,7 +4,7 @@
   <div class="superlist">
     <p>
       {% for tip in craft.entries.section("tips") %}
-        <a href="{{ tip.url }}" onmouseover="body.style.backgroundImage = 'url({{ entry.backgroundImage.first.url ?? siteUrl ~ "assets/images/bad-miss.jpg" }})'">{{ tip.title|title }}</a>
+        <a href="{{ tip.url }}" onmouseover="body.style.backgroundImage = 'url({{ tip.backgroundImage.first.url ?? siteUrl ~ "" }})'">{{ tip.title|title }}</a>
       {% endfor %}
      </p>
    </div>
