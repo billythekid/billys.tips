@@ -1,9 +1,11 @@
 {% extends "_layout" %}
 
 {% block content %}
-  <p>
-    {% for tip in craft.entries.section("tips") %}
-      <a href="{{ tip.url }}">{{ tip.title|title }}</a>
-    {% endfor %}
-   </p>
+  <div class="superlist">
+    <p>
+      {% for tip in craft.entries.section("tips") %}
+        <a href="{{ tip.url }}">{{ tip.title|title }}</a>
+      {% endfor %}
+     </p>
+   </div>
 {% endblock %}
