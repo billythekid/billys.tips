@@ -4,9 +4,9 @@
   <div class="superlist">
     <p>
       {% for tip in craft.entries.section("tips") %}
-        <a href="{{ tip.url }}" onmouseover="body.style.backgroundImage = 'url({{ tip.backgroundImage.first.url ?? siteUrl ~ "" }})'">{{ tip.title|title }}</a>
+        <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmouseover="body.style.backgroundImage = 'url({{ tip.backgroundImage.first.url }})'" onmouseout="body.style.backgroundImage = ''"{% endif %}>{{ tip.title|title }}</a>
       {% endfor %}
-     </p>
-   </div>
+    </p>
+  </div>
   <div class="whatTheFuckIsBillysTips">{{ entry.body }}</div>
 {% endblock %}
