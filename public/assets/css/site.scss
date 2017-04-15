@@ -128,7 +128,7 @@ h3 {
 
 .siteContainer {
   position: relative;
-  margin: 2rem;
+  margin: 0 2rem;
 }
 
 /* Header
@@ -137,6 +137,7 @@ h3 {
 .siteLogo{
   font-size: 2rem;
   margin-bottom: 3rem;
+  padding-top: 2rem;
 }
 
 .siteLogo a{
@@ -176,7 +177,7 @@ h3 {
 @media screen and (min-width: 800px) {
 
   .siteContainer {
-    margin: 3rem;
+    margin: 0 3rem;
   }
 
   .superlist p{
@@ -190,6 +191,10 @@ h3 {
 
   .whatTheFuckIsBillysTips p{
     width: 50%;
+  }
+
+  .siteLogo{
+    padding-top: 3rem;
   }
 
 
