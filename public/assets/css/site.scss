@@ -150,7 +150,7 @@ h3 {
 .superlist p{
   font-size: 2rem;
   margin-bottom: 3rem;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .superlist a{
@@ -173,16 +173,16 @@ h3 {
 }
 
 
-@media screen and (min-width: 1096px) {
+@media screen and (min-width: 800px) {
 
   .superlist p{
     font-size: 3rem;
+    line-height: 1.7;
   }
 
   .superlist a{
     display: inline;
   }
-
 
 }
 
