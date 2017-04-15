@@ -148,13 +148,14 @@ h3 {
 ------------------------------------------------  */
 
 .superlist p{
-  font-size: 3rem;
+  font-size: 2rem;
   margin-bottom: 3rem;
   line-height: 1.6;
 }
 
 .superlist a{
   position: relative;
+  display: block;
 }
 
 .superlist a span{
@@ -169,5 +170,19 @@ h3 {
 .whatTheFuckIsBillysTips p{
   width: 50%;
   color: #000;
+}
+
+
+@media screen and (min-width: 1096px) {
+
+  .superlist p{
+    font-size: 3rem;
+  }
+
+  .superlist a{
+    display: inline;
+  }
+
+
 }
 
