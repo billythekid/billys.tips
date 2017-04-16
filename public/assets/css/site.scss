@@ -88,7 +88,8 @@ body {
   font-family: 'Krona One', sans-serif;
   line-height: 1.5;
   color: #fff;
-  background: #71c0a0;
+  /*background: #71c0a0;*/
+  background: #fff;
   -webkit-text-size-adjust: none;
   -webkit-font-smoothing: antialiased
 }
@@ -100,7 +101,6 @@ p, ul, ol, table {
 }
 
 a {
-  color: #fff;
   text-decoration: none;
 }
 
@@ -115,12 +115,6 @@ h1, h2, h3, h4, h5 {
 
 h1 {
   font-size: 2rem;
-}
-
-h2 {
-}
-
-h3 {
 }
 
 /* Site Container
@@ -201,6 +195,4 @@ h3 {
     font-size: 3rem;
   }
 
-
 }
-
