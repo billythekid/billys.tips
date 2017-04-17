@@ -144,18 +144,6 @@ h1 {
 /* Content
 ------------------------------------------------  */
 
-.tip {
-  a {
-    color:           #666;
-    text-decoration: underline wavy turquoise;
-  }
-
-  a:hover {
-    color:           #000;
-    text-decoration: underline darken(#666, 5%) darken(turquoise, 5%);
-  }
-}
-
 ol, ul {
   margin-left: 3rem;
 }
@@ -195,6 +183,10 @@ code {
 
 .line-highlight {
   background: linear-gradient(to right, grey, transparent);
+}
+
+.top img{
+  max-width: 80%;
 }
 
 @media screen and (min-width: 800px) {
