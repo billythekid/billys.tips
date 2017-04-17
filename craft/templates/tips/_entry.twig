@@ -19,13 +19,12 @@
       {% endswitch %}
     {% endfor %}
 
-    {% if entry.bonusTip is not empty %}
-      <hr>
+    {# {% if entry.bonusTip is not empty %}
       <div class="plumbing" id="bonus">
         <h3>Billy's bonus {{ entry.bonusType }} tip…</h3>
         {{ entry.bonusTip }}
       </div>
-    {% endif %}
+    {% endif %} #}
   </div>
 
 {% endblock %}
