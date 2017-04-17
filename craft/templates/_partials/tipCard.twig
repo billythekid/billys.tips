@@ -3,6 +3,6 @@
 {% endif %}
 {% if tip is defined %}
   <p class="date">{{ tip.postDate.format('F d, Y') }}</p>
-  {{ tip.link }}
-  {{ tip.intro|raw }}
+  <p>{{ tip.link }}</p>
+  <p>{{ tip.intro|raw }}</p>
 {% endif %}
