@@ -119,6 +119,9 @@ h1 {
   color: #000;
   text-decoration: underline #595959 #2adccb; }
 
+ol, ul {
+  margin-left: 3rem; }
+
 code {
   background: #ddd;
   padding: 2px 4px;
