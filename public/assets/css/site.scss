@@ -25,7 +25,7 @@ nav ul {
 /* Variables
 ------------------------------------------------  */
 
-/* $pink: rgb(246, 96, 118);
+$pink: rgb(246, 96, 118);
 $blue: rgb(107, 196, 234);
 $purple: rgb(140, 133, 203);
 $mushroom: rgb(194, 181, 155);
@@ -34,24 +34,24 @@ $dark: #6f6e6e;
 $primary-color-1: $pink;
 $primary-color-2: $purple;
 $primary-color-3: $blue;
-$text-color: $dark; */
+$text-color: $dark;
 
 /* Utility
 ------------------------------------------------  */
 
-/* Align text to center */
+/* Align text center */
 
 .textCenter {
   text-align: center;
 }
 
-/* Align text to left */
+/* Align text left */
 
 .textLeft {
   text-align: left;
 }
 
-/* Align text to right */
+/* Align text ight */
 
 .textRight {
   text-align: right;
@@ -118,12 +118,16 @@ h2 {
   font-size: 1.5rem;
 }
 
+ol, ul {
+  margin-left: 3rem;
+}
+
 /* Site Container
 ------------------------------------------------  */
 
 .siteContainer {
   position: relative;
-  margin:   0 2rem 2rem;
+  margin:   0 2rem;
 }
 
 /* Header
@@ -139,20 +143,8 @@ h2 {
   color: #000;
 }
 
-/* Content
+/* Home
 ------------------------------------------------  */
-
-ol, ul {
-  margin-left: 3rem;
-}
-
-code {
-  background: #ddd;
-  padding:    2px 4px;
-  position:   relative;
-  top:        -2px;
-  margin:     2px;
-}
 
 .superlist p {
   font-size:     2rem;
@@ -180,19 +172,12 @@ code {
   color: #000;
 }
 
-.line-highlight {
-  background: linear-gradient(to right, #333, transparent);
-}
+/* Tip page
+------------------------------------------------  */
 
-.tip {
-  a {
-    padding-bottom: 3px;
-    border-bottom: 1px solid turquoise;
-  }
-
-  a:hover {
-    color:           #000;
-  }
+.tip a{
+  padding-bottom: 3px;
+  border-bottom: 1px solid #40E0D0;
 }
 
 .tip img{
@@ -203,7 +188,23 @@ code {
   margin-top: -2rem;
 }
 
+.line-highlight {
+  background: linear-gradient(to right, #333, transparent);
+}
+
+code {
+  background: #ddd;
+  padding:    2px 4px;
+  position:   relative;
+  top:        -2px;
+  margin:     2px;
+}
+
 @media screen and (min-width: 800px) {
+
+  .siteLogo {
+    padding-top: 3rem;
+  }
 
   .siteContainer {
     margin: 0 3rem 3rem;
@@ -222,10 +223,6 @@ code {
     width: 50%;
   }
 
-  .siteLogo {
-    padding-top: 3rem;
-  }
-
   h1 {
     font-size: 3rem;
   }
@@ -241,6 +238,5 @@ code {
   .tip {
     width: 80%;
   }
-
 
 }
