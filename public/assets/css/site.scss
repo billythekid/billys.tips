@@ -143,6 +143,13 @@ ol, ul {
   color: #000;
 }
 
+/* Content
+------------------------------------------------  */
+
+.content{
+  margin-bottom: 3rem;
+}
+
 /* Home
 ------------------------------------------------  */
 
@@ -207,7 +214,7 @@ code {
   }
 
   .siteContainer {
-    margin: 0 3rem 3rem;
+    margin: 0 3rem;
   }
 
   .superlist p {
