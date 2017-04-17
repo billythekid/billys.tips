@@ -12,6 +12,13 @@
     "source",
     "fullscreen",
     "pagebreak"
-
-  ]
+  ],
+  "formattingAdd": {
+    "inline-code": {
+      "title": "Inline Code",
+      "args": [
+        "code"
+      ]
+    }
+  }
 }
