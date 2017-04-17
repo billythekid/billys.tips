@@ -9,6 +9,7 @@
 return array(
     '*' => [
         'omitScriptNameInUrls' => true,
+        'devMode' => false,
     ],
 
     '.dev' => [
@@ -23,7 +24,6 @@ return array(
 
     '.tips' => [
         'siteUrl' => 'https://billys.tips/',
-        'devMode' => false,
         'environmentVariables' => [
             'basePath' => '/home/forge/billys.tips/public/',
             'baseUrl' => 'https://billys.tips/',
