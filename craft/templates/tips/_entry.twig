@@ -2,28 +2,30 @@
 {% set class='entry' %}
 
 {% block content %}
-  <h1>{{ entry.title|title }}</h1>
-  <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
-  {#<p class="lead">{{ entry.intro|raw }}</p>#}
-  {% for block in entry.blocks %}
-    {% switch block.type %}
-    {% case "code" %}
-    <pre {% if block.highlightLines is not empty %}data-line="{{ block.highlightLines }}"{% endif %}><code class="prism-code language-{{ block.language }} line-numbers">{{ block.body }}</code></pre>
-    {% case "image" %}
-    {% for image in block.images %}
-      <img src="{{ image.url }}" alt="{{ image }}">
+  <div class="tip">
+    <h1>{{ entry.title|title }}</h1>
+    <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
+    {#<p class="lead">{{ entry.intro|raw }}</p>#}
+    {% for block in entry.blocks %}
+      {% switch block.type %}
+      {% case "code" %}
+      <pre {% if block.highlightLines is not empty %}data-line="{{ block.highlightLines }}"{% endif %}><code class="prism-code language-{{ block.language }} line-numbers">{{ block.body }}</code></pre>
+      {% case "image" %}
+      {% for image in block.images %}
+        <img src="{{ image.url }}" alt="{{ image }}">
+      {% endfor %}
+      {% default %}
+      {{ block.body }}
+      {% endswitch %}
     {% endfor %}
-    {% default %}
-    {{ block.body }}
-    {% endswitch %}
-  {% endfor %}
 
-  {% if entry.bonusTip is not empty %}
-    <hr>
-    <div class="plumbing" id="bonus">
-      <h3>Billy's bonus {{ entry.bonusType }} tip…</h3>
-      {{ entry.bonusTip }}
-    </div>
-  {% endif %}
+    {% if entry.bonusTip is not empty %}
+      <hr>
+      <div class="plumbing" id="bonus">
+        <h3>Billy's bonus {{ entry.bonusType }} tip…</h3>
+        {{ entry.bonusTip }}
+      </div>
+    {% endif %}
+  </div>
 
 {% endblock %}

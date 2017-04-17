@@ -79,13 +79,13 @@ p, ul, ol, table {
   margin-bottom: 1rem;
   color: #000; }
 
-.content a {
-  color: #666;
-  text-decoration: underline wavy turquoise; }
-
-.content a:hover {
+a {
   color: #000;
-  text-decoration: underline #595959 #2adccb; }
+  text-decoration: none; }
+
+a:hover {
+  color: #000;
+  text-decoration: none; }
 
 h1, h2, h3, h4, h5 {
   line-height: 1.2;
@@ -112,6 +112,13 @@ h1 {
 
 /* Content
 ------------------------------------------------  */
+.tip a {
+  color: #666;
+  text-decoration: underline wavy turquoise; }
+.tip a:hover {
+  color: #000;
+  text-decoration: underline #595959 #2adccb; }
+
 code {
   background: #ddd;
   padding: 2px 4px;
