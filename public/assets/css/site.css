@@ -79,11 +79,11 @@ p, ul, ol, table {
   margin-bottom: 1rem;
   color: #000; }
 
-a {
+.content a {
   color: #666;
   text-decoration: underline wavy turquoise; }
 
-a:hover {
+.content a:hover {
   color: #000;
   text-decoration: underline #595959 #2adccb; }
 

@@ -101,12 +101,12 @@ p, ul, ol, table {
   color:         #000
 }
 
-a {
+.content a {
   color:           #666;
   text-decoration: underline wavy turquoise;
 }
 
-a:hover {
+.content a:hover {
   color:           #000;
   text-decoration: underline darken(#666, 5%) darken(turquoise, 5%);
 }
