@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name=viewport content="width=device-width, initial-scale=1">
-    <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
-    <link rel="home" href="{{ siteUrl }}">
-    <link href="https://fonts.googleapis.com/css?family=Krona+One|Stardos+Stencil" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url('assets/css/site.css') }}">
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
+  <link rel="home" href="{{ siteUrl }}">
+  <link href="https://fonts.googleapis.com/css?family=Krona+One|Stardos+Stencil" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url('assets/css/site.css') }}">
+</head>
 
-  <body style="background-repeat:no-repeat; background-position: center center">
-    <div class="siteContainer">
+<body style="background-repeat:no-repeat; background-position: center center; background-size: cover;">
+  <div class="siteContainer">
 
-      <header>
-        <h1 class="siteLogo"><a href="{{ siteUrl }}">{{ craft.tips.getWord(siteName) }}</a></h1>
-      </header>
+    <header>
+      <h1 class="siteLogo"><a href="{{ siteUrl }}">{{ craft.tips.getWord(siteName) }}</a></h1>
+    </header>
 
-      <div class="content">
-        {% block content %}
-          <p>If you see me, you haven’t set your <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
-          <p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.</p>
-        {% endblock %}
-      </div>
-
+    <div class="content">
+      {% block content %}
+        <p>If you see me, you haven’t set your
+          <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
+        <p>See Twig’s
+          <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.
+        </p>
+      {% endblock %}
     </div>
 
-    {# Prism is used for code indenting, keeeeeeeep #}
-    <script src="{{ url('assets/js/prism.js') }}"></script>
-    {% if entry is defined and entry.konami is not empty %}
-      <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
-    {% endif %}
-  </body>
+  </div>
+
+  {# Prism is used for code indenting, keeeeeeeep #}
+  <script src="{{ url('assets/js/prism.js') }}"></script>
+  {% if entry is defined and entry.konami is not empty %}
+    <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
+  {% endif %}
+</body>
 </html>
