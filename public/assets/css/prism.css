@@ -1,4 +1,4 @@
-/* http://prismjs.com/download.html?themes=prism-twilight&languages=markup+css+clike+javascript+aspnet+basic+batch+ruby+css-extras+git+json+markdown+php+php-extras+python+sass+scss+sql+swift+yaml&plugins=line-highlight+line-numbers+remove-initial-line-feed */
+/* http://prismjs.com/download.html?themes=prism-twilight&languages=markup+css+clike+javascript+css-extras+git+json+markdown+php+php-extras+sass+scss+sql+swift+yaml&plugins=line-highlight+line-numbers */
 /**
  * prism.js Twilight theme
  * Based (more or less) on the Twilight theme originally of Textmate fame.
@@ -34,12 +34,12 @@ pre[class*="language-"],
 
 /* Code blocks */
 pre[class*="language-"] {
-	/*border-radius: .5em;*/
-	/*border: .3em solid hsl(0, 0%, 33%);*/
+	border-radius: .5em;
+	border: .3em solid hsl(0, 0%, 33%); /* #282A2B */
 	box-shadow: 1px 1px .5em black inset;
-	margin: 1rem 0;
+	margin: .5em 0;
 	overflow: auto;
-	padding: 1rem;
+	padding: 1em;
 }
 
 pre[class*="language-"]::-moz-selection {
@@ -161,11 +161,11 @@ pre[data-line] {
 .line-highlight {
 	background: hsla(0, 0%, 33%, 0.25); /* #545454 */
 	background: linear-gradient(to right, hsla(0, 0%, 33%, .1) 70%, hsla(0, 0%, 33%, 0)); /* #545454 */
-	border-bottom: 1px dashed hsl(0, 0%, 33%); /* #545454 */
-	border-top: 1px dashed hsl(0, 0%, 33%); /* #545454 */
+	/*border-bottom: 1px dashed hsl(0, 0%, 33%); !* #545454 *!*/
+	/*border-top: 1px dashed hsl(0, 0%, 33%); !* #545454 *!*/
 	left: 0;
 	line-height: inherit;
-	margin-top: 0.75em; /* Same as .prism’s padding-top */
+	/*margin-top: 0.75em; !* Same as .prism’s padding-top *!*/
 	padding: inherit 0;
 	pointer-events: none;
 	position: absolute;
@@ -180,7 +180,7 @@ pre[data-line] {
 	border-radius: 999px;
 	box-shadow: 0 1px white;
 	color: hsl(24, 20%, 95%); /* #F5F2F0 */
-	content: attr(data-start);
+	/*content: attr(data-start);*/
 	font: bold 65%/1.5 sans-serif;
 	left: .6em;
 	min-width: 1em;
@@ -194,7 +194,7 @@ pre[data-line] {
 
 .line-highlight[data-end]:after {
 	bottom: .4em;
-	content: attr(data-end);
+	/*content: attr(data-end);*/
 	top: auto;
 }
 
@@ -208,7 +208,7 @@ pre[data-line] {
 	left: 0;
 	right: 0;
 	padding: inherit 0;
-	margin-top: 1em; /* Same as .prism’s padding-top */
+	/*margin-top: 1em; !* Same as .prism’s padding-top *!*/
 
 	background: hsla(24, 20%, 50%,.08);
 	background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
@@ -219,29 +219,29 @@ pre[data-line] {
 	white-space: pre;
 }
 
-	.line-highlight:before,
-	.line-highlight[data-end]:after {
-		content: attr(data-start);
-		position: absolute;
-		top: .4em;
-		left: .6em;
-		min-width: 1em;
-		padding: 0 .5em;
-		background-color: hsla(24, 20%, 50%,.4);
-		color: hsl(24, 20%, 95%);
-		font: bold 65%/1.5 sans-serif;
-		text-align: center;
-		vertical-align: .3em;
-		border-radius: 999px;
-		text-shadow: none;
-		box-shadow: 0 1px white;
-	}
+.line-highlight:before,
+.line-highlight[data-end]:after {
+	/*content: attr(data-start);*/
+	position: absolute;
+	top: .4em;
+	left: .6em;
+	min-width: 1em;
+	padding: 0 .5em;
+	background-color: hsla(24, 20%, 50%,.4);
+	color: hsl(24, 20%, 95%);
+	font: bold 65%/1.5 sans-serif;
+	text-align: center;
+	vertical-align: .3em;
+	border-radius: 999px;
+	text-shadow: none;
+	box-shadow: 0 1px white;
+}
 
-	.line-highlight[data-end]:after {
-		content: attr(data-end);
-		top: auto;
-		bottom: .4em;
-	}
+.line-highlight[data-end]:after {
+	/*content: attr(data-end);*/
+	top: auto;
+	bottom: .4em;
+}
 
 pre.line-numbers {
 	position: relative;
@@ -270,16 +270,26 @@ pre.line-numbers > code {
 
 }
 
-	.line-numbers-rows > span {
-		pointer-events: none;
-		display: block;
-		counter-increment: linenumber;
-	}
+.line-numbers-rows > span {
+	pointer-events: none;
+	display: block;
+	counter-increment: linenumber;
+}
 
-		.line-numbers-rows > span:before {
-			content: counter(linenumber);
-			color: #999;
-			display: block;
-			padding-right: 0.8em;
-			text-align: right;
-		}
+.line-numbers-rows > span:before {
+	content: counter(linenumber);
+	color: #999;
+	display: block;
+	padding-right: 0.8em;
+	text-align: right;
+}
+DOWNLOAD CSS
+Handcrafted with ♥, by Lea Verou, Golmote & all these awesome people
+
+Home
+Download
+FAQ
+Test drive
+API docs
+Fork Prism on Github
+Follow Prism on Twitter

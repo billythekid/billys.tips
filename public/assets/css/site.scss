@@ -193,6 +193,10 @@ code {
   color: #000;
 }
 
+.line-highlight {
+  background: linear-gradient(to right, grey, transparent);
+}
+
 @media screen and (min-width: 800px) {
 
   .siteContainer {
