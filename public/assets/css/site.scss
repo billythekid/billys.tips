@@ -234,7 +234,15 @@ code {
 
   .tip {
     width: 90%;
-    max-width: 1200px
   }
+
+}
+
+@media screen and (min-width: 1000px) {
+
+  .tip {
+    width: 80%;
+  }
+
 
 }
