@@ -85,7 +85,7 @@ html, body {
 }
 
 body {
-  font-family:              'Krona One', sans-serif;
+  font-family:              'Lora', serif;
   line-height:              1.5;
   color:                    #000;
   /*background: #71c0a0;*/
@@ -112,6 +112,7 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5 {
+  font-family: 'Krona One', sans-serif;
   line-height:   1.2;
   margin-bottom: 1rem;
 }
@@ -160,6 +161,7 @@ code {
   font-size:     2rem;
   margin-bottom: 3rem;
   line-height:   1.2;
+  font-family: 'Krona One', sans-serif;
 }
 
 .superlist a {
