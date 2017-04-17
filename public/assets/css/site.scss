@@ -185,7 +185,7 @@ code {
 }
 
 .line-highlight {
-  background: linear-gradient(to right, grey, transparent);
+  background: linear-gradient(to right, #f0f0f0, transparent);
 }
 
 .tip {
@@ -202,6 +202,10 @@ code {
 
 .tip img{
   max-width: 80%;
+}
+
+.tip__date{
+  margin-bottom: -2rem;
 }
 
 @media screen and (min-width: 800px) {

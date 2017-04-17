@@ -4,7 +4,7 @@
 {% block content %}
   <div class="tip">
     <h1>{{ entry.title|title }}</h1>
-    <p class="date">Posted on {{ entry.postDate.format('F d, Y') }}</p>
+    <p class="tip__date">Posted on {{ entry.postDate.format('F d Y') }}</p>
     {#<p class="lead">{{ entry.intro|raw }}</p>#}
     {% for block in entry.blocks %}
       {% switch block.type %}
