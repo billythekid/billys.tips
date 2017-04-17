@@ -2,7 +2,7 @@
   {% set tip = entry %}
 {% endif %}
 {% if tip is defined %}
-  <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
+  <p class="date">{{ tip.postDate.format('F d, Y') }}</p>
   {{ tip.link }}
-  <span>{{ tip.intro|raw }}</span>
+  {{ tip.intro|raw }}
 {% endif %}
