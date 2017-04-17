@@ -2,13 +2,7 @@
   {% set tip = entry %}
 {% endif %}
 {% if tip is defined %}
-  <article>
-    <h2>Just the tip…</h2>
-    <h3><a href="{{ tip.url }}">{{ tip.title|title }}</a></h3>
-    <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
-    <span>{{ tip.intro|raw }}</span>
-    {% if tip.blocks is not empty %}
-      <p class="pull-right"><a class='btn btn-red' href="{{ tip.url }}">…go deeper.</a></p>
-    {% endif %}
-  </article>
+  <p class="date">Posted on {{ tip.postDate.format('F d, Y') }}</p>
+  {{ tip.link }}
+  <span>{{ tip.intro|raw }}</span>
 {% endif %}
