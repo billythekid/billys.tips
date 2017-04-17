@@ -118,10 +118,6 @@ h2 {
   font-size: 1.5rem;
 }
 
-ol, ul {
-  margin-left: 3rem;
-}
-
 /* Site Container
 ------------------------------------------------  */
 
@@ -148,6 +144,11 @@ ol, ul {
 
 .content{
   margin-bottom: 3rem;
+}
+
+.content ol,
+.content ul {
+  margin-left: 3rem;
 }
 
 /* Home
@@ -206,6 +207,9 @@ code {
   top:        -2px;
   margin:     2px;
 }
+
+/* Media queries
+------------------------------------------------  */
 
 @media screen and (min-width: 800px) {
 
