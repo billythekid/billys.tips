@@ -105,7 +105,7 @@ a {
 
 h1, h2, h3, h4 {
   font-family: 'Krona One', sans-serif;
-  line-height:   1.2;
+  line-height:   1.4;
   margin-bottom: 2rem;
 }
 
@@ -156,7 +156,6 @@ h2 {
 .superlist p {
   font-size:     2rem;
   margin-bottom: 3rem;
-  line-height:   1.2;
   font-family: 'Krona One', sans-serif;
 }
 
@@ -247,10 +246,6 @@ code {
 
   .superlist a {
     display: inline;
-  }
-
-  .superlist p {
-    line-height: 1.7;
   }
 
 }
