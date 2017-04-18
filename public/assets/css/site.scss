@@ -86,7 +86,6 @@ html, body {
 
 body {
   font-family:              'merriweather', serif;
-  font-weight: 200;
   line-height:              1.9;
   color:                    #292929;
   background:               #fff;
@@ -96,7 +95,8 @@ body {
 
 p, ul, ol, table {
   margin-bottom: 1.5rem;
-  color:         #292929
+  color:         #292929;
+  font-weight: 200;
 }
 
 a {
