@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name=viewport content="width=device-width, initial-scale=1">
-  <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
+  <title>{% if entry is defined %}{{ craft.tips.getWord(entry.title) }} - {% endif %}{{ craft.tips.getWord(siteName) }}</title>
   <link rel="home" href="{{ siteUrl }}">
   <link href="https://fonts.googleapis.com/css?family=Krona+One|Lora:400,700" rel="stylesheet">
   <link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">
