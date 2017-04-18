@@ -17,12 +17,14 @@
 {% block scripts %}
   <script>
       let mouseyMousey = function (event, link) {
-          console.log(event);
+          console.log(link);
           let img = link.nextSibling;
           img.style.display = 'block';
           img.style.position = 'absolute';
           img.style.height = '20%';
           img.style.zIndex = 1;
+          img.style.top = event.clientY;
+          img.style.left = event.clientX;
       }
   </script>
 {% endblock %}
