@@ -5,7 +5,7 @@
     <p>
       {% spaceless %}
         {% for tip in craft.entries.section("tips") %}
-          <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmouseover="mouseyMousey(event);body.style.backgroundImage = 'url({{ tip.backgroundImage.first.url }})'" onmouseout="mouseyMousey(event,true);body.style.backgroundImage = ''"{% endif %}>{{ tip.title|title }}
+          <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmouseover="mouseyMousey(event);" onmouseout="mouseyMousey(event,true);"{% endif %}>{{ tip.title|title }}
             <span>{{ tip.postDate.format('F d Y') }}</span></a>
           {% if tip.backgroundImage is not empty %}
             <img src="{{ tip.backgroundImage.first.url }}" alt="" style="display:none" class="bgimg">
@@ -32,7 +32,7 @@
                   img.style.top = event.clientY;
                   img.style.left = event.clientX;
               } else {
-                  img.style.display = 'none';
+                  img.style = {display: 'none'};
 //                  let bgimgs = document.querySelectorAll('.bgimg');
 //                  for (let i = 0; i < bgimgs.length; i++) {
 //                      bgimgs[i].style.display = 'none';
