@@ -32,10 +32,11 @@
                   img.style.top = event.clientY;
                   img.style.left = event.clientX;
               } else {
-                  let bgimgs = document.querySelectorAll('.bgimg');
-                  for (let i = 0; i < bgimgs.length; i++) {
-                      bgimgs[i].style.display = 'none';
-                  }
+                  img.style.display = 'none';
+//                  let bgimgs = document.querySelectorAll('.bgimg');
+//                  for (let i = 0; i < bgimgs.length; i++) {
+//                      bgimgs[i].style.display = 'none';
+//                  }
               }
           }
       }
