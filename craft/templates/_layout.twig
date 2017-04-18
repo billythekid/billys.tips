@@ -19,9 +19,9 @@
 
     <div class="content">
       {% block content %}
-        <p>If you see me, you havenâ€™t set your
-          <code class="language-php">{% verbatim %}{% block content %}â€¦{% endblock %}{% endverbatim %}</code> yet.</p>
-        <p>See Twigâ€™s
+        <p>If you see me, you haven’t set your
+          <code class="language-php">{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
+        <p>See Twig’s
           <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.
         </p>
       {% endblock %}
@@ -34,5 +34,7 @@
   {% if entry is defined and entry.konami is not empty %}
     <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
   {% endif %}
+  
+  {% block scripts %}{% endblock %}
 </body>
 </html>
