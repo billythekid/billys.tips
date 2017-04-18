@@ -20,15 +20,19 @@
 
 {% block scripts %}
   <script>
-      let mouseyMousey = function (event) {
+      let mouseyMousey = function (event, hide) {
           let img = event.target.nextSibling;
-          console.log(img);
-          img.style.display = 'block';
-          img.style.position = 'absolute';
-          img.style.height = '20%';
-          img.style.zIndex = 1;
-          img.style.top = event.clientY;
-          img.style.left = event.clientX;
+          hide = hide || false;
+          if (!hide) {
+              img.style.display = 'block';
+              img.style.position = 'absolute';
+              img.style.height = '20%';
+              img.style.zIndex = 1;
+              img.style.top = event.clientY;
+              img.style.left = event.clientX;
+          } else {
+              img.style.display = 'none';
+          }
       }
   </script>
 {% endblock %}
