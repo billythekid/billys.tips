@@ -25,9 +25,9 @@
           if (img) {
               hide = hide || false;
               if (!hide) {
-                  img.setAttribute("style", "display: block; position: absolute; width: 20%; z-index: 1; top:" + event.clientY + "px; left:" + event.clientX + "px;");
+                  img.setAttribute("style", "display: block; position: absolute; width: 20%; z-index: -1; top: " + event.clientY + "px; left: " + event.clientX + "px;");
               } else {
-                  img.setAttribute("style", "display:none;");
+                  img.setAttribute("style", "display: none;");
               }
           }
       }
