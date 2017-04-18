@@ -207,11 +207,10 @@ h2 {
 }
 
 code {
-  background: #ddd;
-  padding:    2px 4px;
-  position:   relative;
-  top:        -2px;
-  margin:     2px;
+  background-color: #f4f4f6;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 3px 4px 3px 4px;
 }
 
 /* Media queries
