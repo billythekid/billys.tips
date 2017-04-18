@@ -189,7 +189,7 @@ h2 {
 }
 
 .tip{
-  max-width: 1000px;
+  max-width: 900px;
 }
 
 .tip img{
@@ -230,10 +230,6 @@ code {
     line-height: 1.7;
   }
 
-  .superlist a {
-    display: inline;
-  }
-
   .whatTheFuckIsBillysTips p {
     width: 50%;
   }
@@ -244,6 +240,14 @@ code {
 
   .tip {
     width: 90%;
+  }
+
+}
+
+@media screen and (min-width: 800px) {
+
+  .superlist a {
+    display: inline;
   }
 
 }
