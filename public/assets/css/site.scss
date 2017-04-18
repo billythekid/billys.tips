@@ -189,7 +189,7 @@ h2 {
 }
 
 .tip{
-  max-width: 1200px;
+  max-width: 1000px;
 }
 
 .tip img{
@@ -244,14 +244,6 @@ code {
 
   .tip {
     width: 90%;
-  }
-
-}
-
-@media screen and (min-width: 1000px) {
-
-  .tip {
-    width: 80%;
   }
 
 }
