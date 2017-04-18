@@ -22,18 +22,20 @@
   <script>
       let mouseyMousey = function (event, hide) {
           let img = event.target.nextSibling;
-          hide = hide || false;
-          if (!hide) {
-              img.style.display = 'block';
-              img.style.position = 'absolute';
-              img.style.height = '20%';
-              img.style.zIndex = 1;
-              img.style.top = event.clientY;
-              img.style.left = event.clientX;
-          } else {
-              let bgimgs = document.querySelectorAll('.bgimg');
-              for(let i = 0; i<bgimgs.length; i++){
-                  bgimgs[i].style.display = 'none';
+          if (img) {
+              hide = hide || false;
+              if (!hide) {
+                  img.style.display = 'block';
+                  img.style.position = 'absolute';
+                  img.style.height = '20%';
+                  img.style.zIndex = 1;
+                  img.style.top = event.clientY;
+                  img.style.left = event.clientX;
+              } else {
+                  let bgimgs = document.querySelectorAll('.bgimg');
+                  for (let i = 0; i < bgimgs.length; i++) {
+                      bgimgs[i].style.display = 'none';
+                  }
               }
           }
       }
