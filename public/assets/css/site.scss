@@ -153,7 +153,7 @@ h2 {
 /* Home
 ------------------------------------------------  */
 
-.superlist {
+ul.superlist {
   font-size:     2rem;
   margin-bottom: 3rem;
   margin-left: 0rem;
@@ -162,13 +162,13 @@ h2 {
   list-style: none;
 }
 
-.superlist li {
+ul.superlist li {
   position:      relative;
   display:       block;
   margin-bottom: 1.5rem;
 }
 
-.superlist a span {
+ul.superlist a span {
   position:  absolute;
   left:      0.125rem;
   top:       -0.75rem;
@@ -177,8 +177,8 @@ h2 {
   width:     150px;
 }
 
-.superlist a:hover,
-.superlist a:focus {
+ul.superlist a:hover,
+ul.superlist a:focus {
   text-decoration: underline;
   text-decoration-skip: ink;
 }
