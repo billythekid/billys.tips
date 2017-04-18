@@ -227,7 +227,6 @@ code {
 
   .superlist p {
     font-size:   3rem;
-    line-height: 1.7;
   }
 
   .whatTheFuckIsBillysTips p {
@@ -248,6 +247,10 @@ code {
 
   .superlist a {
     display: inline;
+  }
+
+  .superlist p {
+    line-height: 1.7;
   }
 
 }
