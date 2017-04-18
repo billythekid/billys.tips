@@ -2,16 +2,14 @@
 
 {% block content %}
   <div class="superlist">
-    <p>
-      {% spaceless %}
-        {% for tip in craft.entries.section("tips") %}
-          <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmousemove="mouseyMousey(event);" onmouseout="mouseyMousey(event,true);"{% endif %}>{{ tip.title|title }} <span>{{ tip.postDate.format('F d Y') }}</span></a>
-          {% if tip.backgroundImage is not empty %}
-            <img src="{{ tip.backgroundImage.first.url }}" alt="" style="display:none" class="bgimg">
-          {% endif %}
-        {% endfor %}
-      {% endspaceless %}
-    </p>
+    {% spaceless %}
+      {% for tip in craft.entries.section("tips") %}
+        <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmousemove="mouseyMousey(event);" onmouseout="mouseyMousey(event,true);"{% endif %}>{{ tip.title|title }}<span>{{ tip.postDate.format('F d Y') }}</span></a>
+        {% if tip.backgroundImage is not empty %}
+          <img src="{{ tip.backgroundImage.first.url }}" alt="" style="display:none" class="bgimg">
+        {% endif %}
+      {% endfor %}
+    {% endspaceless %}
   </div>
   <div class="whatTheFuckIsBillysTips">{{ entry.body }}</div>
 {% endblock %}
