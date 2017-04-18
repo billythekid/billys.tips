@@ -4,10 +4,25 @@
   <div class="superlist">
     <p>
       {% for tip in craft.entries.section("tips") %}
-        <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmouseover="body.style.backgroundImage = 'url({{ tip.backgroundImage.first.url }})'" onmouseout="body.style.backgroundImage = ''"{% endif %}>{{ tip.title|title }}<span>{{ tip.postDate.format('F d Y') }}</span></a>
-        {% if tip.backgroundImage is not empty %}<img src="{{ tip.backgroundImage.first.url }}" alt="" style="display:none">{% endif %}
+        <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmouseover="mouseyMousey(event,this);body.style.backgroundImage = 'url({{ tip.backgroundImage.first.url }})'" onmouseout="body.style.backgroundImage = ''"{% endif %}>{{ tip.title|title }}
+          <span>{{ tip.postDate.format('F d Y') }}</span></a>
+        {% if tip.backgroundImage is not empty %}
+          <img src="{{ tip.backgroundImage.first.url }}" alt="" style="display:none">{% endif %}
       {% endfor %}
     </p>
   </div>
   <div class="whatTheFuckIsBillysTips">{{ entry.body }}</div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+      let mouseyMousey = function (event, link) {
+          console.log(event);
+          let img = link.nextSibling;
+          img.style.display = 'block';
+          img.style.position = 'absolute';
+          img.style.height = '20%';
+          img.style.zIndex = 1;
+      }
+  </script>
 {% endblock %}
