@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name=viewport content="width=device-width, initial-scale=1">
-  {# <title>{% if entry is defined and not entry.section.isHomepage() %}{{ craft.tips.getWord(entry.title) }} - {% endif %}{{ craft.tips.getWord(siteName) }}</title> #}
-  <title>{{ siteName }} - {{ craft.tips.getWord(entry.title) }}</title>
+  <title>{% if entry is defined and not entry.section.isHomepage() %}{{ craft.tips.getWord(entry.title) }} - {% endif %}{{ craft.tips.getWord(siteName) }}</title>
   <link rel="home" href="{{ siteUrl }}">
   <link href="https://fonts.googleapis.com/css?family=Krona+One|Merriweather:300,400,400i,700,700i" rel="stylesheet">
   <link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">
@@ -24,12 +23,12 @@
 
   </div>
 
+  {# Prism is used for code indenting, keeeeeeeep #}
   <script src="{{ url('assets/js/prism.js') }}"></script>
   {% if entry is defined and entry.konami is not empty %}
     <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
   {% endif %}
   
-  {% block scripts %}
-  {% endblock %}
+  {% block scripts %}{% endblock %}
 </body>
 </html>
