@@ -189,8 +189,8 @@ li > code {
     line-height: 1.7; }
 
   .latest-tips {
-    position: absolute;
+    position: fixed;
     top: 15rem;
-    left: 850px; } }
+    left: calc(3rem + 850px); } }
 
 /*# sourceMappingURL=site.css.map */
