@@ -1,20 +1,20 @@
 {% extends "_layout" %}
 
 {% block content %}
-  <div class="superlist">
-    <p>
-      {% spaceless %}
-        {% for tip in craft.entries.section("tips") %}
-          <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmousemove="mouseyMousey(event);" onmouseout="mouseyMousey(event,true);"{% endif %}>{{ tip.title|title }}
-            <span>{{ tip.postDate.format('F d Y') }}</span></a>
+  <ul class="superlist">
+    {% spaceless %}
+      {% for tip in craft.entries.section("tips") %}
+        <li>
+          <a href="{{ tip.url }}" {% if tip.backgroundImage is not empty %}onmousemove="mouseyMousey(event);" onmouseout="mouseyMousey(event,true);"{% endif %}>{{ tip.title|title }}<span>{{ tip.postDate.format('F d Y') }}</span></a>
           {% if tip.backgroundImage is not empty %}
+          {# <a href="{{ tip.url }}"> #}
             <img src="{{ tip.backgroundImage.first.url }}" alt="" style="display:none" class="bgimg">
-          {% endif %}
-
-        {% endfor %}
-      {% endspaceless %}
-    </p>
-  </div>
+          {# </a> #}
+          {% endif %}&nbsp;
+        </li>
+      {% endfor %}
+    {% endspaceless %}
+  </ul>
   <div class="whatTheFuckIsBillysTips">{{ entry.body }}</div>
 {% endblock %}
 
@@ -25,7 +25,7 @@
           if (img) {
               hide = hide || false;
               if (!hide) {
-                  img.setAttribute("style", "display: block; position: fixed; width: 25%; z-index: -1; top: " + event.clientY + "px; left: " + event.clientX + "px; filter: opacity(0.9);");
+                  img.setAttribute("style", "display: block; position: fixed; width: 35%; z-index: -1000; top: " + event.clientY + "px; left: " + event.clientX + "px; filter: opacity(0.85);");
               } else {
                   img.setAttribute("style", "display: none;");
               }
