@@ -3,7 +3,7 @@
 {% endif %}
 {% if tip is defined %}
   <div class="latest-tips-tip">
-    <h4>{{ tip.link }}</h4>
+    <h4><a href="{{ tip.url }}">{{ craft.tips.getWord(tip.title) }}</a></h4>
     <p class="date">{{ tip.postDate.format('F d, Y') }}</p>
     <p>{{ tip.intro|raw }}</p>
   </div>
