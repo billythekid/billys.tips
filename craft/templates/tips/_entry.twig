@@ -28,7 +28,7 @@
   </div>
 
   <div class="latest-tips">
-    {% for tip in craft.entries.section('tips').limit(3).id('not ' ~ entry.id) %}
+    {% for tip in craft.entries({section:'tips', limit:3, id:'not ' ~ entry.id}) %}
       {% include '_partials/tipCard' %}
     {% endfor %}
   </div>
