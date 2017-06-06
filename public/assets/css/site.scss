@@ -1,13 +1,14 @@
+@charset "utf-8";
 /* Reset
 ------------------------------------------------  */
 html, body, h1, h2, h3, h4, h5, h6, p, blockquote, address, pre, cite, code, dfn, abbr, acronym, kbd, a, samp, img, ins, i, b, u, strike, small, big, font, tt, q, dl, dt, dd, ul, ol, li, applet, object, iframe, form, fieldset, label, legend, th, td, th, tbody, tfoot, thead, tr, caption {
-  font-size:   100%;
-  margin:      0;
-  padding:     0;
-  border:      0;
-  outline:     0;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
   font-weight: normal;
-  font-style:  normal;
+  font-style: normal;
 }
 
 article, aside, details, figcaption, figure, footer, header, menu, nav, section, img {
@@ -66,10 +67,10 @@ $text-color: $dark;
 /* Clearfix */
 
 .clearfix:after {
-  content:    ".";
-  display:    block;
-  height:     0;
-  clear:      both;
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
   visibility: hidden;
 }
 
@@ -85,27 +86,32 @@ html, body {
 }
 
 body {
-  font-family:              'merriweather', serif;
-  line-height:              1.9;
-  color:                    #292929;
-  background:               #fff;
+  font-family: 'merriweather', serif;
+  line-height: 1.9;
+  color: #292929;
+  background: #fff;
   -webkit-text-size-adjust: none;
-  -webkit-font-smoothing:   antialiased
+  -webkit-font-smoothing: antialiased
 }
 
 p, ul, ol, table {
   margin-bottom: 1.5rem;
-  font-weight:   200;
+  font-weight: 200;
 }
 
 a {
-  color:           #292929;
+  color: #292929;
   text-decoration: none;
+  &[target=_blank]:after {
+    vertical-align: super;
+    content: '➚';
+    color: #40E0D0;
+  }
 }
 
 h1, h2, h3, h4 {
-  font-family:   'Krona One', sans-serif;
-  line-height:   1.4;
+  font-family: 'Krona One', sans-serif;
+  line-height: 1.4;
   margin-bottom: 2rem;
 }
 
@@ -122,16 +128,16 @@ h2 {
 
 .siteContainer {
   position: relative;
-  margin:   0 2rem;
+  margin: 0 2rem;
 }
 
 /* Header
 ------------------------------------------------  */
 
 .siteLogo {
-  font-size:     2rem;
+  font-size: 2rem;
   margin-bottom: 4rem;
-  padding-top:   2rem;
+  padding-top: 2rem;
 }
 
 .siteLogo a {
@@ -154,32 +160,32 @@ h2 {
 ------------------------------------------------  */
 
 ul.superlist {
-  font-size:     2rem;
+  font-size: 2rem;
   margin-bottom: 3rem;
-  margin-left:   0rem;
-  font-family:   'Krona One', sans-serif;
-  line-height:   1.3;
-  list-style:    none;
+  margin-left: 0rem;
+  font-family: 'Krona One', sans-serif;
+  line-height: 1.3;
+  list-style: none;
 }
 
 ul.superlist li {
-  position:      relative;
-  display:       block;
+  position: relative;
+  display: block;
   margin-bottom: 1.5rem;
 }
 
 ul.superlist a span {
-  position:  absolute;
-  left:      0.125rem;
-  top:       -0.75rem;
+  position: absolute;
+  left: 0.125rem;
+  top: -0.75rem;
   font-size: 11px;
-  color:     #000;
-  width:     150px;
+  color: #000;
+  width: 150px;
 }
 
 ul.superlist a:hover,
 ul.superlist a:focus {
-  text-decoration:      underline;
+  text-decoration: underline;
   text-decoration-skip: ink;
 }
 
@@ -187,9 +193,8 @@ ul.superlist a:focus {
   color: #000;
 }
 
-
 .bgimg {
-  filter: grayscale() !important;
+  filter: grayscale(100%) !important;
 }
 
 /* Tip page
@@ -197,11 +202,13 @@ ul.superlist a:focus {
 
 .tip a {
   padding-bottom: 3px;
-  border-bottom:  1px solid #40E0D0;
+  border-bottom: 1px solid #40E0D0;
 }
 
 .tip {
   max-width: 800px;
+  margin-right: 5rem;
+  float: left;
 }
 
 .tip img {
@@ -209,8 +216,8 @@ ul.superlist a:focus {
 }
 
 .tip__date {
-  margin-top:    -1rem;
-  font-size:     0.875rem;
+  margin-top: -1rem;
+  font-size: 0.875rem;
   margin-bottom: 2rem;
 }
 
@@ -221,9 +228,17 @@ ul.superlist a:focus {
 p > code,
 li > code {
   background-color: #f4f4f6;
-  border:           1px solid #eee;
-  border-radius:    3px;
-  padding:          3px 4px 3px 4px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 3px 4px 3px 4px;
+}
+
+.latest-tips {
+  border-left: 2px solid #40E0D0;
+  float: left;
+  min-width: 200px;
+  width: 20%;
+  padding-left: 2rem;
 }
 
 /* Media queries
@@ -261,12 +276,6 @@ li > code {
 
   ul.superlist {
     line-height: 1.7;
-  }
-
-  .latest-tips {
-    position: fixed;
-    top:      15rem;
-    left:     calc(3rem + 850px);
   }
 
 }
