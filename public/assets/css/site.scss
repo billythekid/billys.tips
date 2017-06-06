@@ -207,7 +207,7 @@ ul.superlist a:focus {
 
 .tip {
   max-width: 800px;
-  margin-right: 5rem;
+  margin-right: 2rem;
   float: left;
 }
 
@@ -237,6 +237,11 @@ li > code {
   float: left;
   min-width: 200px;
   width: 20%;
+}
+
+.plumbing {
+  background: #40E0D0;
+  padding: 2rem;
 }
 
 /* Media queries
@@ -277,14 +282,17 @@ li > code {
   }
 
 }
+
 @media only screen and (max-width: 1195px) {
   .latest-tips {
     border-top: 2px solid #40E0D0;
     padding-top: 2rem;
+    margin-top: 2rem;
     width: 100%;
     max-width: 800px
   }
 }
+
 @media only screen and (min-width: 1196px) {
   .latest-tips {
     border-left: 2px solid #40E0D0;
