@@ -1,34 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name=viewport content="width=device-width, initial-scale=1">
-  <title>{{ entry.title }} - {{ craft.tips.getWord(siteName) }}</title>
-  <link rel="home" href="{{ siteUrl }}">
-  <link href="https://fonts.googleapis.com/css?family=Krona+One|Merriweather:300,400,400i,700,700i" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url('assets/css/site.css') }}">
-</head>
+{% spaceless %}
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>{{ entry.title }} - {{ craft.tips.getWord(siteName) }}</title>
+    <link rel="home" href="{{ siteUrl }}">
+    <link href="https://fonts.googleapis.com/css?family=Krona+One|Merriweather:300,400,400i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url('assets/css/prism.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url('assets/css/site.css') }}">
+  </head>
 
-<body style="background-repeat:no-repeat; background-position: center center; background-size: 50%;">
-  <div class="siteContainer">
+  <body style="background-repeat:no-repeat; background-position: center center; background-size: 50%;">
+    <div class="siteContainer">
 
-    <header>
-      <h1 class="siteLogo"><a href="{{ siteUrl }}">{{ craft.tips.getWord(siteName) }}</a></h1>
-    </header>
+      <header>
+        <h1 class="siteLogo"><a href="{{ siteUrl }}">{{ craft.tips.getWord(siteName) }}</a></h1>
+      </header>
 
-    <div class="content">
-      {% block content %}{% endblock %}
+      <div class="content">
+        {% block content %}{% endblock %}
+      </div>
+
     </div>
 
-  </div>
+    {# Prism is used for code indenting, keeeeeeeep #}
+    <script src="{{ url('assets/js/prism.js') }}"></script>
+    {% if entry is defined and entry.konami is not empty %}
+      <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
+    {% endif %}
 
-  {# Prism is used for code indenting, keeeeeeeep #}
-  <script src="{{ url('assets/js/prism.js') }}"></script>
-  {% if entry is defined and entry.konami is not empty %}
-    <script src="{{ url('scripts/') ~ "?ver=" ~ entry.id }}"></script>
-  {% endif %}
-  
-  {% block scripts %}{% endblock %}
-</body>
-</html>
+    {% block scripts %}{% endblock %}
+  </body>
+  </html>
+{% endspaceless %}
