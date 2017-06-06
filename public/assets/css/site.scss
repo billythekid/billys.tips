@@ -104,7 +104,7 @@ a {
   text-decoration: none;
   &[target=_blank]:after {
     vertical-align: super;
-    content: '➚';
+    content: ' ➚';
     color: #40E0D0;
   }
 }
@@ -234,11 +234,9 @@ li > code {
 }
 
 .latest-tips {
-  border-left: 2px solid #40E0D0;
   float: left;
   min-width: 200px;
   width: 20%;
-  padding-left: 2rem;
 }
 
 /* Media queries
@@ -278,4 +276,18 @@ li > code {
     line-height: 1.7;
   }
 
+}
+@media only screen and (max-width: 1195px) {
+  .latest-tips {
+    border-top: 2px solid #40E0D0;
+    padding-top: 2rem;
+    width: 100%;
+    max-width: 800px
+  }
+}
+@media only screen and (min-width: 1196px) {
+  .latest-tips {
+    border-left: 2px solid #40E0D0;
+    padding-left: 2rem;
+  }
 }
