@@ -244,6 +244,15 @@ li > code {
 .plumbing {
   background: #40E0D0;
   padding: 2rem;
+  a {
+    padding-bottom: 3px;
+    border-bottom: 1px solid #40E0D0;
+    &[target=_blank]:after {
+      vertical-align: super;
+      content: ' ➚';
+      color: #000;
+    }
+  }
 }
 
 /* Media queries
