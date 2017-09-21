@@ -249,8 +249,6 @@ li > code {
     padding-bottom: 3px;
     border-bottom: 1px solid #000;
     &[target=_blank]:after {
-      vertical-align: super;
-      content: ' ➚';
       color: #000;
     }
   }
