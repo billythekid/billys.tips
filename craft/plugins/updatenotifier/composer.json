@@ -1,0 +1,14 @@
+{
+	"name": "billythekid/updatenotifier",
+	"description": "Plugin to let you know if your CMSes/plugins need updated",
+	"type": "craft-plugin",
+	"authors": [
+		{
+			"name": "Billy Fagan",
+			"homepage": "https://billyfagan.co.uk"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0"
+	}
+}
