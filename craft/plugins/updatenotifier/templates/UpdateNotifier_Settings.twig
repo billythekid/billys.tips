@@ -27,6 +27,15 @@
 
 <input type="button" class="btn submit" id="secret-key-generator" value="Generate New Key">
 <strong>Note: If you generate a new key, any existing apps will cease to work.</strong>
+<p>POST a request to {{ siteUrl }} with the following parameters.</p>
+<p>
+    <strong>Key: </strong>updatenotifierkey<br>
+    <strong>Value: </strong><span id="secret-key">{{ settings['secretKey'] }}</span>
+</p>
+<p>
+    <strong>Key: </strong> action<br>
+    <strong>Value: </strong> UpdateNotifier/getUpdates
+</p>
 <script>
   {% set uuidJs %}
   var crypto = window.crypto || window.msCrypto || null; // IE11 fix
@@ -71,7 +80,9 @@
   var generatorButton = document.getElementById('settings-secret-key-generator');
   generatorButton.addEventListener('click', function(){
       var keyInput = document.getElementById('settings-secretKey');
+      var keySpan = document.getElementById('settings-secret-key');
       keyInput.value = Guid.newGuid();
+      keySpan.innerText = keyInput.value;
   });
 
   {% endset %}
