@@ -25,7 +25,11 @@ class UpdateNotifierController extends BaseController
      */
     public function actionGetUpdates()
     {
+
         $this->requirePostRequest();
+
+        //  we need this to allow off-site requests - TODO make this settable
+        header("Access-Control-Allow-Origin: *");
 
         $secretKey = craft()->plugins->getPlugin('updatenotifier')->getSettings()->secretKey;
 
