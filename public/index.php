@@ -1,4 +1,6 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+
 // Path to your craft/ folder
 $craftPath = __DIR__ . '/../craft';
 
