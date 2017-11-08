@@ -26,16 +26,41 @@
   value: settings['secretKey']}) }}
 
 <input type="button" class="btn submit" id="secret-key-generator" value="Generate New Key">
-<strong>Note: If you generate a new key, any existing apps will cease to work.</strong>
-<p>POST a request to {{ siteUrl }} with the following parameters.</p>
+<p><strong>Note: If you generate a new key, any existing apps will cease to work.</strong></p>
+<hr>
+<p>POST a request to <code>{{ siteUrl }}</code> with the following parameters.</p>
 <p>
-    <strong>Key: </strong>updatenotifierkey<br>
-    <strong>Value: </strong><span id="secret-key">{{ settings['secretKey'] }}</span>
+  <strong>Key: </strong> <code>updatenotifierkey</code><br>
+  <strong>Value: </strong> <code id="secret-key">{{ settings['secretKey'] }}</code>
 </p>
 <p>
-    <strong>Key: </strong> action<br>
-    <strong>Value: </strong> UpdateNotifier/getUpdates
+  <strong>Key: </strong> <code>action</code><br>
+  <strong>Value: </strong> <code>UpdateNotifier/getUpdates</code>
 </p>
+{% if craft.config.enableCsrfProtection %}
+  <p>
+    <strong>
+      Note: You have
+      <a href="https://craftcms.com/docs/config-settings#enableCsrfProtection">CSRF protection</a> turned on, so you will need to add exempt the route "<code>{{ craft.config.get('actionTrigger') }}/UpdateNotifier/getUpdates</code>" from it:
+    </strong>
+  </p>
+  <p>An example of how to do this would be in your general.php config file for this environment:</p>
+  <pre><code> &lt;?php
+    $secretKey = '{{ settings['secretKey'] }}';
+
+    return [
+      '*' => [
+        // ...applied to all environments
+      ],
+      '{{ constant('CRAFT_ENVIRONMENT') }}' => [
+        'enableCsrfProtection' => (!isset($_POST['updatenotifierkey']) || $_POST['updatenotifierkey'] !== '{{ settings['secretKey'] }}'),
+        // ... other environment specific rules here
+      ]
+    ]
+    </code>
+</pre>
+{% endif %}
+
 <script>
   {% set uuidJs %}
   var crypto = window.crypto || window.msCrypto || null; // IE11 fix
@@ -78,11 +103,11 @@
   })();
 
   var generatorButton = document.getElementById('settings-secret-key-generator');
-  generatorButton.addEventListener('click', function(){
+  generatorButton.addEventListener('click', function () {
       var keyInput = document.getElementById('settings-secretKey');
-      var keySpan = document.getElementById('settings-secret-key');
+//      var keySpan = document.getElementById('settings-secret-key');
       keyInput.value = Guid.newGuid();
-      keySpan.innerText = keyInput.value;
+//      keySpan.innerText = keyInput.value;
   });
 
   {% endset %}

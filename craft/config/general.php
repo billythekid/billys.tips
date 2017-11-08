@@ -5,17 +5,13 @@
  * All of your system's general configuration settings go in here.
  * You can see a list of the default settings in craft/app/etc/config/defaults/general.php
  */
-
-require_once(CRAFT_PLUGINS_PATH . '/updatenotifier/UpdateNotifierHelper.php');
-use Craft\UpdateNotifierHelper;
-
-$isUpdateNotifierRequest = UpdateNotifierHelper::isApiRequest();
+$secretKey = '33a6306c-a1e7-2656-4daa-76689d017c36';
 
 return array(
     '*' => [
         'omitScriptNameInUrls' => true,
         'devMode' => false,
-        'enableCsrfProtection' => !$isUpdateNotifierRequest,
+        'enableCsrfProtection' => (!isset($_POST['updatenotifierkey']) || $_POST['updatenotifierkey'] !== '33a6306c-a1e7-2656-4daa-76689d017c36'),
     ],
 
     '.dev' => [

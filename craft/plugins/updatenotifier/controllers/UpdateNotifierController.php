@@ -38,6 +38,7 @@ class UpdateNotifierController extends BaseController
         $updates = false;
         try
         {
+            craft()->updates->flushUpdateInfoFromCache();
             $updates = craft()->updates->getUpdates(true);
         } catch (EtException $e)
         {
