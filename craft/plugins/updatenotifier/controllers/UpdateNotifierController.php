@@ -31,25 +31,35 @@ class UpdateNotifierController extends BaseController
         $allowedDomain = craft()->plugins->getPlugin('updatenotifier')->getSettings()->allowedDomain;
         $allowedDomain = !empty(trim($allowedDomain)) ? $allowedDomain : '*';
 
-        if (!function_exists('getallheaders'))  {
+        if (!function_exists('getallheaders'))
+        {
             function getallheaders()
             {
-                if (!is_array($_SERVER)) {
+                if (!is_array($_SERVER))
+                {
                     return array();
                 }
 
                 $headers = array();
-                foreach ($_SERVER as $name => $value) {
-                    if (substr($name, 0, 5) == 'HTTP_') {
+                foreach ($_SERVER as $name => $value)
+                {
+                    if (substr($name, 0, 5) == 'HTTP_')
+                    {
                         $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
                     }
                 }
+
                 return $headers;
             }
         }
-        Craft::dd(getallheaders());
 
         header("Access-Control-Allow-Origin: {$allowedDomain}");
+        $origin = getallheaders()['Origin'];
+
+        if ($allowedDomain !== '*' && $origin !== trim($allowedDomain, '/'))
+        {
+            $this->returnErrorJson("Failed to load " . craft()->siteUrl . ": The 'Access-Control-Allow-Origin' header has a value '{$allowedDomain}' that is not equal to the supplied origin. Origin '{$origin}' is therefore not allowed access.");
+        }
 
         $secretKey = craft()->plugins->getPlugin('updatenotifier')->getSettings()->secretKey;
 
