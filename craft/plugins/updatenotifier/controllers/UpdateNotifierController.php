@@ -28,10 +28,10 @@ class UpdateNotifierController extends BaseController
 
         $this->requirePostRequest();
 
-        $domainAllowed = craft()->plugins->getPlugin('updatenotifier')->getSettings()->domainAllowed;
-        $domainAllowed = !empty(trim($domainAllowed)) ? $domainAllowed : '*';
+        $allowedDomain = craft()->plugins->getPlugin('updatenotifier')->getSettings()->allowedDomain;
+        $allowedDomain = !empty(trim($allowedDomain)) ? $allowedDomain : '*';
 
-        header("Access-Control-Allow-Origin: {$domainAllowed}");
+        header("Access-Control-Allow-Origin: {$allowedDomain}");
 
         $secretKey = craft()->plugins->getPlugin('updatenotifier')->getSettings()->secretKey;
 
