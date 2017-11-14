@@ -124,11 +124,16 @@ class UpdateNotifierPlugin extends BasePlugin
     protected function defineSettings()
     {
         return array(
-            'secretKey' => array(
+            'secretKey'     => array(
                 AttributeType::String,
-                'label'    => 'Secret Key',
+                'label'    => 'Secret key',
                 'default'  => '00000000-0000-0000-0000-000000000000',
                 'required' => true,
+            ),
+            'allowedDomain' => array(
+                AttributeType::String,
+                'label'   => 'Restrict access to a specific domain',
+                'default' => '',
             ),
         );
     }
@@ -153,7 +158,6 @@ class UpdateNotifierPlugin extends BasePlugin
 
         return $settings;
     }
-
 
 
 }

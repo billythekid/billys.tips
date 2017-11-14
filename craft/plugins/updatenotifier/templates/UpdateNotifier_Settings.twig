@@ -53,8 +53,8 @@
       <a href="https://craftcms.com/docs/config-settings#enableCsrfProtection">CSRF protection</a> turned on, so you will need to add exempt the route "<code>{{ craft.config.get('actionTrigger') }}/UpdateNotifier/getUpdates</code>" from it:
     </strong>
   </p>
-  <p>An example of how to do this would be in your general.php config file for this environment:</p>
-  <pre><code> &lt;?php
+  <p>An example of one possible way to do this would be to edit your general.php config file for this environment something like the following:</p>
+  <pre><code>&lt;?php
     $secretKey = '{{ settings['secretKey'] }}';
 
     return [
