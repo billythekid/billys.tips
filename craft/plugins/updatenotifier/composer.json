@@ -2,6 +2,7 @@
 	"name": "billythekid/updatenotifier",
 	"description": "Plugin to let you know if your CMSes/plugins need updated",
 	"type": "craft-plugin",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Billy Fagan",
