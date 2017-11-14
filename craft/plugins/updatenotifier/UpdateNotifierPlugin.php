@@ -4,7 +4,7 @@
  * Plugin to let you know if your CMSes/plugins need updated
  *
  * @author    Billy Fagan
- * @copyright Copyright (c) 2017 Billy Fagan
+ * @copyright Copyright 2017 Billy Fagan
  * @link      https://billyfagan.co.uk
  * @package   UpdateNotifier
  * @since     1.0.0
@@ -14,31 +14,41 @@ namespace Craft;
 
 class UpdateNotifierPlugin extends BasePlugin
 {
+
+
     /**
-     * @return mixed
+     * Runs any code needed to initialise the plugin
      */
     public function init()
     {
         parent::init();
     }
 
+
     /**
-     * @return mixed
+     * Gets the plugin's name
+     *
+     * @return string
      */
     public function getName()
     {
-        return Craft::t('UpdateNotifier');
+        return 'Update Notifier';
     }
 
+
     /**
-     * @return mixed
+     * Gets the plugin's description
+     *
+     * @return string
      */
     public function getDescription()
     {
-        return Craft::t('Plugin to let you know if your CMSes/plugins need updated');
+        return 'Plugin to let you know if your CMSes/plugins need updated';
     }
 
     /**
+     * The master readme URL
+     *
      * @return string
      */
     public function getDocumentationUrl()
@@ -47,6 +57,8 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * The release feed URL
+     *
      * @return string
      */
     public function getReleaseFeedUrl()
@@ -55,6 +67,8 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * Current plugin version
+     *
      * @return string
      */
     public function getVersion()
@@ -63,6 +77,8 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * Current DB/migration version
+     *
      * @return string
      */
     public function getSchemaVersion()
@@ -71,6 +87,8 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * This name looks like my name!
+     *
      * @return string
      */
     public function getDeveloper()
@@ -79,6 +97,8 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * My website address
+     *
      * @return string
      */
     public function getDeveloperUrl()
@@ -87,6 +107,8 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * If the plugin has its own section in the dashboard
+     *
      * @return bool
      */
     public function hasCpSection()
@@ -94,31 +116,10 @@ class UpdateNotifierPlugin extends BasePlugin
         return false;
     }
 
-    /**
-     */
-    public function onBeforeInstall()
-    {
-    }
 
     /**
-     */
-    public function onAfterInstall()
-    {
-    }
-
-    /**
-     */
-    public function onBeforeUninstall()
-    {
-    }
-
-    /**
-     */
-    public function onAfterUninstall()
-    {
-    }
-
-    /**
+     * Settable settings for the plugin
+     *
      * @return array
      */
     protected function defineSettings()
@@ -139,6 +140,8 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * Show the settings page
+     *
      * @return mixed
      */
     public function getSettingsHtml()
@@ -149,13 +152,13 @@ class UpdateNotifierPlugin extends BasePlugin
     }
 
     /**
+     * If I need to make any changes to the settings before they get saved, this is where I'd do it.
+     *
      * @param mixed $settings The plugin's settings
      * @return mixed
      */
     public function prepSettings($settings)
     {
-        // Modify $settings here...
-
         return $settings;
     }
 
