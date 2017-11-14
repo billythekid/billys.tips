@@ -31,30 +31,13 @@ class UpdateNotifierController extends BaseController
         $allowedDomain = craft()->plugins->getPlugin('updatenotifier')->getSettings()->allowedDomain;
         $allowedDomain = !empty(trim($allowedDomain)) ? $allowedDomain : '*';
 
-        if (!function_exists('getallheaders'))
-        {
-            function getallheaders()
-            {
-                if (!is_array($_SERVER))
-                {
-                    return array();
-                }
-
-                $headers = array();
-                foreach ($_SERVER as $name => $value)
-                {
-                    if (substr($name, 0, 5) == 'HTTP_')
-                    {
-                        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-                    }
-                }
-
-                return $headers;
-            }
-        }
 
         header("Access-Control-Allow-Origin: {$allowedDomain}");
-        $origin = getallheaders()['Origin'];
+        $headers = $this->getallheaders();
+
+        // set to * by default, if allowed domain is * it doesn't care.
+        // If allowed domain is set to something, it won't match the * anyway.
+        $origin = $headers['Origin'] ?? '*';
 
         if ($allowedDomain !== '*' && $origin !== trim($allowedDomain, '/'))
         {
@@ -95,5 +78,29 @@ class UpdateNotifierController extends BaseController
         }
     }
 
+
+    private function getAllHeaders()
+    {
+        if (!function_exists('getallheaders'))
+        {
+            if (!is_array($_SERVER))
+            {
+                return array();
+            }
+
+            $headers = array();
+            foreach ($_SERVER as $name => $value)
+            {
+                if (substr($name, 0, 5) == 'HTTP_')
+                {
+                    $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+                }
+            }
+
+            return $headers;
+        }
+
+        return getallheaders();
+    }
 
 }
