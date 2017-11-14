@@ -78,6 +78,7 @@ class UpdateNotifierController extends BaseController
         {
             if ($e->getCode() == 10001)
             {
+                // craft folder is not writable
                 $this->returnErrorJson($e->getMessage());
             }
         }
