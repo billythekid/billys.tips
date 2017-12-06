@@ -14,21 +14,34 @@
 {% set title = "Tips" %}
 
 {% block content %}
-  <h2>Tips</h2>
+<h2>Tips</h2>
+{% if matches is defined %}
+  {% set year = matches.year %}
+  {% set dates = 'and, >= ' ~ year ~ '-01-01, < ' ~ (year + 1) ~ '-01-01' %}
+  {% paginate craft.entries.section('tips').postDate(dates).limit(6) as pageInfo, tips %}
+{% else %}
   {% paginate craft.entries.section('tips').limit(6) as pageInfo, tips %}
+{% endif %}
 
-  <div>
-    {% if tips is not empty %}
-      {% for tip in tips %}
-        <div>
-          {% include '_partials/tipCard' %}
-        </div>
-        {% if not loop.last %}
-          <hr>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-  </div>
+<div>
+  {% if tips is not empty %}
+    {% for tip in tips %}
+      <div>
+        {% include '_partials/tipCard' %}
+      </div>
+      {% if not loop.last %}
+        <hr>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <h3>
+      No Tips Found
+      {% if matches is defined %}
+        for {{ matches.year }}
+      {% endif %}
+    </h3>
+  {% endif %}
+</div>
 
-  {% include '_partials/pagination' %}
+{% include '_partials/pagination' %}
 {% endblock %}
