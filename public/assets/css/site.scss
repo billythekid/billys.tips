@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* Reset
 ------------------------------------------------  */
-html, body, h1, h2, h3, h4, h5, h6, p, blockquote, address, pre, cite, code, dfn, abbr, acronym, kbd, a, samp, img, ins, i, b, u, strike, small, big, font, tt, q, dl, dt, dd, ul, ol, li, applet, object, iframe, form, fieldset, label, legend, th, td, th, tbody, tfoot, thead, tr, caption {
+html, body, h1, h2, h3, h4, h5, h6, p, blockquote, address, pre, cite, code, dfn, abbr, acronym, a, samp, img, ins, i, b, u, strike, small, big, font, tt, q, dl, dt, dd, ul, ol, li, applet, object, iframe, form, fieldset, label, legend, th, td, th, tbody, tfoot, thead, tr, caption {
   font-size: 100%;
   margin: 0;
   padding: 0;
@@ -121,6 +121,14 @@ h1 {
 
 h2 {
   font-size: 1.5rem;
+}
+
+kbd {
+  background: #000;
+  color: #fff;
+  white-space: nowrap;
+  padding: 2px 4px 1px;
+  border-radius: 3px;
 }
 
 /* Site Container
